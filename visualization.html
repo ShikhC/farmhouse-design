@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Storage Design — Moradabad</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: #16213e;
+            padding: 16px 24px;
+            border-bottom: 1px solid #0f3460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header h1 {
+            font-size: 1.2rem;
+            color: #e94560;
+            font-weight: 600;
+        }
+        .header .subtitle {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .nav button {
+            padding: 8px 16px;
+            border: 1px solid #0f3460;
+            background: #16213e;
+            color: #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .nav button:hover { background: #0f3460; }
+        .nav button.active {
+            background: #e94560;
+            border-color: #e94560;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .view { display: none; }
+        .view.active { display: block; }
+        .svg-container {
+            background: #0f0f23;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+        svg { display: block; margin: 0 auto; }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+            padding: 12px;
+            background: #16213e;
+            border-radius: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        .info-panel {
+            margin-top: 20px;
+            padding: 16px;
+            background: #16213e;
+            border-radius: 8px;
+            border-left: 3px solid #e94560;
+        }
+        .info-panel h3 {
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .info-panel p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #ccc;
+        }
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .spec-card {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #333;
+        }
+        .spec-card h4 {
+            color: #e94560;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+        .spec-card p {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+        .tooltip {
+            position: fixed;
+            background: #1a1a2e;
+            border: 1px solid #e94560;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            max-width: 200px;
+        }
+        @media print {
+            body { background: white; color: black; }
+            .header { background: white; border-bottom: 2px solid black; }
+            .header h1 { color: black; }
+            .nav { display: none; }
+            .svg-container { background: white; border: 1px solid #ccc; }
+            .legend { background: #f5f5f5; }
+            .info-panel { background: #f5f5f5; border-left-color: black; }
+            .info-panel h3 { color: black; }
+            .view { display: block !important; page-break-after: always; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 12px; }
+            .header { padding: 12px; }
+            .header h1 { font-size: 1rem; }
+            .nav button { padding: 6px 10px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="tooltip" id="tooltip"></div>
+
+    <div class="header">
+        <div>
+            <h1>Farm Storage — Mithanpur, Moradabad</h1>
+            <div class="subtitle">20ft × 25ft | 3ft Plinth | 12ft Height | Future First Floor</div>
+        </div>
+        <div class="nav">
+            <button class="active" onclick="showView('ground')">Ground Floor</button>
+            <button onclick="showView('first')">First Floor</button>
+            <button onclick="showView('elevation')">Front Elevation</button>
+            <button onclick="showView('section')">Section</button>
+            <button onclick="showView('structure')">Structure</button>
+            <button onclick="showView('electrical')">Electrical</button>
+            <button onclick="showView('plumbing')">Plumbing</button>
+            <button onclick="showView('future')">Future Provisions</button>
+            <button onclick="showView('construction')">Construction Steps</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- GROUND FLOOR VIEW -->
+        <div class="view active" id="view-ground">
+            <div class="svg-container">
+                <svg viewBox="-60 -40 700 820" width="100%" style="max-width:700px; height:auto;">
+                    <!-- Grid background -->
+                    <defs>
+                        <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-60" y="-40" width="700" height="820" fill="url(#grid)"/>
+
+                    <!-- Platform (raised plinth area) -->
+                    <rect x="0" y="0" width="480" height="600" fill="#1e293b" stroke="#475569" stroke-width="2" rx="2"/>
+
+                    <!-- Main storage area -->
+                    <rect x="144" y="0" width="336" height="600" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1" opacity="0.3"
+                          class="clickable" data-info="Open Storage: 14ft × 25ft = 350 sq ft usable area"/>
+
+                    <!-- Staircase zone -->
+                    <rect x="0" y="0" width="144" height="240" fill="#2d1b4e" stroke="#8b5cf6" stroke-width="1.5" opacity="0.5"
+                          class="clickable" data-info="Staircase Zone: 6ft × 10ft, Dog-legged, 20 risers @ 7&quot; each"/>
+
+                    <!-- Flight 1 (going backward) -->
+                    <rect x="6" y="120" width="66" height="180" fill="#4c1d95" stroke="#8b5cf6" stroke-width="1"
+                          class="clickable" data-info="Flight 1: 2.75ft wide, 9 treads @ 10&quot;, going up (front to back)"/>
+                    <!-- Stair treads Flight 1 -->
+                    <g stroke="#8b5cf6" stroke-width="0.5" opacity="0.7">
+                        <line x1="6" y1="140" x2="72" y2="140"/>
+                        <line x1="6" y1="160" x2="72" y2="160"/>
+                        <line x1="6" y1="180" x2="72" y2="180"/>
+                        <line x1="6" y1="200" x2="72" y2="200"/>
+                        <line x1="6" y1="220" x2="72" y2="220"/>
+                        <line x1="6" y1="240" x2="72" y2="240"/>
+                        <line x1="6" y1="260" x2="72" y2="260"/>
+                        <line x1="6" y1="280" x2="72" y2="280"/>
+                        <line x1="6" y1="300" x2="72" y2="300"/>
+                    </g>
+                    <!-- Arrow on Flight 1 -->
+                    <path d="M 39 280 L 39 140 L 33 150 M 39 140 L 45 150" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+
+                    <!-- Flight 2 (coming forward) -->
+                    <rect x="78" y="120" width="66" height="180" fill="#4c1d95" stroke="#8b5cf6" stroke-width="1"
+                          class="clickable" data-info="Flight 2: 2.75ft wide, 9 treads @ 10&quot;, going up (back to front)"/>
+                    <!-- Stair treads Flight 2 -->
+                    <g stroke="#8b5cf6" stroke-width="0.5" opacity="0.7">
+                        <line x1="78" y1="140" x2="144" y2="140"/>
+                        <line x1="78" y1="160" x2="144" y2="160"/>
+                        <line x1="78" y1="180" x2="144" y2="180"/>
+                        <line x1="78" y1="200" x2="144" y2="200"/>
+                        <line x1="78" y1="220" x2="144" y2="220"/>
+                        <line x1="78" y1="240" x2="144" y2="240"/>
+                        <line x1="78" y1="260" x2="144" y2="260"/>
+                        <line x1="78" y1="280" x2="144" y2="280"/>
+                        <line x1="78" y1="300" x2="144" y2="300"/>
+                    </g>
+                    <!-- Arrow on Flight 2 -->
+                    <path d="M 111 140 L 111 280 L 105 270 M 111 280 L 117 270" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+
+                    <!-- Half Landing -->
+                    <rect x="0" y="0" width="144" height="72" fill="#5b21b6" stroke="#8b5cf6" stroke-width="1"
+                          class="clickable" data-info="Half Landing: 6ft × 3ft at mid-height (6ft from floor)"/>
+                    <text x="72" y="40" text-anchor="middle" fill="#c4b5fd" font-size="10">LANDING</text>
+
+                    <!-- Toilet -->
+                    <rect x="0" y="480" width="72" height="120" fill="#1e3a3a" stroke="#14b8a6" stroke-width="1.5"
+                          class="clickable" data-info="Toilet (WC): 3ft × 5ft, Western commode, under Flight 2"/>
+                    <!-- Commode symbol -->
+                    <ellipse cx="36" cy="530" rx="12" ry="16" fill="none" stroke="#14b8a6" stroke-width="1"/>
+                    <!-- Basin symbol -->
+                    <rect x="50" y="555" width="16" height="12" fill="none" stroke="#14b8a6" stroke-width="1" rx="2"/>
+                    <text x="36" y="590" text-anchor="middle" fill="#5eead4" font-size="9">WC</text>
+
+                    <!-- Lobby -->
+                    <rect x="72" y="480" width="72" height="120" fill="#1a2e1a" stroke="#22c55e" stroke-width="1"
+                          class="clickable" data-info="Lobby: 3ft × 5ft, connects gate, toilet, stairs, and storage"/>
+                    <text x="108" y="545" text-anchor="middle" fill="#86efac" font-size="9">LOBBY</text>
+
+                    <!-- Internal door to storage -->
+                    <rect x="141" y="510" width="6" height="36" fill="#22c55e" opacity="0.8"/>
+                    <text x="158" y="530" fill="#86efac" font-size="8">DR</text>
+
+                    <!-- Gate (front wall, left) -->
+                    <rect x="0" y="597" width="72" height="6" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"
+                          class="clickable" data-info="External Gate: 3ft wide MS gate, lockable, with 5 steps down to ground"/>
+                    <text x="36" y="620" text-anchor="middle" fill="#fbbf24" font-size="9">GATE (3ft)</text>
+                    <text x="36" y="635" text-anchor="middle" fill="#92400e" font-size="8">+ 5 Steps</text>
+
+                    <!-- Shutter (front wall, center-right) -->
+                    <rect x="144" y="597" width="240" height="6" fill="#ef4444" stroke="#ef4444" stroke-width="2"
+                          class="clickable" data-info="Rolling Shutter: 10ft × 10ft, MS galvanized, for tractor access"/>
+                    <text x="264" y="620" text-anchor="middle" fill="#fca5a5" font-size="10">SHUTTER (10ft)</text>
+
+                    <!-- Right wall section (front) -->
+                    <rect x="384" y="597" width="96" height="6" fill="#475569"/>
+
+                    <!-- Walls -->
+                    <rect x="0" y="0" width="480" height="600" fill="none" stroke="#94a3b8" stroke-width="3"/>
+
+                    <!-- Front shade area -->
+                    <rect x="-20" y="603" width="520" height="120" fill="#0d2847" stroke="#1d4ed8" stroke-width="1" stroke-dasharray="5,3" rx="4"
+                          class="clickable" data-info="Front Shade: 5ft PURE CANTILEVER slab — no columns. Completely open for tractor turning and sitting. Slab tapers 6&quot; to 4&quot;."/>
+                    <text x="240" y="655" text-anchor="middle" fill="#60a5fa" font-size="11">5 ft FRONT SHADE</text>
+                    <text x="240" y="673" text-anchor="middle" fill="#3b82f6" font-size="9">(pure cantilever — no columns, fully open)</text>
+
+                    <!-- No shade columns — pure cantilever -->
+
+                    <!-- Vents (side walls) -->
+                    <rect x="-8" y="150" width="8" height="18" fill="#22c55e" class="clickable" data-info="Vent V3: 9&quot;×12&quot; with MS grill, at 10ft height"/>
+                    <rect x="-8" y="400" width="8" height="18" fill="#22c55e" class="clickable" data-info="Vent V4: 9&quot;×12&quot; with MS grill, at 10ft height"/>
+                    <rect x="480" y="150" width="8" height="18" fill="#22c55e" class="clickable" data-info="Vent V1: 9&quot;×12&quot; with MS grill, at 10ft height"/>
+                    <rect x="480" y="400" width="8" height="18" fill="#22c55e" class="clickable" data-info="Vent V2: 9&quot;×12&quot; with MS grill, at 10ft height"/>
+
+                    <!-- Vents (back wall) -->
+                    <rect x="100" y="-8" width="18" height="8" fill="#22c55e" class="clickable" data-info="Vent V6: 9&quot;×12&quot; back wall, at 11ft height (exhaust)"/>
+                    <rect x="360" y="-8" width="18" height="8" fill="#22c55e" class="clickable" data-info="Vent V5: 9&quot;×12&quot; back wall, at 11ft height (exhaust)"/>
+
+                    <!-- Vent labels -->
+                    <text x="-16" y="162" fill="#22c55e" font-size="7" text-anchor="end">V3</text>
+                    <text x="-16" y="412" fill="#22c55e" font-size="7" text-anchor="end">V4</text>
+                    <text x="500" y="162" fill="#22c55e" font-size="7">V1</text>
+                    <text x="500" y="412" fill="#22c55e" font-size="7">V2</text>
+                    <text x="109" y="-14" fill="#22c55e" font-size="7" text-anchor="middle">V6</text>
+                    <text x="369" y="-14" fill="#22c55e" font-size="7" text-anchor="middle">V5</text>
+
+                    <!-- Dimension lines -->
+                    <!-- Top (width) -->
+                    <line x1="0" y1="-25" x2="480" y2="-25" stroke="#666" stroke-width="0.5"/>
+                    <line x1="0" y1="-30" x2="0" y2="-20" stroke="#666" stroke-width="0.5"/>
+                    <line x1="480" y1="-30" x2="480" y2="-20" stroke="#666" stroke-width="0.5"/>
+                    <text x="240" y="-30" text-anchor="middle" fill="#999" font-size="10">20 ft</text>
+
+                    <!-- Right (depth) -->
+                    <line x1="510" y1="0" x2="510" y2="600" stroke="#666" stroke-width="0.5"/>
+                    <line x1="505" y1="0" x2="515" y2="0" stroke="#666" stroke-width="0.5"/>
+                    <line x1="505" y1="600" x2="515" y2="600" stroke="#666" stroke-width="0.5"/>
+                    <text x="530" y="300" text-anchor="middle" fill="#999" font-size="10" transform="rotate(90, 530, 300)">25 ft</text>
+
+                    <!-- Stair width dimension -->
+                    <line x1="0" y1="75" x2="144" y2="75" stroke="#8b5cf6" stroke-width="0.5" stroke-dasharray="2,2"/>
+                    <text x="72" y="90" text-anchor="middle" fill="#a78bfa" font-size="8">6 ft</text>
+
+                    <!-- Storage label -->
+                    <text x="312" y="280" text-anchor="middle" fill="#93c5fd" font-size="14" font-weight="bold">STORAGE</text>
+                    <text x="312" y="300" text-anchor="middle" fill="#64748b" font-size="10">14ft × 25ft</text>
+                    <text x="312" y="318" text-anchor="middle" fill="#64748b" font-size="10">350 sq ft</text>
+
+                    <!-- North arrow -->
+                    <g transform="translate(580, 50)">
+                        <circle cx="0" cy="0" r="18" fill="none" stroke="#666" stroke-width="1"/>
+                        <path d="M 0 -14 L 4 4 L 0 0 L -4 4 Z" fill="#e94560"/>
+                        <text x="0" y="-22" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">N</text>
+                    </g>
+
+                    <!-- Ramp indication -->
+                    <rect x="130" y="726" width="288" height="30" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,2" rx="3"/>
+                    <text x="274" y="748" text-anchor="middle" fill="#f59e0b" font-size="9">TRACTOR RAMP (12ft W × 8ft L, tractor only)</text>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#4c1d95"></div>Staircase</div>
+                <div class="legend-item"><div class="legend-color" style="background:#1e3a3a"></div>Toilet</div>
+                <div class="legend-item"><div class="legend-color" style="background:#1a2e1a"></div>Lobby</div>
+                <div class="legend-item"><div class="legend-color" style="background:#ef4444"></div>Shutter</div>
+                <div class="legend-item"><div class="legend-color" style="background:#f59e0b"></div>Gate + Steps</div>
+                <div class="legend-item"><div class="legend-color" style="background:#22c55e"></div>Vents</div>
+                <div class="legend-item"><div class="legend-color" style="background:#1d4ed8; opacity:0.5"></div>Front Shade (cantilever)</div>
+            </div>
+
+            <div class="info-panel">
+                <h3>Ground Floor Summary</h3>
+                <p>Open plan storage with 350 sq ft usable area. Dog-legged staircase in front-left corner (6ft × 10ft) with toilet underneath.
+                10ft rolling shutter for tractor access. 3ft raised plinth with 18ft ramp.
+                5ft cantilevered shade protects front from rain/sun. 6 vents for cross-ventilation.
+                Click/tap any element for details.</p>
+            </div>
+        </div>
+
+        <!-- FIRST FLOOR VIEW -->
+        <div class="view" id="view-first">
+            <div class="svg-container">
+                <svg viewBox="-40 -40 640 780" width="100%" style="max-width:640px; height:auto;">
+                    <defs>
+                        <pattern id="grid2" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-40" y="-40" width="640" height="780" fill="url(#grid2)"/>
+
+                    <!-- Main building outline -->
+                    <rect x="0" y="0" width="480" height="600" fill="#1e293b" stroke="#94a3b8" stroke-width="3" rx="2"/>
+
+                    <!-- Room (back) -->
+                    <rect x="6" y="6" width="468" height="384" fill="#2d1b4e" stroke="#8b5cf6" stroke-width="1.5" opacity="0.4"
+                          class="clickable" data-info="Living Room: 20ft × 16ft = 320 sq ft enclosed living space"/>
+                    <text x="240" y="180" text-anchor="middle" fill="#c4b5fd" font-size="16" font-weight="bold">ROOM</text>
+                    <text x="240" y="200" text-anchor="middle" fill="#a78bfa" font-size="11">20 ft × 16 ft</text>
+                    <text x="240" y="220" text-anchor="middle" fill="#7c3aed" font-size="10">320 sq ft — Living Space</text>
+
+                    <!-- Partition wall -->
+                    <rect x="0" y="384" width="480" height="4" fill="#94a3b8"/>
+
+                    <!-- Balcony (within building) -->
+                    <rect x="6" y="390" width="468" height="206" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1" opacity="0.4"
+                          class="clickable" data-info="Covered Balcony: 20ft × 9ft, within building, RCC roof above"/>
+                    <text x="300" y="490" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="bold">COVERED BALCONY</text>
+                    <text x="300" y="510" text-anchor="middle" fill="#60a5fa" font-size="10">20 ft × 9 ft — RCC slab roof</text>
+
+                    <!-- Stair well opening -->
+                    <rect x="12" y="450" width="144" height="72" fill="#0f0f23" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2"
+                          class="clickable" data-info="Stair Well: 6ft × 3ft opening in slab with safety railing around"/>
+                    <text x="84" y="485" text-anchor="middle" fill="#fca5a5" font-size="9">STAIR</text>
+                    <text x="84" y="498" text-anchor="middle" fill="#fca5a5" font-size="9">WELL</text>
+                    <text x="84" y="511" text-anchor="middle" fill="#ef4444" font-size="7">(opening)</text>
+
+                    <!-- Extended balcony (cantilevered) -->
+                    <rect x="-20" y="600" width="520" height="120" fill="#0d2847" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="5,3" rx="4"
+                          class="clickable" data-info="Extended Terrace: 20ft × 5ft cantilevered beyond building, sheet roof above, railing at edge"/>
+                    <text x="240" y="650" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="bold">EXTENDED TERRACE</text>
+                    <text x="240" y="670" text-anchor="middle" fill="#3b82f6" font-size="9">20 ft × 5 ft — Sheet roof above</text>
+                    <text x="240" y="688" text-anchor="middle" fill="#1d4ed8" font-size="8">(cantilevered beyond building footprint)</text>
+
+                    <!-- Railing indication -->
+                    <line x1="-20" y1="720" x2="500" y2="720" stroke="#f59e0b" stroke-width="2" stroke-dasharray="8,4"/>
+                    <text x="240" y="738" text-anchor="middle" fill="#f59e0b" font-size="8">RAILING (3.5 ft high MS pipe)</text>
+
+                    <!-- Door from balcony to room -->
+                    <rect x="200" y="382" width="60" height="8" fill="#22c55e"/>
+                    <text x="230" y="375" text-anchor="middle" fill="#86efac" font-size="8">DOOR</text>
+
+                    <!-- Dimensions -->
+                    <line x1="0" y1="-20" x2="480" y2="-20" stroke="#666" stroke-width="0.5"/>
+                    <line x1="0" y1="-25" x2="0" y2="-15" stroke="#666" stroke-width="0.5"/>
+                    <line x1="480" y1="-25" x2="480" y2="-15" stroke="#666" stroke-width="0.5"/>
+                    <text x="240" y="-26" text-anchor="middle" fill="#999" font-size="10">20 ft</text>
+
+                    <!-- Depth dimensions -->
+                    <line x1="510" y1="0" x2="510" y2="384" stroke="#666" stroke-width="0.5"/>
+                    <text x="530" y="192" text-anchor="middle" fill="#999" font-size="9" transform="rotate(90,530,192)">16 ft</text>
+
+                    <line x1="510" y1="384" x2="510" y2="600" stroke="#666" stroke-width="0.5"/>
+                    <text x="530" y="492" text-anchor="middle" fill="#999" font-size="9" transform="rotate(90,530,492)">9 ft</text>
+
+                    <line x1="510" y1="600" x2="510" y2="720" stroke="#666" stroke-width="0.5"/>
+                    <text x="530" y="660" text-anchor="middle" fill="#999" font-size="9" transform="rotate(90,530,660)">5 ft</text>
+
+                    <!-- Direction label -->
+                    <text x="240" y="760" text-anchor="middle" fill="#666" font-size="10">← FRONT (overlooking farm) →</text>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#2d1b4e"></div>Room (enclosed)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#1e3a5f"></div>Covered Balcony</div>
+                <div class="legend-item"><div class="legend-color" style="background:#0d2847"></div>Extended Terrace</div>
+                <div class="legend-item"><div class="legend-color" style="background:#0f0f23; border:1px solid #ef4444"></div>Stair Well</div>
+            </div>
+
+            <div class="info-panel">
+                <h3>First Floor (Future)</h3>
+                <p>320 sq ft enclosed living room at the back (quiet, private). 9ft covered balcony within building footprint (RCC roof for future second floor/solar).
+                5ft extended terrace cantilevered beyond the front wall (sheet roof, open railing).
+                Total first floor: 600 sq ft. Staircase arrives at the balcony level.</p>
+            </div>
+        </div>
+
+        <!-- FRONT ELEVATION VIEW -->
+        <div class="view" id="view-elevation">
+            <div class="svg-container">
+                <svg viewBox="-40 -20 640 560" width="100%" style="max-width:640px; height:auto;">
+                    <defs>
+                        <pattern id="grid3" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                        <pattern id="brick" width="20" height="10" patternUnits="userSpaceOnUse">
+                            <rect width="20" height="10" fill="#3d2b1f"/>
+                            <line x1="0" y1="5" x2="20" y2="5" stroke="#2a1f16" stroke-width="0.5"/>
+                            <line x1="10" y1="0" x2="10" y2="5" stroke="#2a1f16" stroke-width="0.5"/>
+                            <line x1="0" y1="5" x2="0" y2="10" stroke="#2a1f16" stroke-width="0.5"/>
+                            <line x1="20" y1="5" x2="20" y2="10" stroke="#2a1f16" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-40" y="-20" width="640" height="560" fill="url(#grid3)"/>
+
+                    <!-- Ground line -->
+                    <line x1="-30" y1="460" x2="570" y2="460" stroke="#4ade80" stroke-width="2"/>
+                    <text x="560" y="475" fill="#4ade80" font-size="8">GL (0 ft)</text>
+
+                    <!-- Plinth -->
+                    <rect x="0" y="388" width="480" height="72" fill="url(#brick)" stroke="#78350f" stroke-width="1.5"/>
+                    <text x="240" y="430" text-anchor="middle" fill="#fbbf24" font-size="10">PLINTH (3 ft)</text>
+
+                    <!-- Extended plinth (for shade) -->
+                    <rect x="480" y="388" width="80" height="72" fill="url(#brick)" stroke="#78350f" stroke-width="1" opacity="0.7"/>
+
+                    <!-- Main building wall -->
+                    <rect x="0" y="100" width="480" height="288" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+
+                    <!-- Gate opening -->
+                    <rect x="8" y="148" width="72" height="240" fill="#0f0f23" stroke="#f59e0b" stroke-width="2"
+                          class="clickable" data-info="Gate: 3ft wide × 7ft high, MS fabricated, lockable"/>
+                    <text x="44" y="280" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">GATE</text>
+                    <text x="44" y="295" text-anchor="middle" fill="#92400e" font-size="8">3ft × 7ft</text>
+
+                    <!-- Shutter opening -->
+                    <rect x="144" y="148" width="240" height="240" fill="#0f0f23" stroke="#ef4444" stroke-width="2"
+                          class="clickable" data-info="Rolling Shutter: 10ft × 10ft, MS galvanized, manual or motorized"/>
+                    <text x="264" y="270" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="bold">ROLLING SHUTTER</text>
+                    <text x="264" y="290" text-anchor="middle" fill="#fca5a5" font-size="10">10 ft × 10 ft</text>
+                    <!-- Shutter lines -->
+                    <g stroke="#333" stroke-width="0.5" opacity="0.5">
+                        <line x1="148" y1="170" x2="380" y2="170"/>
+                        <line x1="148" y1="190" x2="380" y2="190"/>
+                        <line x1="148" y1="210" x2="380" y2="210"/>
+                        <line x1="148" y1="230" x2="380" y2="230"/>
+                        <line x1="148" y1="250" x2="380" y2="250"/>
+                        <line x1="148" y1="310" x2="380" y2="310"/>
+                        <line x1="148" y1="330" x2="380" y2="330"/>
+                        <line x1="148" y1="350" x2="380" y2="350"/>
+                        <line x1="148" y1="370" x2="380" y2="370"/>
+                    </g>
+
+                    <!-- Right wall section -->
+                    <rect x="384" y="148" width="96" height="240" fill="#2a2a3e" stroke="#64748b" stroke-width="1"/>
+
+                    <!-- Vent on right wall -->
+                    <rect x="410" y="160" width="20" height="28" fill="#22c55e" opacity="0.6"
+                          class="clickable" data-info="Ventilation provision on front-right wall section"/>
+
+                    <!-- First floor (future, shown faded) -->
+                    <rect x="0" y="10" width="480" height="90" fill="#1e293b" stroke="#94a3b8" stroke-width="1" opacity="0.4" stroke-dasharray="4,2"/>
+                    <text x="240" y="55" text-anchor="middle" fill="#666" font-size="10">FIRST FLOOR (future)</text>
+
+                    <!-- Parapet -->
+                    <rect x="0" y="0" width="480" height="12" fill="#475569" stroke="#94a3b8" stroke-width="1" opacity="0.5"/>
+
+                    <!-- RCC Slab line -->
+                    <rect x="0" y="97" width="560" height="6" fill="#64748b" stroke="#94a3b8" stroke-width="1"
+                          class="clickable" data-info="RCC Slab: 5&quot; thick, extends 5ft at front (cantilever for shade)"/>
+
+                    <!-- Cantilever shade extension -->
+                    <rect x="480" y="97" width="80" height="6" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+                    <text x="520" y="90" text-anchor="middle" fill="#60a5fa" font-size="8">5ft cantilever</text>
+
+                    <!-- Pure cantilever — no columns -->
+                    <text x="540" y="250" text-anchor="middle" fill="#4ade80" font-size="7" transform="rotate(90,540,250)">NO COLUMNS</text>
+
+                    <!-- Steps at gate -->
+                    <g fill="#78350f" stroke="#f59e0b" stroke-width="0.5">
+                        <rect x="8" y="400" width="72" height="12"/>
+                        <rect x="8" y="414" width="60" height="12"/>
+                        <rect x="8" y="428" width="48" height="12"/>
+                        <rect x="8" y="442" width="36" height="12"/>
+                        <rect x="8" y="456" width="24" height="12"/>
+                    </g>
+                    <text x="44" y="485" text-anchor="middle" fill="#f59e0b" font-size="8">5 STEPS</text>
+
+                    <!-- Ramp -->
+                    <path d="M 144 460 L 144 388 L 384 388 L 384 460 Z" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+                    <path d="M 264 460 L 264 388" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="2,2"/>
+                    <text x="264" y="500" text-anchor="middle" fill="#f59e0b" font-size="8">RAMP (~1:2.7, 8ft long)</text>
+                    <text x="264" y="514" text-anchor="middle" fill="#92400e" font-size="7">12 ft wide, tractor only</text>
+
+                    <!-- Height dimensions (left side) -->
+                    <line x1="-20" y1="460" x2="-20" y2="388" stroke="#666" stroke-width="0.5"/>
+                    <text x="-25" y="428" text-anchor="end" fill="#999" font-size="8">3ft</text>
+
+                    <line x1="-20" y1="388" x2="-20" y2="100" stroke="#666" stroke-width="0.5"/>
+                    <text x="-25" y="244" text-anchor="end" fill="#999" font-size="8">12ft</text>
+
+                    <!-- Width dimension (top) -->
+                    <line x1="0" y1="-8" x2="480" y2="-8" stroke="#666" stroke-width="0.5"/>
+                    <text x="240" y="-12" text-anchor="middle" fill="#999" font-size="9">20 ft</text>
+
+                    <!-- Shade dimension -->
+                    <line x1="480" y1="85" x2="560" y2="85" stroke="#60a5fa" stroke-width="0.5"/>
+                    <text x="520" y="80" text-anchor="middle" fill="#60a5fa" font-size="8">5 ft</text>
+                </svg>
+            </div>
+
+            <div class="info-panel">
+                <h3>Front Elevation</h3>
+                <p>3ft brick plinth raises the structure above flood level. 10ft×10ft rolling shutter (center-right) for tractor access with 18ft ramp.
+                3ft gate (left) with 5 steps for pedestrian access. RCC slab cantilevers 5ft at front with supporting columns — provides shade and becomes
+                first floor terrace. First floor shown dashed (future construction).</p>
+            </div>
+        </div>
+
+        <!-- SECTION VIEW -->
+        <div class="view" id="view-section">
+            <div class="svg-container">
+                <svg viewBox="-40 -20 700 520" width="100%" style="max-width:700px; height:auto;">
+                    <defs>
+                        <pattern id="grid4" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                        <pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse">
+                            <rect width="8" height="8" fill="#3d2b1f"/>
+                            <circle cx="2" cy="2" r="1" fill="#5c4033"/>
+                            <circle cx="6" cy="6" r="1" fill="#5c4033"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-40" y="-20" width="700" height="520" fill="url(#grid4)"/>
+
+                    <!-- Ground line -->
+                    <line x1="-30" y1="400" x2="650" y2="400" stroke="#4ade80" stroke-width="2"/>
+                    <text x="-30" y="415" fill="#4ade80" font-size="8">Ground (0ft)</text>
+
+                    <!-- Foundation -->
+                    <rect x="120" y="400" width="20" height="60" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+                    <rect x="460" y="400" width="20" height="60" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+                    <rect x="105" y="445" width="50" height="20" fill="#64748b" stroke="#94a3b8" stroke-width="1"/>
+                    <rect x="445" y="445" width="50" height="20" fill="#64748b" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="130" y="480" text-anchor="middle" fill="#999" font-size="7">FOOTING</text>
+                    <text x="470" y="480" text-anchor="middle" fill="#999" font-size="7">FOOTING</text>
+
+                    <!-- Plinth walls -->
+                    <rect x="120" y="360" width="20" height="40" fill="url(#brick)" stroke="#78350f" stroke-width="1"/>
+                    <rect x="460" y="360" width="20" height="40" fill="url(#brick)" stroke="#78350f" stroke-width="1"/>
+
+                    <!-- Earth fill -->
+                    <rect x="140" y="365" width="320" height="35" fill="url(#earth)" opacity="0.6"/>
+                    <text x="300" y="385" text-anchor="middle" fill="#a78bfa" font-size="7">EARTH FILL + PCC</text>
+
+                    <!-- Floor slab -->
+                    <rect x="120" y="355" width="360" height="8" fill="#64748b" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="540" y="360" fill="#999" font-size="7">Floor Slab (4" RCC + mesh)</text>
+
+                    <!-- Ground floor space -->
+                    <rect x="120" y="115" width="360" height="240" fill="#1e3a5f" stroke="none" opacity="0.2"/>
+                    <text x="300" y="240" text-anchor="middle" fill="#93c5fd" font-size="14" font-weight="bold">STORAGE</text>
+                    <text x="300" y="258" text-anchor="middle" fill="#60a5fa" font-size="10">12 ft clear height</text>
+
+                    <!-- Walls -->
+                    <rect x="120" y="115" width="20" height="240" fill="#2a2a3e" stroke="#94a3b8" stroke-width="1.5"/>
+                    <rect x="460" y="115" width="20" height="240" fill="#2a2a3e" stroke="#94a3b8" stroke-width="1.5"/>
+
+                    <!-- RCC Slab (ceiling / first floor) -->
+                    <rect x="60" y="105" width="420" height="12" fill="#64748b" stroke="#94a3b8" stroke-width="2"
+                          class="clickable" data-info="RCC Slab: 5&quot; thick M20 concrete. Cantilevers 5ft at front. Supports future first floor."/>
+                    <text x="300" y="95" text-anchor="middle" fill="#ccc" font-size="9" font-weight="bold">RCC SLAB (5" thick)</text>
+
+                    <!-- Cantilever portion -->
+                    <rect x="60" y="105" width="60" height="12" fill="#3b82f6" stroke="#60a5fa" stroke-width="1"/>
+                    <text x="90" y="100" text-anchor="middle" fill="#60a5fa" font-size="7">5ft cantilever</text>
+
+                    <!-- Pure cantilever - no shade column -->
+                    <text x="75" y="245" text-anchor="middle" fill="#4ade80" font-size="7">PURE</text>
+                    <text x="75" y="256" text-anchor="middle" fill="#4ade80" font-size="7">CANTILEVER</text>
+                    <text x="75" y="267" text-anchor="middle" fill="#4ade80" font-size="6">(no columns)</text>
+
+                    <!-- First floor (future) -->
+                    <rect x="120" y="10" width="360" height="95" fill="#2d1b4e" stroke="#8b5cf6" stroke-width="1" opacity="0.3" stroke-dasharray="4,2"/>
+                    <text x="300" y="55" text-anchor="middle" fill="#a78bfa" font-size="10" opacity="0.7">FIRST FLOOR ROOM (future)</text>
+                    <text x="300" y="72" text-anchor="middle" fill="#7c3aed" font-size="8" opacity="0.7">10 ft height</text>
+
+                    <!-- Roof slab (future) -->
+                    <rect x="120" y="2" width="360" height="10" fill="#64748b" stroke="#94a3b8" stroke-width="1" opacity="0.4" stroke-dasharray="3,2"/>
+
+                    <!-- Extended balcony above shade -->
+                    <rect x="60" y="10" width="60" height="95" fill="#0d2847" stroke="#1d4ed8" stroke-width="1" opacity="0.3" stroke-dasharray="3,2"/>
+                    <text x="90" y="55" text-anchor="middle" fill="#60a5fa" font-size="7" opacity="0.7">TERRACE</text>
+
+                    <!-- Sheet roof over terrace -->
+                    <line x1="55" y1="8" x2="125" y2="5" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2"/>
+                    <text x="90" y="0" text-anchor="middle" fill="#f59e0b" font-size="7">Sheet roof</text>
+
+                    <!-- Height annotations (right side) -->
+                    <g fill="#999" font-size="8">
+                        <line x1="500" y1="400" x2="500" y2="355" stroke="#666" stroke-width="0.5"/>
+                        <text x="510" y="380" >3 ft</text>
+
+                        <line x1="500" y1="355" x2="500" y2="115" stroke="#666" stroke-width="0.5"/>
+                        <text x="510" y="235">12 ft</text>
+
+                        <line x1="500" y1="105" x2="500" y2="10" stroke="#666" stroke-width="0.5" stroke-dasharray="2,2"/>
+                        <text x="510" y="60" opacity="0.6">10 ft</text>
+                    </g>
+
+                    <!-- Level marks -->
+                    <g fill="#e94560" font-size="7">
+                        <text x="-30" y="363">+3 ft</text>
+                        <text x="-30" y="118">+15 ft</text>
+                        <text x="-30" y="12">+25 ft</text>
+                    </g>
+
+                    <!-- Ramp (in section) -->
+                    <path d="M 60 400 L 120 355" stroke="#f59e0b" stroke-width="2" fill="none"/>
+                    <text x="70" y="420" fill="#f59e0b" font-size="7">Ramp 1:6</text>
+
+                    <!-- Section label -->
+                    <text x="300" y="500" text-anchor="middle" fill="#666" font-size="10">SECTION A-A (Front to Back)</text>
+                    <text x="60" y="430" text-anchor="middle" fill="#666" font-size="8">FRONT</text>
+                    <text x="540" y="430" text-anchor="middle" fill="#666" font-size="8">BACK</text>
+                </svg>
+            </div>
+
+            <div class="info-panel">
+                <h3>Building Section (Front to Back)</h3>
+                <p>Shows the full height build-up: 3ft plinth (earth fill + PCC + mesh floor), 12ft clear ground floor height,
+                5" RCC slab at +15ft with 5ft front pure cantilever (no columns needed). Future first floor room (10ft height)
+                shown dashed. Foundation footings go 3ft below ground. Sheet roof covers the extended terrace at first floor level.</p>
+            </div>
+        </div>
+
+        <!-- STRUCTURE VIEW -->
+        <div class="view" id="view-structure">
+            <div class="svg-container">
+                <svg viewBox="-40 -40 600 700" width="100%" style="max-width:600px; height:auto;">
+                    <defs>
+                        <pattern id="grid5" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-40" y="-40" width="600" height="700" fill="url(#grid5)"/>
+
+                    <!-- Title -->
+                    <text x="240" y="0" text-anchor="middle" fill="#e94560" font-size="12" font-weight="bold">STRUCTURAL COLUMN & BEAM LAYOUT</text>
+
+                    <!-- Building outline -->
+                    <rect x="0" y="30" width="480" height="600" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,3"/>
+
+                    <!-- Grid lines (horizontal) -->
+                    <line x1="0" y1="30" x2="480" y2="30" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="0" y1="414" x2="480" y2="414" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="0" y1="630" x2="480" y2="630" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+                    <!-- Grid lines (vertical - only on front wall where shutter columns exist) -->
+                    <line x1="0" y1="30" x2="0" y2="630" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="144" y1="414" x2="144" y2="630" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="384" y1="414" x2="384" y2="630" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <line x1="480" y1="30" x2="480" y2="630" stroke="#333" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+                    <!-- Beams (horizontal) -->
+                    <g stroke="#f59e0b" stroke-width="3" opacity="0.6">
+                        <line x1="0" y1="30" x2="480" y2="30"/>
+                        <line x1="0" y1="414" x2="480" y2="414"/>
+                        <line x1="0" y1="630" x2="480" y2="630"/>
+                    </g>
+
+                    <!-- Beams (vertical - side walls) -->
+                    <g stroke="#f59e0b" stroke-width="3" opacity="0.6">
+                        <line x1="0" y1="30" x2="0" y2="630"/>
+                        <line x1="480" y1="30" x2="480" y2="630"/>
+                    </g>
+                    <!-- Front wall beams (segmented) -->
+                    <g stroke="#f59e0b" stroke-width="2" opacity="0.5">
+                        <line x1="0" y1="630" x2="144" y2="630"/>
+                        <line x1="144" y1="630" x2="384" y2="630"/>
+                        <line x1="384" y1="630" x2="480" y2="630"/>
+                    </g>
+
+                    <!-- Back wall deep beam (highlighted) -->
+                    <line x1="0" y1="30" x2="480" y2="30" stroke="#ff6b00" stroke-width="5" class="clickable" data-info="BACK BEAM (9&quot;×20&quot;): Spans full 20ft between corner columns C1-C2. No intermediate columns on back wall."/>
+                    <text x="240" y="18" text-anchor="middle" fill="#ff6b00" font-size="8">BACK BEAM 9"×20" (20ft, corners only)</text>
+
+                    <!-- Shutter beam (highlighted) -->
+                    <line x1="144" y1="630" x2="384" y2="630" stroke="#ef4444" stroke-width="4"/>
+                    <text x="264" y="650" text-anchor="middle" fill="#fca5a5" font-size="8">SHUTTER BEAM (9"×15", 10ft span)</text>
+
+                    <!-- Columns (8 total - all wall-embedded) -->
+                    <g class="clickable" data-info="8 Columns total: 9&quot;×12&quot; RCC, ALL in walls. Back wall has only corners. Middle beam at 9ft from front aligns with first floor room partition.">
+                        <!-- Row 1 (back wall - CORNERS ONLY) -->
+                        <rect x="-8" y="22" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+                        <rect x="472" y="22" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+
+                        <!-- Row 2 (middle at 9ft from front = 16ft from back - wall columns only) -->
+                        <rect x="-8" y="406" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+                        <rect x="472" y="406" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+
+                        <!-- Row 3 (front wall - 4 columns for shutter support) -->
+                        <rect x="-8" y="622" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+                        <rect x="136" y="622" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+                        <rect x="376" y="622" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+                        <rect x="472" y="622" width="16" height="16" fill="#e94560" stroke="#ff6b6b" stroke-width="1.5" rx="2"/>
+                    </g>
+
+                    <!-- Middle beam (at 9ft from front, aligned with room partition) -->
+                    <line x1="0" y1="414" x2="480" y2="414" stroke="#ff6b00" stroke-width="5" class="clickable" data-info="MIDDLE BEAM (9&quot;×20&quot;): At 9ft from front wall. Spans full 20ft. Aligns with first floor room partition — wall above sits directly on this beam."/>
+                    <text x="240" y="435" text-anchor="middle" fill="#ff6b00" font-size="9" font-weight="bold">DEEP BEAM 9"×20" — aligns with 1F room partition</text>
+
+                    <!-- Room partition indication -->
+                    <line x1="0" y1="414" x2="480" y2="414" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="8,4" opacity="0.6"/>
+                    <text x="240" y="400" text-anchor="middle" fill="#a78bfa" font-size="8">↑ First floor ROOM/BALCONY partition above ↑</text>
+
+                    <!-- Bay annotations -->
+                    <text x="240" y="220" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold">BACK BAY (16ft)</text>
+                    <text x="240" y="238" text-anchor="middle" fill="#4ade80" font-size="8">Slab: 6" thick (handles 16ft span)</text>
+
+                    <text x="240" y="530" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold">FRONT BAY (9ft)</text>
+                    <text x="240" y="548" text-anchor="middle" fill="#4ade80" font-size="8">Slab: 6" thick</text>
+
+                    <!-- No shade columns — pure cantilever indicated -->
+                    <text x="240" y="670" text-anchor="middle" fill="#4ade80" font-size="8">FRONT SHADE: Pure 5ft cantilever (no columns)</text>
+
+                    <!-- Column labels -->
+                    <g fill="#fca5a5" font-size="8">
+                        <text x="-20" y="35">C1</text>
+                        <text x="492" y="35">C2</text>
+                        <text x="-20" y="420">C3</text>
+                        <text x="492" y="420">C4</text>
+                        <text x="-20" y="620">C5</text>
+                        <text x="124" y="620">C6</text>
+                        <text x="396" y="620">C7</text>
+                        <text x="492" y="620">C8</text>
+                    </g>
+
+                    <!-- Span dimensions -->
+                    <g fill="#999" font-size="9">
+                        <!-- Horizontal spans (front wall) -->
+                        <text x="72" y="615" text-anchor="middle">6 ft</text>
+                        <text x="264" y="615" text-anchor="middle">10 ft</text>
+                        <text x="432" y="615" text-anchor="middle">4 ft</text>
+
+                        <!-- Vertical spans -->
+                        <text x="510" y="220">16 ft</text>
+                        <text x="510" y="530">9 ft</text>
+                    </g>
+
+                    <!-- Lintel provisions (shown as dotted rectangles) -->
+                    <g fill="none" stroke="#22c55e" stroke-width="1" stroke-dasharray="3,2" opacity="0.6">
+                        <rect x="-12" y="150" width="5" height="72"/>
+                        <rect x="-12" y="420" width="5" height="72"/>
+                        <rect x="487" y="150" width="5" height="72"/>
+                        <rect x="487" y="420" width="5" height="72"/>
+                    </g>
+                    <text x="520" y="195" fill="#22c55e" font-size="7">Future</text>
+                    <text x="520" y="207" fill="#22c55e" font-size="7">windows</text>
+
+                    <!-- BACK / FRONT labels -->
+                    <text x="240" y="28" text-anchor="middle" fill="#666" font-size="9">BACK WALL</text>
+                    <text x="240" y="645" text-anchor="middle" fill="#666" font-size="9">FRONT WALL</text>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#e94560"></div>Wall Columns (9"×12")</div>
+                <div class="legend-item"><div class="legend-color" style="background:#f59e0b"></div>Standard Beams (9"×15")</div>
+                <div class="legend-item"><div class="legend-color" style="background:#ff6b00"></div>Deep Beam (9"×20", 20ft span)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#4ade80"></div>Pure Cantilever (no columns)</div>
+                <div class="legend-item"><div class="legend-color" style="background:none; border:1px dashed #22c55e"></div>Future Window Lintels</div>
+                <div class="legend-item"><div class="legend-color" style="background:#ef4444"></div>Shutter Beam (10ft span)</div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>Columns (8 nos. — all in walls)</h4>
+                    <p>Size: 9" × 12"<br>Concrete: M20<br>Steel: Fe500, 4-12mm + 8mm ties @ 6"<br>All embedded in walls — zero freestanding<br>Middle beam at 9ft = room partition line<br>Back wall: corners only (no intermediate)</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Main Beams</h4>
+                    <p>Standard: 9" × 15" (side walls, front)<br><strong>Deep beams: 9" × 20" × 2 nos.</strong><br>Back beam (C1-C2): 20ft span<br>Middle beam (C3-C4): 20ft span at 9ft from front<br>Stirrups: 8mm @ 5" near supports</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Foundation</h4>
+                    <p>Isolated footings: 3ft × 3ft × 1ft<br>PCC bed: 6" M15<br>Footing: M20 RCC<br>Depth: 3ft below ground</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Slab</h4>
+                    <p>Thickness: <strong>6"</strong> (roof), 4" (floor)<br>Floor mesh: 6mm @ 6" × 6"<br>Roof: 10mm @ 6" main, 8mm @ 8" dist.<br>5ft cantilever at front (pure, no columns)<br>Handles 16ft back bay + future 2nd floor</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ELECTRICAL VIEW -->
+        <div class="view" id="view-electrical">
+            <div class="svg-container">
+                <svg viewBox="-60 -40 720 840" width="100%" style="max-width:720px; height:auto;">
+                    <defs>
+                        <pattern id="grid6" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-60" y="-40" width="720" height="840" fill="url(#grid6)"/>
+
+                    <!-- Building outline -->
+                    <rect x="0" y="0" width="480" height="600" fill="#0f0f1a" stroke="#333" stroke-width="2" rx="2"/>
+
+                    <!-- Stair zone (dimmed) -->
+                    <rect x="0" y="0" width="144" height="240" fill="#1a1a2e" stroke="#333" stroke-width="1" opacity="0.5"/>
+                    <text x="72" y="120" text-anchor="middle" fill="#555" font-size="9">STAIR</text>
+
+                    <!-- Toilet zone -->
+                    <rect x="0" y="480" width="72" height="120" fill="#1a1a2e" stroke="#333" stroke-width="1" opacity="0.5"/>
+                    <text x="36" y="545" text-anchor="middle" fill="#555" font-size="8">WC</text>
+
+                    <!-- Shutter indication -->
+                    <rect x="144" y="597" width="240" height="6" fill="#333"/>
+                    <text x="264" y="618" text-anchor="middle" fill="#555" font-size="8">SHUTTER</text>
+
+                    <!-- === LIGHTING POINTS === -->
+                    <!-- L1: Storage front-left -->
+                    <g class="clickable" data-info="L1: LED Tube 4ft, 36W. Storage front-center. Height: 11ft. Switch: SW1 (near DB)">
+                        <rect x="180" y="380" width="40" height="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" rx="2"/>
+                        <text x="200" y="400" text-anchor="middle" fill="#fbbf24" font-size="7">L1</text>
+                    </g>
+                    <!-- L2: Storage front-right -->
+                    <g class="clickable" data-info="L2: LED Tube 4ft, 36W. Storage front-right. Height: 11ft. Switch: SW1 (same as L1)">
+                        <rect x="350" y="380" width="40" height="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" rx="2"/>
+                        <text x="370" y="400" text-anchor="middle" fill="#fbbf24" font-size="7">L2</text>
+                    </g>
+                    <!-- L3: Storage back-left -->
+                    <g class="clickable" data-info="L3: LED Tube 4ft, 36W. Storage back-left. Height: 11ft. Switch: SW2 (near back wall)">
+                        <rect x="180" y="120" width="40" height="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" rx="2"/>
+                        <text x="200" y="140" text-anchor="middle" fill="#fbbf24" font-size="7">L3</text>
+                    </g>
+                    <!-- L4: Storage back-right -->
+                    <g class="clickable" data-info="L4: LED Tube 4ft, 36W. Storage back-right. Height: 11ft. Switch: SW2 (same as L3)">
+                        <rect x="350" y="120" width="40" height="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" rx="2"/>
+                        <text x="370" y="140" text-anchor="middle" fill="#fbbf24" font-size="7">L4</text>
+                    </g>
+                    <!-- L5: Stair landing -->
+                    <g class="clickable" data-info="L5: LED Bulb 9W. Staircase half-landing. Height: 7ft (at landing). Switch: SW3 (stair base)">
+                        <circle cx="72" cy="60" r="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" opacity="0.8"/>
+                        <text x="72" y="80" text-anchor="middle" fill="#fbbf24" font-size="7">L5</text>
+                    </g>
+                    <!-- L6: Toilet -->
+                    <g class="clickable" data-info="L6: LED Bulb 9W, IP44 rated. Toilet. Height: 7ft. Switch: SW4 (outside WC door)">
+                        <circle cx="36" cy="510" r="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" opacity="0.8"/>
+                        <text x="36" y="500" text-anchor="middle" fill="#fbbf24" font-size="7">L6</text>
+                    </g>
+                    <!-- L7, L8: Shade lights -->
+                    <g class="clickable" data-info="L7: LED Tube 4ft, 36W. Front shade left. Height: 11ft (slab soffit). Switch: SW5 (near gate)">
+                        <rect x="80" y="640" width="40" height="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" rx="2"/>
+                        <text x="100" y="660" text-anchor="middle" fill="#fbbf24" font-size="7">L7</text>
+                    </g>
+                    <g class="clickable" data-info="L8: LED Tube 4ft, 36W. Front shade right. Height: 11ft (slab soffit). Switch: SW5 (same as L7)">
+                        <rect x="340" y="640" width="40" height="8" fill="#fbbf24" stroke="#f59e0b" stroke-width="1" rx="2"/>
+                        <text x="360" y="660" text-anchor="middle" fill="#fbbf24" font-size="7">L8</text>
+                    </g>
+
+                    <!-- === SECURITY LIGHTS === -->
+                    <g class="clickable" data-info="SEC1: 20W LED Floodlight + PIR motion sensor. Above gate. Height: 10ft. IP65 weatherproof. Switch: SW6 + auto sensor">
+                        <polygon points="36,595 28,580 44,580" fill="#ef4444" stroke="#ff6b6b" stroke-width="1"/>
+                        <text x="36" y="575" text-anchor="middle" fill="#fca5a5" font-size="7">SEC1</text>
+                    </g>
+                    <g class="clickable" data-info="SEC2: 30W LED Floodlight + PIR motion sensor. Above shutter center. Height: 10ft. IP65 weatherproof. Switch: SW6 + auto sensor">
+                        <polygon points="264,595 256,580 272,580" fill="#ef4444" stroke="#ff6b6b" stroke-width="1"/>
+                        <text x="264" y="575" text-anchor="middle" fill="#fca5a5" font-size="7">SEC2</text>
+                    </g>
+
+                    <!-- === POWER SOCKETS === -->
+                    <g class="clickable" data-info="S1: 15A power socket + switch. Front wall inside (right of shutter). Height: 4ft. For equipment/pump.">
+                        <rect x="400" y="560" width="16" height="16" fill="none" stroke="#22c55e" stroke-width="2" rx="2"/>
+                        <text x="408" y="572" text-anchor="middle" fill="#22c55e" font-size="8">⚡</text>
+                        <text x="424" y="568" fill="#86efac" font-size="7">S1</text>
+                    </g>
+                    <g class="clickable" data-info="S2: 15A power socket + switch. Left wall (mid-section). Height: 4ft. For tools/chargers.">
+                        <rect x="148" y="280" width="16" height="16" fill="none" stroke="#22c55e" stroke-width="2" rx="2"/>
+                        <text x="156" y="292" text-anchor="middle" fill="#22c55e" font-size="8">⚡</text>
+                        <text x="170" y="288" fill="#86efac" font-size="7">S2</text>
+                    </g>
+                    <g class="clickable" data-info="S3: 15A power socket + switch. Right wall (mid-section). Height: 4ft. General purpose.">
+                        <rect x="462" y="350" width="16" height="16" fill="none" stroke="#22c55e" stroke-width="2" rx="2"/>
+                        <text x="470" y="362" text-anchor="middle" fill="#22c55e" font-size="8">⚡</text>
+                        <text x="453" y="358" fill="#86efac" font-size="7" text-anchor="end">S3</text>
+                    </g>
+                    <g class="clickable" data-info="S4: 15A WEATHERPROOF socket. Outside under front shade. Height: 3ft. For external equipment.">
+                        <rect x="400" y="640" width="16" height="16" fill="none" stroke="#22c55e" stroke-width="2" rx="2"/>
+                        <text x="408" y="652" text-anchor="middle" fill="#22c55e" font-size="8">⚡</text>
+                        <text x="424" y="648" fill="#86efac" font-size="7">S4</text>
+                    </g>
+                    <g class="clickable" data-info="S5: 5A socket + switch. Inside toilet. Height: 5ft. For future geyser or exhaust fan.">
+                        <rect x="50" y="530" width="12" height="12" fill="none" stroke="#22c55e" stroke-width="1.5" rx="2"/>
+                        <text x="56" y="539" text-anchor="middle" fill="#22c55e" font-size="6">⚡</text>
+                        <text x="67" y="538" fill="#86efac" font-size="6">S5</text>
+                    </g>
+
+                    <!-- === DISTRIBUTION BOARD === -->
+                    <g class="clickable" data-info="Distribution Board (DB): 8-way SPN, metal IP43. Contains: 63A main, ELCB 30mA, 6 MCBs (2×lighting, 2×power, pump, spare). Height: 5ft. Location: front-right wall inside.">
+                        <rect x="420" y="520" width="40" height="30" fill="#7c3aed" stroke="#a78bfa" stroke-width="2" rx="3"/>
+                        <text x="440" y="538" text-anchor="middle" fill="white" font-size="8" font-weight="bold">DB</text>
+                        <text x="440" y="548" text-anchor="middle" fill="#c4b5fd" font-size="6">8-way</text>
+                    </g>
+
+                    <!-- === WIRING ROUTES (simplified) === -->
+                    <!-- Main circuit from DB to lights -->
+                    <g stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3" opacity="0.5">
+                        <!-- DB to front lights -->
+                        <line x1="440" y1="520" x2="440" y2="390"/>
+                        <line x1="440" y1="390" x2="390" y2="390"/>
+                        <line x1="440" y1="390" x2="200" y2="390"/>
+                        <!-- Up to back lights -->
+                        <line x1="200" y1="390" x2="200" y2="125"/>
+                        <line x1="200" y1="125" x2="370" y2="125"/>
+                    </g>
+                    <!-- Power circuit from DB to sockets -->
+                    <g stroke="#22c55e" stroke-width="1" stroke-dasharray="4,3" opacity="0.4">
+                        <line x1="420" y1="535" x2="156" y2="535"/>
+                        <line x1="156" y1="535" x2="156" y2="290"/>
+                        <line x1="460" y1="535" x2="470" y2="535"/>
+                        <line x1="470" y1="535" x2="470" y2="360"/>
+                    </g>
+
+                    <!-- === METER BOARD (external) === -->
+                    <g class="clickable" data-info="Meter Board (MB): Outside front-right wall. Contains energy meter + main fuse. Height: 5ft from platform. Accessible to meter reader.">
+                        <rect x="440" y="603" width="30" height="20" fill="#6366f1" stroke="#818cf8" stroke-width="1.5" rx="2"/>
+                        <text x="455" y="616" text-anchor="middle" fill="white" font-size="7">MB</text>
+                    </g>
+
+                    <!-- === EARTH PITS === -->
+                    <g class="clickable" data-info="Earth Pit 1 (body earth): 2ft×2ft×8ft deep. GI pipe + salt + charcoal layers. Target: &lt;5 ohms resistance. Connected to all metal fixtures.">
+                        <circle cx="510" cy="400" r="12" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="510" y="404" text-anchor="middle" fill="#6ee7b7" font-size="7">E1</text>
+                    </g>
+                    <g class="clickable" data-info="Earth Pit 2 (neutral earth): 2ft×2ft×8ft deep. 6ft from E1. Connected to DB neutral bar.">
+                        <circle cx="510" cy="450" r="12" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="510" y="454" text-anchor="middle" fill="#6ee7b7" font-size="7">E2</text>
+                    </g>
+                    <text x="510" y="475" text-anchor="middle" fill="#10b981" font-size="7">EARTH PITS</text>
+                    <text x="510" y="487" text-anchor="middle" fill="#065f46" font-size="6">(outside, right side)</text>
+
+                    <!-- === EXHAUST FAN === -->
+                    <g class="clickable" data-info="Exhaust fan: 6 inch, in toilet external wall. Connected to L6 switch circuit. Provides ventilation to WC.">
+                        <circle cx="5" cy="520" r="8" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="0" y1="515" x2="10" y2="525" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="10" y1="515" x2="0" y2="525" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="-10" y="535" text-anchor="middle" fill="#06b6d4" font-size="6">EXH</text>
+                    </g>
+
+                    <!-- === CEILING FANS (F1-F6) in storage area, 3x2 grid === -->
+                    <g class="clickable" data-info="F1: Ceiling Fan, 48 inch, 75W. Storage back-left. Height: 10ft from floor (2ft drop rod). Switch: SW7.">
+                        <circle cx="210" cy="80" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="210" y1="66" x2="210" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="198" y1="87" x2="210" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="222" y1="87" x2="210" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <text x="210" y="102" text-anchor="middle" fill="#06b6d4" font-size="7">F1</text>
+                    </g>
+                    <g class="clickable" data-info="F2: Ceiling Fan, 48 inch, 75W. Storage back-center. Height: 10ft from floor (2ft drop rod). Switch: SW7.">
+                        <circle cx="312" cy="80" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="312" y1="66" x2="312" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="300" y1="87" x2="312" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="324" y1="87" x2="312" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <text x="312" y="102" text-anchor="middle" fill="#06b6d4" font-size="7">F2</text>
+                    </g>
+                    <g class="clickable" data-info="F3: Ceiling Fan, 48 inch, 75W. Storage back-right. Height: 10ft from floor (2ft drop rod). Switch: SW7.">
+                        <circle cx="414" cy="80" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="414" y1="66" x2="414" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="402" y1="87" x2="414" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="426" y1="87" x2="414" y2="80" stroke="#06b6d4" stroke-width="1.5"/>
+                        <text x="414" y="102" text-anchor="middle" fill="#06b6d4" font-size="7">F3</text>
+                    </g>
+                    <g class="clickable" data-info="F4: Ceiling Fan, 48 inch, 75W. Storage front-left. Height: 10ft from floor (2ft drop rod). Switch: SW8.">
+                        <circle cx="210" cy="300" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="210" y1="286" x2="210" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="198" y1="307" x2="210" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="222" y1="307" x2="210" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <text x="210" y="322" text-anchor="middle" fill="#06b6d4" font-size="7">F4</text>
+                    </g>
+                    <g class="clickable" data-info="F5: Ceiling Fan, 48 inch, 75W. Storage front-center. Height: 10ft from floor (2ft drop rod). Switch: SW8.">
+                        <circle cx="312" cy="300" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="312" y1="286" x2="312" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="300" y1="307" x2="312" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="324" y1="307" x2="312" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <text x="312" y="322" text-anchor="middle" fill="#06b6d4" font-size="7">F5</text>
+                    </g>
+                    <g class="clickable" data-info="F6: Ceiling Fan, 48 inch, 75W. Storage front-right. Height: 10ft from floor (2ft drop rod). Switch: SW8.">
+                        <circle cx="414" cy="300" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="414" y1="286" x2="414" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="402" y1="307" x2="414" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="426" y1="307" x2="414" y2="300" stroke="#06b6d4" stroke-width="1.5"/>
+                        <text x="414" y="322" text-anchor="middle" fill="#06b6d4" font-size="7">F6</text>
+                    </g>
+
+                    <!-- === INDOOR CORNER LAMPS (IL1-IL4) at 4 internal corners === -->
+                    <g class="clickable" data-info="IL1: Indoor Corner Lamp, LED 12W decorative. Top-left internal corner. Height: 8ft. Switch: SW9 (ambient lighting).">
+                        <polygon points="12,12 18,6 24,12 18,18" fill="#d946ef" stroke="#d946ef" stroke-width="1"/>
+                        <text x="30" y="16" fill="#d946ef" font-size="6">IL1</text>
+                    </g>
+                    <g class="clickable" data-info="IL2: Indoor Corner Lamp, LED 12W decorative. Top-right internal corner. Height: 8ft. Switch: SW9 (ambient lighting).">
+                        <polygon points="456,12 462,6 468,12 462,18" fill="#d946ef" stroke="#d946ef" stroke-width="1"/>
+                        <text x="446" y="16" fill="#d946ef" font-size="6" text-anchor="end">IL2</text>
+                    </g>
+                    <g class="clickable" data-info="IL3: Indoor Corner Lamp, LED 12W decorative. Bottom-left internal corner. Height: 8ft. Switch: SW9 (ambient lighting).">
+                        <polygon points="12,588 18,582 24,588 18,594" fill="#d946ef" stroke="#d946ef" stroke-width="1"/>
+                        <text x="30" y="592" fill="#d946ef" font-size="6">IL3</text>
+                    </g>
+                    <g class="clickable" data-info="IL4: Indoor Corner Lamp, LED 12W decorative. Bottom-right internal corner. Height: 8ft. Switch: SW9 (ambient lighting).">
+                        <polygon points="456,588 462,582 468,588 462,594" fill="#d946ef" stroke="#d946ef" stroke-width="1"/>
+                        <text x="446" y="592" fill="#d946ef" font-size="6" text-anchor="end">IL4</text>
+                    </g>
+
+                    <!-- === CCTV CAMERAS (CAM1-CAM4) on external walls at midpoint === -->
+                    <g class="clickable" data-info="CAM1: CCTV Camera, 2MP IP67 bullet. Top (back) wall midpoint, facing outward (north). Night vision 30m. PoE powered from DB. DVR in storage.">
+                        <polygon points="240,-12 232,-4 248,-4" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="240" y="-16" text-anchor="middle" fill="#f43f5e" font-size="6">CAM1</text>
+                    </g>
+                    <g class="clickable" data-info="CAM2: CCTV Camera, 2MP IP67 bullet. Bottom (front) wall midpoint, facing outward (south). Night vision 30m. Covers gate + shutter area. PoE powered.">
+                        <polygon points="264,612 256,604 272,604" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="264" y="626" text-anchor="middle" fill="#f43f5e" font-size="6">CAM2</text>
+                    </g>
+                    <g class="clickable" data-info="CAM3: CCTV Camera, 2MP IP67 bullet. Left wall midpoint, facing outward (west). Night vision 30m. PoE powered from DB.">
+                        <polygon points="-12,300 -4,292 -4,308" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="-18" y="304" text-anchor="end" fill="#f43f5e" font-size="6">CAM3</text>
+                    </g>
+                    <g class="clickable" data-info="CAM4: CCTV Camera, 2MP IP67 bullet. Right wall midpoint, facing outward (east). Night vision 30m. PoE powered from DB.">
+                        <polygon points="492,300 484,292 484,308" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="498" y="304" fill="#f43f5e" font-size="6">CAM4</text>
+                    </g>
+
+                    <!-- === INVERTER + 2 BATTERIES (near DB, front-right area) === -->
+                    <g class="clickable" data-info="Inverter: 1.5KVA Pure Sine Wave. Located near DB on front-right wall. Powers emergency lights + CCTV during outage. Connected to 2x 150Ah batteries.">
+                        <rect x="390" y="460" width="36" height="24" fill="#22c55e" stroke="#4ade80" stroke-width="1.5" rx="3"/>
+                        <text x="408" y="475" text-anchor="middle" fill="white" font-size="7">INV</text>
+                    </g>
+                    <g class="clickable" data-info="Battery Bank: 2x 150Ah Tall Tubular batteries. Located below inverter near DB. Backup duration: 4-6 hours (emergency load). Charging via mains + future solar.">
+                        <rect x="390" y="488" width="17" height="22" fill="#22c55e" stroke="#4ade80" stroke-width="1.5" rx="2"/>
+                        <text x="398" y="502" text-anchor="middle" fill="white" font-size="6">B1</text>
+                        <rect x="409" y="488" width="17" height="22" fill="#22c55e" stroke="#4ade80" stroke-width="1.5" rx="2"/>
+                        <text x="418" y="502" text-anchor="middle" fill="white" font-size="6">B2</text>
+                    </g>
+
+                    <!-- Dimension reference -->
+                    <text x="240" y="-20" text-anchor="middle" fill="#666" font-size="10">ELECTRICAL LAYOUT — Ground Floor Plan</text>
+
+                    <!-- Switch positions -->
+                    <g fill="#a78bfa" font-size="6">
+                        <text x="430" y="510">SW1</text>
+                        <text x="165" y="138">SW2</text>
+                        <text x="90" y="240">SW3</text>
+                        <text x="76" y="500">SW4</text>
+                        <text x="60" y="640">SW5</text>
+                        <text x="50" y="580">SW6</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="svg-container" style="margin-top:20px">
+                <p style="color:#e94560; font-size:0.95rem; font-weight:600; margin-bottom:12px;">3D Isometric View — Electrical</p>
+                <svg viewBox="0 0 620 520" width="100%" style="max-width:620px; height:auto;">
+                    <!-- Isometric electrical view -->
+                    <!-- Building wireframe box: 20ft wide x 25ft deep x 12ft high -->
+                    <!-- Isometric axes: x-axis 30deg right, y-axis 30deg left, z-axis vertical -->
+                    <!-- Scale: 1ft = 10px approx. Using cos30=0.866, sin30=0.5 -->
+
+                    <!-- Base corners (ground level, on plinth):
+                         Front-left (FL): 100, 420
+                         Front-right (FR): FL + (200*0.866, -200*0.5) = (273, 320)
+                         Back-left (BL): FL + (-250*0.866, -250*0.5) = (-116, 295) -> shift everything: use offset
+                         Let's use a practical coordinate system:
+                         Front-left: 160, 440
+                         Front-right: 160 + 173, 440 - 100 = 333, 340
+                         Back-left: 160 - 216, 440 - 125 = -56, 315 -> too far left
+                         Let's center it better:
+                         Front-left (FL): 280, 450
+                         Front-right (FR): 280+173, 450-100 = 453, 350
+                         Back-left (BL): 280-216, 450-125 = 64, 325
+                         Back-right (BR): 453-216, 350-125 = 237, 225
+                         Top adds z=-120 (12ft height):
+                         TFL: 280, 330   TFR: 453, 230   TBL: 64, 205   TBR: 237, 105
+                    -->
+
+                    <defs>
+                        <pattern id="iso-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a1a3e" stroke-width="0.3"/>
+                        </pattern>
+                    </defs>
+                    <rect x="0" y="0" width="620" height="520" fill="url(#iso-grid)"/>
+
+                    <text x="310" y="20" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">ELECTRICAL — 3D Isometric View</text>
+
+                    <!-- Ground plane (floor) -->
+                    <polygon points="280,450 453,350 237,225 64,325" fill="#1e293b" stroke="#475569" stroke-width="1" opacity="0.4"/>
+
+                    <!-- Building wireframe edges - bottom -->
+                    <line x1="280" y1="450" x2="453" y2="350" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="280" y1="450" x2="64" y2="325" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="453" y1="350" x2="237" y2="225" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="64" y1="325" x2="237" y2="225" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Building wireframe edges - top -->
+                    <line x1="280" y1="330" x2="453" y2="230" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="280" y1="330" x2="64" y2="205" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="453" y1="230" x2="237" y2="105" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="64" y1="205" x2="237" y2="105" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Building wireframe edges - vertical -->
+                    <line x1="280" y1="450" x2="280" y2="330" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="453" y1="350" x2="453" y2="230" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="64" y1="325" x2="64" y2="205" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="237" y1="225" x2="237" y2="105" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Ceiling plane (transparent) -->
+                    <polygon points="280,330 453,230 237,105 64,205" fill="#334155" stroke="#94a3b8" stroke-width="0.5" opacity="0.15"/>
+
+                    <!-- === 6 FANS hanging from ceiling (circles at top plane) === -->
+                    <!-- Fan positions on ceiling plane (interpolated between top corners) -->
+                    <!-- Row 1 (back): 1/3 and 2/3 along back edge, positioned at 1/4 depth -->
+                    <g class="clickable" data-info="F1: Ceiling fan at back-left position. 48 inch, 75W. Drop rod 2ft from ceiling.">
+                        <line x1="148" y1="195" x2="148" y2="210" stroke="#06b6d4" stroke-width="1"/>
+                        <circle cx="148" cy="210" r="10" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="138" y1="210" x2="158" y2="210" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="148" y1="200" x2="148" y2="220" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="148" y="228" text-anchor="middle" fill="#06b6d4" font-size="6">F1</text>
+                    </g>
+                    <g class="clickable" data-info="F2: Ceiling fan at back-center position. 48 inch, 75W. Drop rod 2ft from ceiling.">
+                        <line x1="220" y1="170" x2="220" y2="185" stroke="#06b6d4" stroke-width="1"/>
+                        <circle cx="220" cy="185" r="10" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="210" y1="185" x2="230" y2="185" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="220" y1="175" x2="220" y2="195" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="220" y="203" text-anchor="middle" fill="#06b6d4" font-size="6">F2</text>
+                    </g>
+                    <g class="clickable" data-info="F3: Ceiling fan at back-right position. 48 inch, 75W. Drop rod 2ft from ceiling.">
+                        <line x1="300" y1="148" x2="300" y2="163" stroke="#06b6d4" stroke-width="1"/>
+                        <circle cx="300" cy="163" r="10" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="290" y1="163" x2="310" y2="163" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="300" y1="153" x2="300" y2="173" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="300" y="181" text-anchor="middle" fill="#06b6d4" font-size="6">F3</text>
+                    </g>
+                    <!-- Row 2 (front): at 3/4 depth -->
+                    <g class="clickable" data-info="F4: Ceiling fan at front-left position. 48 inch, 75W. Drop rod 2ft from ceiling.">
+                        <line x1="215" y1="280" x2="215" y2="295" stroke="#06b6d4" stroke-width="1"/>
+                        <circle cx="215" cy="295" r="10" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="205" y1="295" x2="225" y2="295" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="215" y1="285" x2="215" y2="305" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="215" y="313" text-anchor="middle" fill="#06b6d4" font-size="6">F4</text>
+                    </g>
+                    <g class="clickable" data-info="F5: Ceiling fan at front-center position. 48 inch, 75W. Drop rod 2ft from ceiling.">
+                        <line x1="295" y1="255" x2="295" y2="270" stroke="#06b6d4" stroke-width="1"/>
+                        <circle cx="295" cy="270" r="10" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="285" y1="270" x2="305" y2="270" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="295" y1="260" x2="295" y2="280" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="295" y="288" text-anchor="middle" fill="#06b6d4" font-size="6">F5</text>
+                    </g>
+                    <g class="clickable" data-info="F6: Ceiling fan at front-right position. 48 inch, 75W. Drop rod 2ft from ceiling.">
+                        <line x1="375" y1="232" x2="375" y2="247" stroke="#06b6d4" stroke-width="1"/>
+                        <circle cx="375" cy="247" r="10" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+                        <line x1="365" y1="247" x2="385" y2="247" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="375" y1="237" x2="375" y2="257" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="375" y="265" text-anchor="middle" fill="#06b6d4" font-size="6">F6</text>
+                    </g>
+
+                    <!-- === 4 TUBE LIGHTS at ceiling level === -->
+                    <g class="clickable" data-info="L1-L2: LED Tubes 4ft at ceiling, front zone.">
+                        <line x1="240" y1="295" x2="280" y2="275" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="340" y1="260" x2="380" y2="240" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                    <g class="clickable" data-info="L3-L4: LED Tubes 4ft at ceiling, back zone.">
+                        <line x1="160" y1="218" x2="200" y2="198" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="260" y1="180" x2="300" y2="160" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- === DB BOX on front-right wall === -->
+                    <g class="clickable" data-info="Distribution Board: 8-way SPN, located on front-right wall at 5ft height.">
+                        <rect x="420" y="285" width="18" height="14" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5" rx="2"/>
+                        <text x="429" y="295" text-anchor="middle" fill="white" font-size="6">DB</text>
+                    </g>
+
+                    <!-- === 4 POLE LIGHTS outside at corners (vertical lines with circle on top) === -->
+                    <g class="clickable" data-info="PL1: Pole light, 12W LED at front-left corner. 8ft pole height. Solar powered.">
+                        <line x1="280" y1="470" x2="280" y2="440" stroke="#fbbf24" stroke-width="1.5"/>
+                        <circle cx="280" cy="437" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+                        <text x="280" y="480" text-anchor="middle" fill="#fbbf24" font-size="6">PL1</text>
+                    </g>
+                    <g class="clickable" data-info="PL2: Pole light, 12W LED at front-right corner. 8ft pole height. Solar powered.">
+                        <line x1="460" y1="368" x2="460" y2="338" stroke="#fbbf24" stroke-width="1.5"/>
+                        <circle cx="460" cy="335" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+                        <text x="460" y="378" text-anchor="middle" fill="#fbbf24" font-size="6">PL2</text>
+                    </g>
+                    <g class="clickable" data-info="PL3: Pole light, 12W LED at back-left corner. 8ft pole height. Solar powered.">
+                        <line x1="56" y1="340" x2="56" y2="310" stroke="#fbbf24" stroke-width="1.5"/>
+                        <circle cx="56" cy="307" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+                        <text x="56" y="350" text-anchor="middle" fill="#fbbf24" font-size="6">PL3</text>
+                    </g>
+                    <g class="clickable" data-info="PL4: Pole light, 12W LED at back-right corner. 8ft pole height. Solar powered.">
+                        <line x1="242" y1="240" x2="242" y2="210" stroke="#fbbf24" stroke-width="1.5"/>
+                        <circle cx="242" cy="207" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+                        <text x="242" y="250" text-anchor="middle" fill="#fbbf24" font-size="6">PL4</text>
+                    </g>
+
+                    <!-- === 4 CAMERAS on walls (small triangles) === -->
+                    <g class="clickable" data-info="CAM1: CCTV on back wall midpoint, facing north.">
+                        <polygon points="150,260 145,252 155,252" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="150" y="248" text-anchor="middle" fill="#f43f5e" font-size="6">CAM1</text>
+                    </g>
+                    <g class="clickable" data-info="CAM2: CCTV on front wall midpoint, facing south.">
+                        <polygon points="366,395 361,387 371,387" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="366" y="406" text-anchor="middle" fill="#f43f5e" font-size="6">CAM2</text>
+                    </g>
+                    <g class="clickable" data-info="CAM3: CCTV on left wall midpoint, facing west.">
+                        <polygon points="168,385 163,377 173,377" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="168" y="396" text-anchor="middle" fill="#f43f5e" font-size="6">CAM3</text>
+                    </g>
+                    <g class="clickable" data-info="CAM4: CCTV on right wall midpoint, facing east.">
+                        <polygon points="348,283 343,275 353,275" fill="#f43f5e" stroke="#f43f5e" stroke-width="1"/>
+                        <text x="348" y="271" text-anchor="middle" fill="#f43f5e" font-size="6">CAM4</text>
+                    </g>
+
+                    <!-- === INVERTER + BATTERIES at ground level near DB === -->
+                    <g class="clickable" data-info="Inverter 1.5KVA + 2x 150Ah batteries. Ground level near DB on front-right wall.">
+                        <rect x="415" y="330" width="28" height="16" fill="#22c55e" stroke="#4ade80" stroke-width="1.5" rx="2"/>
+                        <text x="429" y="341" text-anchor="middle" fill="white" font-size="6">INV</text>
+                        <rect x="415" y="348" width="12" height="14" fill="#22c55e" stroke="#4ade80" stroke-width="1" rx="1"/>
+                        <rect x="429" y="348" width="12" height="14" fill="#22c55e" stroke="#4ade80" stroke-width="1" rx="1"/>
+                        <text x="421" y="358" text-anchor="middle" fill="white" font-size="5">B1</text>
+                        <text x="435" y="358" text-anchor="middle" fill="white" font-size="5">B2</text>
+                    </g>
+
+                    <!-- === EARTH PITS outside (circles on ground plane) === -->
+                    <g class="clickable" data-info="Earth Pit E1: Body earth, 2ftx2ftx8ft deep. Outside right wall.">
+                        <circle cx="478" cy="320" r="8" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="478" y="323" text-anchor="middle" fill="#6ee7b7" font-size="6">E1</text>
+                    </g>
+                    <g class="clickable" data-info="Earth Pit E2: Neutral earth, 2ftx2ftx8ft deep. 6ft from E1.">
+                        <circle cx="495" cy="310" r="8" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="495" y="313" text-anchor="middle" fill="#6ee7b7" font-size="6">E2</text>
+                    </g>
+
+                    <!-- === WIRING ROUTES (dashed lines) === -->
+                    <g stroke="#fbbf24" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.4">
+                        <!-- DB to fans/lights -->
+                        <line x1="429" y1="285" x2="375" y2="247"/>
+                        <line x1="429" y1="285" x2="295" y2="270"/>
+                        <line x1="429" y1="285" x2="215" y2="295"/>
+                        <line x1="295" y1="270" x2="220" y2="185"/>
+                        <line x1="295" y1="270" x2="300" y2="163"/>
+                        <line x1="215" y1="295" x2="148" y2="210"/>
+                    </g>
+                    <g stroke="#22c55e" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.4">
+                        <!-- DB to inverter/batteries -->
+                        <line x1="429" y1="299" x2="429" y2="330"/>
+                        <!-- DB to earth pits -->
+                        <line x1="440" y1="295" x2="478" y2="320"/>
+                    </g>
+
+                    <!-- Labels -->
+                    <text x="310" y="505" text-anchor="middle" fill="#666" font-size="9">Front (South) ↓</text>
+                    <text x="80" y="400" text-anchor="middle" fill="#666" font-size="8">← Back (North)</text>
+                    <text x="530" y="380" text-anchor="middle" fill="#666" font-size="8">Right (East) →</text>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#fbbf24"></div>LED Lights (tubes + bulbs)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#ef4444"></div>Security Floodlights</div>
+                <div class="legend-item"><div class="legend-color" style="background:none; border:2px solid #22c55e"></div>Power Sockets (15A/5A)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#7c3aed"></div>Distribution Board</div>
+                <div class="legend-item"><div class="legend-color" style="background:#6366f1"></div>Meter Board (external)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#064e3b"></div>Earth Pits</div>
+                <div class="legend-item"><div class="legend-color" style="background:none; border:1.5px solid #06b6d4"></div>Ceiling Fans / Exhaust</div>
+                <div class="legend-item"><div class="legend-color" style="background:#d946ef"></div>Indoor Corner Lamps</div>
+                <div class="legend-item"><div class="legend-color" style="background:#f43f5e"></div>CCTV Cameras</div>
+                <div class="legend-item"><div class="legend-color" style="background:#22c55e"></div>Inverter + Batteries</div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>Load Summary</h4>
+                    <p>Lighting: 6 tubes (36W) + 2 bulbs (9W) = 234W<br>Security: 20W + 30W = 50W<br>Total lighting: ~290W<br>Socket load: ~3000W max<br>Pump: 750W (1HP)<br><strong>Connection: Single phase, 5kW</strong></p>
+                </div>
+                <div class="spec-card">
+                    <h4>Distribution Board</h4>
+                    <p>8-way SPN box (Havells/Schneider)<br>Main: 63A DP MCB<br>ELCB: 63A, 30mA<br>MCB1-2: 6A (lighting)<br>MCB3-4: 16A (power)<br>MCB5: 16A (pump)<br>MCB6: 16A (spare/future 1F)</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Wiring</h4>
+                    <p>Type: Concealed in 20-25mm PVC conduit<br>Light: 1.5 sq mm FR copper<br>Power: 2.5 sq mm FR copper<br>Pump: 4 sq mm FR copper<br>Earth: 1.5 sq mm green-yellow<br>All runs: horizontal/vertical only</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Earthing</h4>
+                    <p>2 earth pits (right side, 6ft apart)<br>Each: 2ft×2ft×8ft deep<br>GI pipe 2"×8ft + salt + charcoal<br>8 SWG GI wire continuity<br>Target resistance: &lt;5 ohms<br>Test with megger before use</p>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h3>Electrical Layout Notes</h3>
+                <p>Total 10 light points + 5 socket points + 1 pump circuit. All wiring concealed in PVC conduits (embed BEFORE plastering).
+                DB located front-right (away from tractor path). Meter board outside for reader access. Two earth pits on right side.
+                Security lights with PIR motion sensors cover gate and shutter. Switch SW6 can override sensors for continuous ON.</p>
+            </div>
+        </div>
+
+        <!-- PLUMBING VIEW -->
+        <div class="view" id="view-plumbing">
+            <div class="svg-container">
+                <svg viewBox="-60 -40 720 840" width="100%" style="max-width:720px; height:auto;">
+                    <defs>
+                        <pattern id="grid7" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-60" y="-40" width="720" height="840" fill="url(#grid7)"/>
+
+                    <!-- Building outline -->
+                    <rect x="0" y="0" width="480" height="600" fill="#0f0f1a" stroke="#333" stroke-width="2" rx="2"/>
+
+                    <!-- Stair/toilet zone -->
+                    <rect x="0" y="0" width="144" height="240" fill="#1a1a2e" stroke="#333" stroke-width="1" opacity="0.4"/>
+                    <rect x="0" y="480" width="72" height="120" fill="#1a2e3a" stroke="#0891b2" stroke-width="1.5" opacity="0.6"/>
+                    <text x="36" y="530" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">WC</text>
+
+                    <!-- Shutter -->
+                    <rect x="144" y="597" width="240" height="6" fill="#333"/>
+
+                    <!-- === OVERHEAD TANK (on roof, shown as projection) === -->
+                    <g class="clickable" data-info="500L HDPE Tank (Sintex): On roof above toilet zone. MS angle stand 2ft height. Float valve inside. Overflow pipe 1&quot; to outside. Fed by 1HP submersible pump via 1&quot; GI rising main.">
+                        <rect x="10" y="-30" width="70" height="30" fill="#0e7490" stroke="#06b6d4" stroke-width="2" rx="4"/>
+                        <text x="45" y="-18" text-anchor="middle" fill="#cffafe" font-size="7">500L TANK</text>
+                        <text x="45" y="-8" text-anchor="middle" fill="#67e8f9" font-size="6">(on roof)</text>
+                    </g>
+
+                    <!-- === WATER SUPPLY PIPES (blue) === -->
+                    <!-- Rising main from pump to tank -->
+                    <g class="clickable" data-info="Rising Main: 1&quot; GI pipe from submersible pump (borewell) to overhead tank. Includes NRV (non-return valve) after pump.">
+                        <line x1="-40" y1="300" x2="-40" y2="-15" stroke="#0ea5e9" stroke-width="3" stroke-dasharray="8,4"/>
+                        <line x1="-40" y1="-15" x2="10" y2="-15" stroke="#0ea5e9" stroke-width="3" stroke-dasharray="8,4"/>
+                        <text x="-45" y="200" fill="#0ea5e9" font-size="7" transform="rotate(-90,-45,200)">1" GI RISING MAIN</text>
+                        <circle cx="-40" cy="310" r="6" fill="#0ea5e9" stroke="#38bdf8" stroke-width="1"/>
+                        <text x="-40" y="325" text-anchor="middle" fill="#7dd3fc" font-size="6">PUMP</text>
+                    </g>
+
+                    <!-- Distribution pipe from tank downward -->
+                    <g stroke="#38bdf8" stroke-width="2" opacity="0.8">
+                        <!-- Main 3/4" down from tank -->
+                        <line x1="45" y1="0" x2="45" y2="30"/>
+                        <line x1="45" y1="30" x2="45" y2="490"/>
+                        <!-- Branch to toilet -->
+                        <line x1="45" y1="490" x2="45" y2="540"/>
+                        <!-- Branch to external tap -->
+                        <line x1="45" y1="200" x2="480" y2="200"/>
+                    </g>
+                    <!-- Pipe labels -->
+                    <text x="55" y="100" fill="#38bdf8" font-size="6">3/4" CPVC</text>
+                    <text x="55" y="110" fill="#38bdf8" font-size="6">(main supply)</text>
+                    <text x="55" y="500" fill="#7dd3fc" font-size="6">1/2" to WC</text>
+                    <text x="300" y="195" fill="#7dd3fc" font-size="6" text-anchor="middle">1/2" CPVC to external tap →</text>
+
+                    <!-- Valve indicators -->
+                    <g class="clickable" data-info="Gate Valve (3/4&quot;): Main shutoff below tank. Isolates entire water supply for maintenance.">
+                        <rect x="39" y="40" width="12" height="8" fill="#0369a1" stroke="#38bdf8" stroke-width="1"/>
+                        <text x="55" y="48" fill="#38bdf8" font-size="5">GV</text>
+                    </g>
+                    <g class="clickable" data-info="Angle Valve (1/2&quot;): Isolates toilet supply independently. Located at toilet entry point.">
+                        <rect x="39" y="478" width="12" height="8" fill="#0369a1" stroke="#38bdf8" stroke-width="1"/>
+                        <text x="55" y="486" fill="#38bdf8" font-size="5">AV</text>
+                    </g>
+
+                    <!-- === EXTERNAL TAP === -->
+                    <g class="clickable" data-info="External Tap: 15mm brass bib cock on right side wall, near front. Height: 2ft. With angle valve for isolation. Small concrete wash platform with drain below.">
+                        <rect x="482" y="193" width="20" height="14" fill="#0891b2" stroke="#22d3ee" stroke-width="1.5" rx="2"/>
+                        <text x="492" y="203" text-anchor="middle" fill="#cffafe" font-size="7">TAP</text>
+                        <text x="515" y="195" fill="#06b6d4" font-size="6">External</text>
+                        <text x="515" y="205" fill="#06b6d4" font-size="6">tap point</text>
+                    </g>
+
+                    <!-- === TOILET FIXTURES === -->
+                    <!-- Commode -->
+                    <g class="clickable" data-info="Western Commode: S-trap floor mounted (Hindware/Cera). Concealed flush tank 8/10L dual flush. 4&quot; soil pipe connection below floor.">
+                        <ellipse cx="24" cy="510" rx="12" ry="16" fill="#134e4a" stroke="#14b8a6" stroke-width="1.5"/>
+                        <text x="24" y="514" text-anchor="middle" fill="#5eead4" font-size="6">WC</text>
+                    </g>
+                    <!-- Basin -->
+                    <g class="clickable" data-info="Wash Basin: Wall mounted 12&quot;×18&quot;. 2&quot; waste pipe with P-trap (75mm water seal). Connected to 4&quot; soil pipe.">
+                        <rect x="50" y="550" width="16" height="12" fill="#134e4a" stroke="#14b8a6" stroke-width="1.5" rx="2"/>
+                        <text x="58" y="560" text-anchor="middle" fill="#5eead4" font-size="6">BSN</text>
+                    </g>
+                    <!-- Floor trap -->
+                    <g class="clickable" data-info="Floor Trap (Nahani): 4&quot; CI with SS grill. Collects floor wash water. Connected to soil pipe below floor.">
+                        <rect x="28" y="570" width="12" height="12" fill="none" stroke="#14b8a6" stroke-width="1" stroke-dasharray="2,1"/>
+                        <text x="34" y="579" text-anchor="middle" fill="#14b8a6" font-size="5">FT</text>
+                    </g>
+
+                    <!-- === DRAINAGE (brown/orange) === -->
+                    <!-- Soil pipe from toilet to soak pit -->
+                    <g class="clickable" data-info="Soil Pipe: 4&quot; PVC SWR. From WC → below floor → underground → soak pit (10ft from building). Slope: 1:40 minimum.">
+                        <line x1="24" y1="530" x2="24" y2="600" stroke="#92400e" stroke-width="3"/>
+                        <line x1="24" y1="600" x2="24" y2="700" stroke="#92400e" stroke-width="3" stroke-dasharray="6,3"/>
+                        <text x="40" y="650" fill="#f59e0b" font-size="6">4" PVC SOIL</text>
+                        <text x="40" y="660" fill="#f59e0b" font-size="6">(underground)</text>
+                        <text x="40" y="670" fill="#92400e" font-size="6">slope 1:40 →</text>
+                    </g>
+
+                    <!-- Soak pit -->
+                    <g class="clickable" data-info="Soak Pit: 4ft diameter × 6ft deep. Brick honeycomb walls (gaps for seepage). Bottom: 1ft gravel. Cover: RCC slab + CI inspection lid. Located 10ft from building (back or side).">
+                        <circle cx="24" cy="740" r="24" fill="#451a03" stroke="#92400e" stroke-width="2"/>
+                        <text x="24" y="736" text-anchor="middle" fill="#fbbf24" font-size="8">SOAK</text>
+                        <text x="24" y="750" text-anchor="middle" fill="#fbbf24" font-size="8">PIT</text>
+                        <text x="24" y="775" text-anchor="middle" fill="#92400e" font-size="6">4ft dia × 6ft deep</text>
+                        <text x="24" y="787" text-anchor="middle" fill="#92400e" font-size="6">10ft from building</text>
+                    </g>
+
+                    <!-- === FLOOR DRAIN CHANNEL === -->
+                    <g class="clickable" data-info="Floor Drain Channel: 6&quot; wide × 3&quot; deep cement channel running center of storage. Slope 1:100 toward front. SS grill cover. Collects wash water and spills.">
+                        <line x1="200" y1="50" x2="200" y2="597" stroke="#78350f" stroke-width="4" stroke-dasharray="10,5" opacity="0.5"/>
+                        <text x="215" y="300" fill="#a16207" font-size="7" transform="rotate(90,215,300)">FLOOR DRAIN CHANNEL (6" wide, slope 1:100 → front)</text>
+                    </g>
+                    <!-- Drain exit -->
+                    <g class="clickable" data-info="Floor drain exit: Through front plinth wall below shutter threshold. Water exits to open channel directed away from building.">
+                        <rect x="195" y="597" width="10" height="10" fill="#78350f" stroke="#a16207" stroke-width="1"/>
+                        <text x="200" y="620" text-anchor="middle" fill="#a16207" font-size="6">EXIT</text>
+                    </g>
+
+                    <!-- === VENT PIPE === -->
+                    <g class="clickable" data-info="Vent Pipe: 2&quot; PVC. Goes UP from toilet through wall to 1ft above roof. Prevents air lock in drainage (critical for smooth flushing).">
+                        <line x1="5" y1="520" x2="5" y2="-20" stroke="#a855f7" stroke-width="2" stroke-dasharray="3,3"/>
+                        <text x="15" y="450" fill="#a855f7" font-size="6" transform="rotate(-90,15,450)">2" VENT PIPE (to above roof)</text>
+                    </g>
+
+                    <!-- === ROOF DOWNPIPES === -->
+                    <g fill="#64748b" font-size="6">
+                        <rect x="-5" y="-5" width="10" height="10" fill="#475569" stroke="#64748b" stroke-width="1" rx="5"/>
+                        <text x="-5" y="15" text-anchor="middle">DP1</text>
+                        <rect x="475" y="-5" width="10" height="10" fill="#475569" stroke="#64748b" stroke-width="1" rx="5"/>
+                        <text x="480" y="15" text-anchor="middle">DP2</text>
+                        <rect x="-5" y="595" width="10" height="10" fill="#475569" stroke="#64748b" stroke-width="1" rx="5"/>
+                        <text x="-5" y="615" text-anchor="middle">DP3</text>
+                        <rect x="475" y="595" width="10" height="10" fill="#475569" stroke="#64748b" stroke-width="1" rx="5"/>
+                        <text x="480" y="615" text-anchor="middle">DP4</text>
+                    </g>
+                    <text x="540" y="10" fill="#64748b" font-size="6">Downpipes: 3" PVC</text>
+                    <text x="540" y="22" fill="#64748b" font-size="6">at all 4 corners</text>
+                    <text x="540" y="34" fill="#64748b" font-size="6">→ ground drain away</text>
+
+                    <!-- Title -->
+                    <text x="240" y="-20" text-anchor="middle" fill="#666" font-size="10">PLUMBING LAYOUT — Ground Floor Plan</text>
+                </svg>
+            </div>
+
+            <div class="svg-container" style="margin-top:20px">
+                <p style="color:#e94560; font-size:0.95rem; font-weight:600; margin-bottom:12px;">3D Isometric View — Plumbing</p>
+                <svg viewBox="0 0 620 540" width="100%" style="max-width:620px; height:auto;">
+                    <!-- Isometric plumbing view -->
+                    <defs>
+                        <pattern id="iso-grid-p" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a1a3e" stroke-width="0.3"/>
+                        </pattern>
+                    </defs>
+                    <rect x="0" y="0" width="620" height="540" fill="url(#iso-grid-p)"/>
+
+                    <text x="310" y="20" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">PLUMBING — 3D Isometric View</text>
+
+                    <!-- Using same building geometry as electrical iso view:
+                         FL: 280, 450  FR: 453, 350  BL: 64, 325  BR: 237, 225
+                         TFL: 280, 330  TFR: 453, 230  TBL: 64, 205  TBR: 237, 105
+                    -->
+
+                    <!-- Ground plane (floor) -->
+                    <polygon points="280,450 453,350 237,225 64,325" fill="#1e293b" stroke="#475569" stroke-width="1" opacity="0.4"/>
+
+                    <!-- Building wireframe edges - bottom -->
+                    <line x1="280" y1="450" x2="453" y2="350" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="280" y1="450" x2="64" y2="325" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="453" y1="350" x2="237" y2="225" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="64" y1="325" x2="237" y2="225" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Building wireframe edges - top (roof level) -->
+                    <line x1="280" y1="330" x2="453" y2="230" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="280" y1="330" x2="64" y2="205" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="453" y1="230" x2="237" y2="105" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="64" y1="205" x2="237" y2="105" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Building wireframe edges - vertical -->
+                    <line x1="280" y1="450" x2="280" y2="330" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="453" y1="350" x2="453" y2="230" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="64" y1="325" x2="64" y2="205" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="237" y1="225" x2="237" y2="105" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+
+                    <!-- Ceiling/roof plane (transparent) -->
+                    <polygon points="280,330 453,230 237,105 64,205" fill="#334155" stroke="#94a3b8" stroke-width="0.5" opacity="0.1"/>
+
+                    <!-- === OVERHEAD TANK on roof (rectangle on top) === -->
+                    <g class="clickable" data-info="500L HDPE Overhead Tank: On roof above toilet zone (front-left). MS angle stand 2ft. Float valve. Overflow pipe.">
+                        <!-- Tank body on roof, near front-left -->
+                        <rect x="243" y="290" width="32" height="20" fill="#0e7490" stroke="#06b6d4" stroke-width="2" rx="3"/>
+                        <text x="259" y="303" text-anchor="middle" fill="#cffafe" font-size="6">500L</text>
+                        <!-- Tank stand (2ft above roof) -->
+                        <line x1="248" y1="310" x2="248" y2="320" stroke="#06b6d4" stroke-width="1"/>
+                        <line x1="270" y1="310" x2="270" y2="320" stroke="#06b6d4" stroke-width="1"/>
+                        <text x="259" y="285" text-anchor="middle" fill="#22d3ee" font-size="7">TANK</text>
+                    </g>
+
+                    <!-- === PIPES from tank down to toilet (blue lines) === -->
+                    <g class="clickable" data-info="Supply pipes: 3/4 inch CPVC from overhead tank downward to toilet fixtures at ground level. Gravity fed.">
+                        <!-- Vertical pipe from tank down to ground level (front-left area = toilet) -->
+                        <line x1="259" y1="310" x2="259" y2="330" stroke="#38bdf8" stroke-width="2.5"/>
+                        <!-- Through roof to interior -->
+                        <line x1="259" y1="330" x2="235" y2="380" stroke="#38bdf8" stroke-width="2"/>
+                        <!-- Down to toilet at ground level -->
+                        <line x1="235" y1="380" x2="235" y2="430" stroke="#38bdf8" stroke-width="2"/>
+                        <text x="222" y="400" fill="#38bdf8" font-size="6">3/4" CPVC</text>
+                    </g>
+
+                    <!-- === TOILET FIXTURES in front-left corner at ground level === -->
+                    <g class="clickable" data-info="Toilet fixtures: Western commode + wash basin in front-left corner of building at ground level.">
+                        <!-- WC (ellipse) -->
+                        <ellipse cx="235" cy="435" rx="8" ry="6" fill="#134e4a" stroke="#14b8a6" stroke-width="1.5"/>
+                        <text x="235" y="438" text-anchor="middle" fill="#5eead4" font-size="5">WC</text>
+                        <!-- Basin (rect) -->
+                        <rect x="248" y="430" width="10" height="8" fill="#134e4a" stroke="#14b8a6" stroke-width="1" rx="1"/>
+                        <text x="253" y="436" text-anchor="middle" fill="#5eead4" font-size="4">BSN</text>
+                    </g>
+
+                    <!-- === UNDERGROUND DRAIN to soak pit (brown dashed below ground) === -->
+                    <g class="clickable" data-info="Underground soil pipe: 4 inch PVC SWR from toilet below floor to soak pit 10ft from building. Slope 1:40.">
+                        <!-- Soil pipe going underground (below floor level, shown dashed going forward/down) -->
+                        <line x1="235" y1="450" x2="235" y2="470" stroke="#92400e" stroke-width="2.5" stroke-dasharray="5,3"/>
+                        <line x1="235" y1="470" x2="210" y2="490" stroke="#92400e" stroke-width="2.5" stroke-dasharray="5,3"/>
+                        <!-- Soak pit (circle below ground) -->
+                        <circle cx="195" cy="500" r="14" fill="#451a03" stroke="#92400e" stroke-width="2"/>
+                        <text x="195" y="497" text-anchor="middle" fill="#fbbf24" font-size="6">SOAK</text>
+                        <text x="195" y="507" text-anchor="middle" fill="#fbbf24" font-size="6">PIT</text>
+                        <text x="195" y="520" text-anchor="middle" fill="#92400e" font-size="5">4" PVC underground</text>
+                    </g>
+
+                    <!-- === FLOOR DRAIN CHANNEL (line on ground plane) === -->
+                    <g class="clickable" data-info="Floor drain channel: 6 inch wide cement channel running center of storage floor. Slope 1:100 toward front. SS grill cover.">
+                        <!-- Line running from back-center to front-center on floor plane -->
+                        <line x1="150" y1="275" x2="330" y2="395" stroke="#78350f" stroke-width="3" stroke-dasharray="8,4" opacity="0.6"/>
+                        <text x="250" y="328" fill="#a16207" font-size="6" transform="rotate(30,250,328)">FLOOR DRAIN (slope →)</text>
+                    </g>
+
+                    <!-- === 4 DOWNPIPES at corners (vertical lines from roof to ground) === -->
+                    <g class="clickable" data-info="DP1: Downpipe 3 inch PVC at front-left corner. Drains roof rainwater to ground away from building.">
+                        <line x1="280" y1="330" x2="280" y2="450" stroke="#64748b" stroke-width="2.5"/>
+                        <circle cx="280" cy="330" r="4" fill="#475569" stroke="#64748b" stroke-width="1"/>
+                        <text x="288" y="390" fill="#94a3b8" font-size="6">DP1</text>
+                    </g>
+                    <g class="clickable" data-info="DP2: Downpipe 3 inch PVC at front-right corner. Drains roof rainwater to ground.">
+                        <line x1="453" y1="230" x2="453" y2="350" stroke="#64748b" stroke-width="2.5"/>
+                        <circle cx="453" cy="230" r="4" fill="#475569" stroke="#64748b" stroke-width="1"/>
+                        <text x="458" y="290" fill="#94a3b8" font-size="6">DP2</text>
+                    </g>
+                    <g class="clickable" data-info="DP3: Downpipe 3 inch PVC at back-left corner. Drains roof rainwater to ground.">
+                        <line x1="64" y1="205" x2="64" y2="325" stroke="#64748b" stroke-width="2.5"/>
+                        <circle cx="64" cy="205" r="4" fill="#475569" stroke="#64748b" stroke-width="1"/>
+                        <text x="72" y="265" fill="#94a3b8" font-size="6">DP3</text>
+                    </g>
+                    <g class="clickable" data-info="DP4: Downpipe 3 inch PVC at back-right corner. Drains roof rainwater to ground.">
+                        <line x1="237" y1="105" x2="237" y2="225" stroke="#64748b" stroke-width="2.5"/>
+                        <circle cx="237" cy="105" r="4" fill="#475569" stroke="#64748b" stroke-width="1"/>
+                        <text x="244" y="165" fill="#94a3b8" font-size="6">DP4</text>
+                    </g>
+
+                    <!-- === EXTERNAL TAP on right wall === -->
+                    <g class="clickable" data-info="External tap: 15mm brass bib cock on right wall near front. Height 2ft. With angle valve.">
+                        <!-- Tap on right wall at mid-height -->
+                        <rect x="446" y="295" width="14" height="10" fill="#0891b2" stroke="#22d3ee" stroke-width="1.5" rx="2"/>
+                        <text x="453" y="303" text-anchor="middle" fill="#cffafe" font-size="5">TAP</text>
+                        <!-- Pipe from interior to tap -->
+                        <line x1="380" y1="290" x2="446" y2="298" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    </g>
+
+                    <!-- === Supply pipe from tank branching to tap === -->
+                    <g stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.6">
+                        <line x1="259" y1="350" x2="380" y2="290"/>
+                    </g>
+
+                    <!-- Labels -->
+                    <text x="310" y="530" text-anchor="middle" fill="#666" font-size="9">Front (South) ↓</text>
+                    <text x="50" y="400" text-anchor="middle" fill="#666" font-size="8">← Back</text>
+                    <text x="530" y="360" text-anchor="middle" fill="#666" font-size="8">Right →</text>
+
+                    <!-- Legend annotations on diagram -->
+                    <g font-size="7">
+                        <line x1="480" y1="60" x2="510" y2="60" stroke="#38bdf8" stroke-width="2"/>
+                        <text x="515" y="63" fill="#38bdf8">Supply pipe</text>
+                        <line x1="480" y1="78" x2="510" y2="78" stroke="#92400e" stroke-width="2" stroke-dasharray="4,2"/>
+                        <text x="515" y="81" fill="#92400e">Drain (underground)</text>
+                        <line x1="480" y1="96" x2="510" y2="96" stroke="#64748b" stroke-width="2.5"/>
+                        <text x="515" y="99" fill="#94a3b8">Downpipes</text>
+                        <line x1="480" y1="114" x2="510" y2="114" stroke="#78350f" stroke-width="3" stroke-dasharray="6,3"/>
+                        <text x="515" y="117" fill="#a16207">Floor drain</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#0ea5e9"></div>Rising Main (1" GI, pump→tank)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#38bdf8"></div>Supply Pipes (3/4"-1/2" CPVC)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#0891b2"></div>Fixtures (tank, tap)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#14b8a6"></div>Toilet Fixtures (WC, basin)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#92400e"></div>Soil/Drain Pipes (4" PVC)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#a855f7"></div>Vent Pipe (2" PVC)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#78350f"></div>Floor Drain Channel</div>
+                <div class="legend-item"><div class="legend-color" style="background:#475569"></div>Roof Downpipes (3")</div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>Water Supply</h4>
+                    <p>Source: Submersible 1HP<br>Rising main: 1" GI<br>Tank: 500L HDPE (roof)<br>Distribution: 3/4" CPVC<br>Branches: 1/2" CPVC<br>Control: Float valve + auto level</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Toilet Drainage</h4>
+                    <p>Soil: 4" PVC SWR<br>Waste: 2" PVC SWR<br>Vent: 2" PVC (above roof)<br>Slope: 1:40 minimum<br>Trap: S-trap (WC) + P-trap (basin)<br>→ Soak pit (10ft away)</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Floor Drainage</h4>
+                    <p>Channel: 6"W × 3"D, center<br>Slope: 1:100 toward front<br>Cover: SS grill (removable)<br>Exit: Through plinth wall<br>Roof: 4 downpipes (3" PVC)<br>Directed away from building</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Soak Pit</h4>
+                    <p>Diameter: 4 ft<br>Depth: 6 ft<br>Wall: Brick honeycomb<br>Bottom: 1ft gravel (no concrete)<br>Cover: RCC + CI inspection lid<br>Distance: 10ft from building</p>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h3>Plumbing Notes</h3>
+                <p>Water flows by gravity from rooftop tank to all fixtures. Underground drain pipes must be laid BEFORE the floor slab is poured.
+                The vent pipe (2" going above roof) is critical — without it, toilet drains slowly due to air lock. Floor drain channel runs the length of
+                the storage for wash-down cleaning. 4 roof downpipes handle monsoon rainwater — directed away from the building to prevent plinth erosion.</p>
+            </div>
+        </div>
+
+        <!-- FUTURE PROVISIONS VIEW -->
+        <div class="view" id="view-future">
+            <div class="svg-container">
+                <svg viewBox="-40 -40 600 700" width="100%" style="max-width:600px; height:auto;">
+                    <defs>
+                        <pattern id="grid8" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-40" y="-40" width="600" height="700" fill="url(#grid8)"/>
+
+                    <!-- Title -->
+                    <text x="240" y="0" text-anchor="middle" fill="#e94560" font-size="12" font-weight="bold">FUTURE PROVISIONS — Conduits & Sleeves</text>
+                    <text x="240" y="16" text-anchor="middle" fill="#666" font-size="8">Installed NOW during construction for first floor + solar (saves wall-breaking later)</text>
+
+                    <!-- Building section view (simplified) -->
+                    <!-- Ground floor -->
+                    <rect x="50" y="350" width="400" height="200" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="250" y="460" text-anchor="middle" fill="#64748b" font-size="12">GROUND FLOOR</text>
+
+                    <!-- Slab -->
+                    <rect x="50" y="340" width="400" height="12" fill="#64748b" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="250" y="335" text-anchor="middle" fill="#999" font-size="8">RCC SLAB (6")</text>
+
+                    <!-- First floor -->
+                    <rect x="50" y="140" width="400" height="200" fill="#1a1a2e" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3"/>
+                    <text x="250" y="250" text-anchor="middle" fill="#555" font-size="12">FIRST FLOOR (future)</text>
+                    <text x="250" y="268" text-anchor="middle" fill="#444" font-size="8">Room (16ft) + Balcony (9ft)</text>
+
+                    <!-- Roof slab -->
+                    <rect x="50" y="130" width="400" height="12" fill="#475569" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+                    <text x="250" y="125" text-anchor="middle" fill="#666" font-size="8">FUTURE ROOF SLAB</text>
+
+                    <!-- Parapet -->
+                    <rect x="50" y="90" width="400" height="40" fill="none" stroke="#475569" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="250" y="115" text-anchor="middle" fill="#555" font-size="8">PARAPET (future)</text>
+
+                    <!-- === ELECTRICAL CONDUITS (yellow/orange) === -->
+                    <!-- Conduit 1: Main power feed to 1F -->
+                    <g class="clickable" data-info="CONDUIT 1: 25mm PVC with draw wire. From DB (ground floor) → up through stair partition wall → exits at 1F slab level. Purpose: Main power feed for entire first floor. Future: pull 4 sq mm cable.">
+                        <line x1="100" y1="540" x2="100" y2="350" stroke="#f59e0b" stroke-width="4"/>
+                        <line x1="100" y1="350" x2="100" y2="165" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6,3"/>
+                        <rect x="93" y="340" width="14" height="12" fill="#78350f" stroke="#f59e0b" stroke-width="1.5" rx="2"/>
+                        <text x="100" y="349" text-anchor="middle" fill="#fbbf24" font-size="6">SL</text>
+                        <text x="115" y="460" fill="#fbbf24" font-size="7">CONDUIT 1</text>
+                        <text x="115" y="472" fill="#f59e0b" font-size="6">25mm PVC</text>
+                        <text x="115" y="484" fill="#f59e0b" font-size="6">Main power → 1F</text>
+                        <text x="115" y="496" fill="#92400e" font-size="6">(in stair wall)</text>
+                    </g>
+
+                    <!-- Conduit 2: Second circuit for 1F -->
+                    <g class="clickable" data-info="CONDUIT 2: 25mm PVC with draw wire. From near DB → up through right wall → exits at 1F slab level (back-right). Purpose: Second circuit for 1F (lighting/AC). Future: pull 2.5-4 sq mm cables.">
+                        <line x1="400" y1="520" x2="400" y2="350" stroke="#f59e0b" stroke-width="4"/>
+                        <line x1="400" y1="350" x2="400" y2="180" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6,3"/>
+                        <rect x="393" y="340" width="14" height="12" fill="#78350f" stroke="#f59e0b" stroke-width="1.5" rx="2"/>
+                        <text x="400" y="349" text-anchor="middle" fill="#fbbf24" font-size="6">SL</text>
+                        <text x="385" y="460" fill="#fbbf24" font-size="7" text-anchor="end">CONDUIT 2</text>
+                        <text x="385" y="472" fill="#f59e0b" font-size="6" text-anchor="end">25mm PVC</text>
+                        <text x="385" y="484" fill="#f59e0b" font-size="6" text-anchor="end">2nd circuit → 1F</text>
+                        <text x="385" y="496" fill="#92400e" font-size="6" text-anchor="end">(in right wall)</text>
+                    </g>
+
+                    <!-- Conduit 3: Stair light -->
+                    <g class="clickable" data-info="CONDUIT 3: 25mm PVC with draw wire. Along stair partition wall from gate/switch area to 1F slab level. Purpose: Staircase lighting continuation to first floor landing.">
+                        <line x1="140" y1="550" x2="140" y2="350" stroke="#f59e0b" stroke-width="3"/>
+                        <line x1="140" y1="350" x2="140" y2="200" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6,3"/>
+                        <rect x="133" y="340" width="14" height="12" fill="#78350f" stroke="#f59e0b" stroke-width="1.5" rx="2"/>
+                        <text x="140" y="349" text-anchor="middle" fill="#fbbf24" font-size="6">SL</text>
+                        <text x="155" y="555" fill="#d97706" font-size="6">CONDUIT 3 (stair light)</text>
+                    </g>
+
+                    <!-- === PLUMBING SLEEVES (blue) === -->
+                    <!-- Sleeve 1: Future 1F bathroom soil -->
+                    <g class="clickable" data-info="SLEEVE 1: 6&quot; PVC pipe cast in slab (for future 4&quot; soil pipe to pass through). Located above current toilet. Purpose: Future first floor bathroom soil pipe. Capped both sides until needed.">
+                        <circle cx="120" cy="346" r="10" fill="#0c4a6e" stroke="#0ea5e9" stroke-width="2.5"/>
+                        <text x="120" y="350" text-anchor="middle" fill="#7dd3fc" font-size="7">S1</text>
+                        <text x="120" y="370" text-anchor="middle" fill="#0ea5e9" font-size="6">4" soil</text>
+                    </g>
+                    <!-- Sleeve 2: Future 1F bathroom supply -->
+                    <g class="clickable" data-info="SLEEVE 2: 2&quot; PVC pipe cast in slab (for future 1/2&quot; supply pipe). Adjacent to S1. Purpose: Future first floor bathroom water supply. Capped both sides.">
+                        <circle cx="150" cy="346" r="8" fill="#0c4a6e" stroke="#0ea5e9" stroke-width="2"/>
+                        <text x="150" y="349" text-anchor="middle" fill="#7dd3fc" font-size="6">S2</text>
+                        <text x="150" y="370" text-anchor="middle" fill="#0ea5e9" font-size="6">supply</text>
+                    </g>
+                    <!-- Sleeve 3: Future 1F kitchen -->
+                    <g class="clickable" data-info="SLEEVE 3: 4&quot; PVC pipe cast in slab (for future kitchen waste pipe). Located in back-right quadrant. Purpose: Future first floor kitchen drainage. Capped both sides.">
+                        <circle cx="370" cy="346" r="10" fill="#0c4a6e" stroke="#0ea5e9" stroke-width="2.5"/>
+                        <text x="370" y="350" text-anchor="middle" fill="#7dd3fc" font-size="7">S3</text>
+                        <text x="370" y="370" text-anchor="middle" fill="#0ea5e9" font-size="6">kitchen</text>
+                    </g>
+
+                    <!-- === SOLAR CONDUIT (green) === -->
+                    <g class="clickable" data-info="SOLAR CONDUIT: 32mm PVC with 14 SWG draw wire. From roof parapet (junction box for DC cables from solar panels) → down through right wall → to ground floor near DB (inverter/battery location). Future: pull 2×6 sq mm DC solar cables.">
+                        <line x1="440" y1="95" x2="440" y2="130" stroke="#22c55e" stroke-width="5"/>
+                        <line x1="440" y1="130" x2="440" y2="350" stroke="#22c55e" stroke-width="5"/>
+                        <line x1="440" y1="350" x2="440" y2="530" stroke="#22c55e" stroke-width="5"/>
+                        <rect x="430" y="85" width="20" height="15" fill="#14532d" stroke="#22c55e" stroke-width="1.5" rx="2"/>
+                        <text x="440" y="95" text-anchor="middle" fill="#86efac" font-size="6">JB</text>
+                        <rect x="433" y="340" width="14" height="12" fill="#14532d" stroke="#22c55e" stroke-width="1.5" rx="2"/>
+                        <text x="440" y="349" text-anchor="middle" fill="#86efac" font-size="6">SL</text>
+                        <!-- Inverter location -->
+                        <rect x="420" y="530" width="40" height="25" fill="#14532d" stroke="#22c55e" stroke-width="2" rx="3"/>
+                        <text x="440" y="543" text-anchor="middle" fill="#86efac" font-size="6">INVERTER</text>
+                        <text x="440" y="553" text-anchor="middle" fill="#4ade80" font-size="5">(future)</text>
+                    </g>
+                    <text x="460" y="250" fill="#22c55e" font-size="7">SOLAR</text>
+                    <text x="460" y="262" fill="#22c55e" font-size="7">CONDUIT</text>
+                    <text x="460" y="274" fill="#16a34a" font-size="6">32mm PVC</text>
+
+                    <!-- Solar panels indication on roof -->
+                    <g opacity="0.4">
+                        <rect x="100" y="65" width="250" height="25" fill="none" stroke="#22c55e" stroke-width="1" stroke-dasharray="3,2" rx="2"/>
+                        <text x="225" y="82" text-anchor="middle" fill="#22c55e" font-size="7">☀ SOLAR PANELS (future)</text>
+                    </g>
+
+                    <!-- Sleeve legend in slab -->
+                    <text x="250" y="346" text-anchor="middle" fill="#94a3b8" font-size="7">── SLAB ── (sleeves cast during pour) ──</text>
+
+                    <!-- Annotations -->
+                    <rect x="50" y="580" width="400" height="70" fill="#16213e" stroke="#333" stroke-width="1" rx="4"/>
+                    <text x="250" y="600" text-anchor="middle" fill="#e94560" font-size="9" font-weight="bold">KEY: What to install NOW (during construction)</text>
+                    <text x="70" y="618" fill="#f59e0b" font-size="7">● Conduits (25mm PVC with draw wire) — embed in walls before plastering</text>
+                    <text x="70" y="632" fill="#0ea5e9" font-size="7">● Pipe sleeves (PVC in slab) — cast during slab pour, cap both ends</text>
+                    <text x="70" y="646" fill="#22c55e" font-size="7">● Solar conduit (32mm PVC) — from roof to ground floor, with draw wire</text>
+
+                    <!-- DB reference -->
+                    <g class="clickable" data-info="DB Location: Distribution Board on ground floor, front-right. The spare MCB6 is connected to Conduit 1 for future first floor power. Solar inverter also located near DB for easy connection.">
+                        <rect x="70" y="510" width="30" height="20" fill="#7c3aed" stroke="#a78bfa" stroke-width="1.5" rx="2"/>
+                        <text x="85" y="523" text-anchor="middle" fill="white" font-size="7">DB</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#f59e0b"></div>Electrical Conduits (25mm PVC)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#0ea5e9"></div>Plumbing Sleeves (in slab)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#22c55e"></div>Solar Conduit (32mm PVC)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#78350f; border:1px solid #f59e0b"></div>Slab Sleeve Points</div>
+                <div class="legend-item"><div class="legend-color" style="background:#14532d; border:1px solid #22c55e"></div>Junction Box / Inverter</div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>Electrical Conduits (3 nos.)</h4>
+                    <p><strong>C1:</strong> DB → stair wall → 1F (main power)<br><strong>C2:</strong> Right wall → 1F back (2nd circuit/AC)<br><strong>C3:</strong> Stair wall → 1F (stair light)<br>All: 25mm PVC + 16 SWG draw wire<br>Cost now: ~₹2,000 | Cost later: ₹20,000+</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Plumbing Sleeves (3 nos.)</h4>
+                    <p><strong>S1:</strong> 6" sleeve for 4" soil (above WC)<br><strong>S2:</strong> 2" sleeve for supply (next to S1)<br><strong>S3:</strong> 4" sleeve for kitchen waste (back-right)<br>Cast in slab, cap both ends<br>Cost now: ~₹500 | Cost later: ₹15,000+</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Solar Conduit (1 no.)</h4>
+                    <p>Size: 32mm PVC (for 2×6mm DC cables)<br>Route: Parapet → right wall → ground floor<br>Junction box at roof (IP65)<br>Inverter space near DB reserved<br>Draw wire: 14 SWG GI inside</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Why Install Now?</h4>
+                    <p>Conduits/sleeves cost ₹3-5K during construction.<br><br>Doing it LATER means:<br>• Breaking walls (₹15-20K damage)<br>• Core-cutting slab (₹10K + weakens slab)<br>• Re-plastering + painting<br><strong>Save ₹40-50K by planning ahead</strong></p>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h3>Future Provisions — Install During Construction</h3>
+                <p>These provisions cost almost nothing to install now (just PVC pipes + wire embedded during construction) but save ₹40,000-50,000 later.
+                The draw wire inside each conduit allows future cables to be pulled through without opening walls.
+                Pipe sleeves in the slab allow future plumbing without core-cutting. Solar conduit connects roof panels to ground floor inverter.
+                All are capped/sealed to prevent concrete entry and debris — opened only when needed.</p>
+            </div>
+        </div>
+
+        <!-- CONSTRUCTION STEPS VIEW -->
+        <div class="view" id="view-construction">
+            <div class="svg-container">
+                <svg viewBox="-20 -10 660 1750" width="100%" style="max-width:660px; height:auto;">
+                    <defs>
+                        <pattern id="grid9" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1a1a3e" stroke-width="0.3"/>
+                        </pattern>
+                    </defs>
+                    <rect x="-20" y="-10" width="660" height="1750" fill="url(#grid9)"/>
+
+                    <!-- Title -->
+                    <text x="320" y="15" text-anchor="middle" fill="#e94560" font-size="14" font-weight="bold">CONSTRUCTION SEQUENCE — MEP Integrated</text>
+                    <text x="320" y="32" text-anchor="middle" fill="#888" font-size="9">Each phase shows CIVIL + ELECTRICAL + PLUMBING work that MUST happen together</text>
+
+                    <!-- ═══════ PHASE 1: FOUNDATION ═══════ -->
+                    <rect x="0" y="50" width="620" height="200" fill="#1e1e2e" stroke="#e94560" stroke-width="2" rx="6"/>
+                    <rect x="0" y="50" width="620" height="24" fill="#e94560" rx="6"/>
+                    <rect x="0" y="62" width="620" height="12" fill="#e94560"/>
+                    <text x="15" y="66" fill="white" font-size="11" font-weight="bold">PHASE 1: FOUNDATION (Week 1-2)</text>
+
+                    <!-- Civil work -->
+                    <rect x="10" y="82" width="195" height="160" fill="#1a2744" stroke="#3b82f6" stroke-width="1" rx="4"/>
+                    <text x="107" y="98" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">CIVIL</text>
+                    <g fill="#93c5fd" font-size="7">
+                        <text x="18" y="114">• Excavate 8 column pits (4ft deep)</text>
+                        <text x="18" y="128">• Pour PCC bed in each pit (6")</text>
+                        <text x="18" y="142">• Cast RCC footings (3ft×3ft×1ft)</text>
+                        <text x="18" y="156">• Raise column stubs to plinth level</text>
+                        <text x="18" y="170">• Build plinth walls (9" brick)</text>
+                        <text x="18" y="184">• Excavate soak pit (10ft from bldg)</text>
+                        <text x="18" y="198">• Excavate ramp area</text>
+                    </g>
+
+                    <!-- Electrical work -->
+                    <rect x="213" y="82" width="195" height="160" fill="#1a2e1a" stroke="#22c55e" stroke-width="1" rx="4"/>
+                    <text x="310" y="98" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold">ELECTRICAL</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="221" y="114">• Dig 2 earth pits (2ft×2ft×8ft)</text>
+                        <text x="221" y="128">• Install GI earth pipes + salt/charcoal</text>
+                        <text x="221" y="142">• Lay earth wire (8 SWG GI) along</text>
+                        <text x="221" y="156">  plinth level connecting to pits</text>
+                        <text x="221" y="170">• Install outdoor pole light bases</text>
+                        <text x="221" y="184">  (concrete 1.5ft×1.5ft×2ft at corners)</text>
+                        <text x="221" y="198">• Embed conduit sleeves in plinth</text>
+                        <text x="221" y="212">  walls (for future underground cable)</text>
+                    </g>
+
+                    <!-- Plumbing work -->
+                    <rect x="416" y="82" width="195" height="160" fill="#1a2e2e" stroke="#06b6d4" stroke-width="1" rx="4"/>
+                    <text x="513" y="98" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PLUMBING</text>
+                    <g fill="#67e8f9" font-size="7">
+                        <text x="424" y="114">• Lay 4" PVC underground drain pipe</text>
+                        <text x="424" y="128">  from toilet location → soak pit</text>
+                        <text x="424" y="142">• Maintain 1:40 slope (CRITICAL)</text>
+                        <text x="424" y="156">• Bed pipe on sand (6" below floor)</text>
+                        <text x="424" y="170">• Build soak pit (brick honeycomb)</text>
+                        <text x="424" y="184">• Install floor trap at toilet position</text>
+                        <text x="424" y="198">• Lay floor drain channel formwork</text>
+                        <text x="424" y="212">• Install rain drain exits thru plinth</text>
+                    </g>
+
+                    <!-- Warning box -->
+                    <rect x="10" y="225" width="600" height="18" fill="#451a03" stroke="#f59e0b" stroke-width="1" rx="3"/>
+                    <text x="320" y="237" text-anchor="middle" fill="#fbbf24" font-size="7" font-weight="bold">⚠ Underground pipes + earth pits MUST be done NOW — impossible to do after floor slab is poured!</text>
+
+                    <!-- ═══════ PHASE 2: FLOOR SLAB ═══════ -->
+                    <rect x="0" y="260" width="620" height="185" fill="#1e1e2e" stroke="#f59e0b" stroke-width="2" rx="6"/>
+                    <rect x="0" y="260" width="620" height="24" fill="#92400e" rx="6"/>
+                    <rect x="0" y="272" width="620" height="12" fill="#92400e"/>
+                    <text x="15" y="276" fill="white" font-size="11" font-weight="bold">PHASE 2: FLOOR SLAB + EARTH FILL (Week 3-4)</text>
+
+                    <rect x="10" y="292" width="195" height="145" fill="#1a2744" stroke="#3b82f6" stroke-width="1" rx="4"/>
+                    <text x="107" y="308" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">CIVIL</text>
+                    <g fill="#93c5fd" font-size="7">
+                        <text x="18" y="324">• Earth fill in 6" layers (compact!)</text>
+                        <text x="18" y="338">• PCC layer (3-4") over fill</text>
+                        <text x="18" y="352">• Lay wire mesh (6mm @ 6"×6")</text>
+                        <text x="18" y="366">• Pour 4" RCC floor slab</text>
+                        <text x="18" y="380">• Form floor drain channel (6"×3")</text>
+                        <text x="18" y="394">• Cure 14 days minimum</text>
+                        <text x="18" y="408">• Cast ramp slab (6" RCC, grooved)</text>
+                    </g>
+
+                    <rect x="213" y="292" width="195" height="145" fill="#1a2e1a" stroke="#22c55e" stroke-width="1" rx="4"/>
+                    <text x="310" y="308" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold">ELECTRICAL</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="221" y="324">• Lay conduit under floor slab for</text>
+                        <text x="221" y="338">  outdoor pole light cables (4 runs)</text>
+                        <text x="221" y="352">• Install MS poles at 4 corners</text>
+                        <text x="221" y="366">  (set in concrete bases)</text>
+                        <text x="221" y="380">• Embed floor-level conduit for</text>
+                        <text x="221" y="394">  external socket (S4, under shade)</text>
+                        <text x="221" y="408">• Nothing else — most work is in walls</text>
+                    </g>
+
+                    <rect x="416" y="292" width="195" height="145" fill="#1a2e2e" stroke="#06b6d4" stroke-width="1" rx="4"/>
+                    <text x="513" y="308" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PLUMBING</text>
+                    <g fill="#67e8f9" font-size="7">
+                        <text x="424" y="324">• Verify drain pipe slope BEFORE pour</text>
+                        <text x="424" y="338">• Confirm floor trap position (toilet)</text>
+                        <text x="424" y="352">• Form drain channel in wet concrete</text>
+                        <text x="424" y="366">• Embed drain exit pipe thru plinth</text>
+                        <text x="424" y="380">• Check all underground pipes clear</text>
+                        <text x="424" y="394">  (pour water to test flow)</text>
+                        <text x="424" y="408">• Mark toilet drain point on floor</text>
+                    </g>
+
+                    <rect x="10" y="420" width="600" height="18" fill="#451a03" stroke="#f59e0b" stroke-width="1" rx="3"/>
+                    <text x="320" y="432" text-anchor="middle" fill="#fbbf24" font-size="7" font-weight="bold">⚠ Last chance for underground work! After slab cures, you CANNOT access below without breaking the floor.</text>
+
+                    <!-- ═══════ PHASE 3: WALLS ═══════ -->
+                    <rect x="0" y="455" width="620" height="200" fill="#1e1e2e" stroke="#8b5cf6" stroke-width="2" rx="6"/>
+                    <rect x="0" y="455" width="620" height="24" fill="#5b21b6" rx="6"/>
+                    <rect x="0" y="467" width="620" height="12" fill="#5b21b6"/>
+                    <text x="15" y="471" fill="white" font-size="11" font-weight="bold">PHASE 3: WALLS + STAIRCASE (Week 5-7) — HEAVIEST MEP PHASE</text>
+
+                    <rect x="10" y="487" width="195" height="160" fill="#1a2744" stroke="#3b82f6" stroke-width="1" rx="4"/>
+                    <text x="107" y="503" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">CIVIL</text>
+                    <g fill="#93c5fd" font-size="7">
+                        <text x="18" y="519">• Cast columns (12ft height)</text>
+                        <text x="18" y="533">• Build external walls (9")</text>
+                        <text x="18" y="547">• Build internal walls (4.5")</text>
+                        <text x="18" y="561">• Leave openings: shutter, gate, vents</text>
+                        <text x="18" y="575">• Cast lintels at all openings</text>
+                        <text x="18" y="589">• Cast lintels at future window spots</text>
+                        <text x="18" y="603">• Build staircase (waist slab + steps)</text>
+                        <text x="18" y="617">• Build toilet enclosure walls</text>
+                    </g>
+
+                    <rect x="213" y="487" width="195" height="160" fill="#1a2e1a" stroke="#22c55e" stroke-width="1" rx="4"/>
+                    <text x="310" y="503" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold">ELECTRICAL (MOST CRITICAL PHASE)</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="221" y="519">• Embed ALL conduits in walls:</text>
+                        <text x="221" y="533">  - Light circuit conduits (20mm)</text>
+                        <text x="221" y="547">  - Fan point conduits (20mm) × 6</text>
+                        <text x="221" y="561">  - Power socket conduits (25mm)</text>
+                        <text x="221" y="575">  - CCTV cable conduits (25mm) × 4</text>
+                        <text x="221" y="589">  - Future 1F conduits (25mm) × 3</text>
+                        <text x="221" y="603">  - Solar conduit (32mm) in right wall</text>
+                        <text x="221" y="617">• Install switch/socket boxes in walls</text>
+                        <text x="221" y="631">• Run staircase light conduit</text>
+                    </g>
+
+                    <rect x="416" y="487" width="195" height="160" fill="#1a2e2e" stroke="#06b6d4" stroke-width="1" rx="4"/>
+                    <text x="513" y="503" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PLUMBING (CRITICAL PHASE)</text>
+                    <g fill="#67e8f9" font-size="7">
+                        <text x="424" y="519">• Embed supply pipes in walls:</text>
+                        <text x="424" y="533">  - 3/4" main from tank position down</text>
+                        <text x="424" y="547">  - 1/2" branch to toilet</text>
+                        <text x="424" y="561">  - 1/2" branch to external tap</text>
+                        <text x="424" y="575">• Install toilet soil pipe vertical (4")</text>
+                        <text x="424" y="589">• Install vent pipe (2") going up wall</text>
+                        <text x="424" y="603">• Embed basin waste pipe (2")</text>
+                        <text x="424" y="617">• Fix GI pipe route for rising main</text>
+                        <text x="424" y="631">  (pump → roof, along external wall)</text>
+                    </g>
+
+                    <rect x="10" y="634" width="600" height="18" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.5" rx="3"/>
+                    <text x="320" y="646" text-anchor="middle" fill="#fca5a5" font-size="7" font-weight="bold">🚨 ALL conduits + pipes MUST be embedded BEFORE plastering! After plaster = wall breaking = ₹₹₹ waste!</text>
+
+                    <!-- ═══════ PHASE 4: ROOF SLAB ═══════ -->
+                    <rect x="0" y="665" width="620" height="200" fill="#1e1e2e" stroke="#0ea5e9" stroke-width="2" rx="6"/>
+                    <rect x="0" y="665" width="620" height="24" fill="#0c4a6e" rx="6"/>
+                    <rect x="0" y="677" width="620" height="12" fill="#0c4a6e"/>
+                    <text x="15" y="681" fill="white" font-size="11" font-weight="bold">PHASE 4: ROOF SLAB (Week 8-9)</text>
+
+                    <rect x="10" y="697" width="195" height="160" fill="#1a2744" stroke="#3b82f6" stroke-width="1" rx="4"/>
+                    <text x="107" y="713" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">CIVIL</text>
+                    <g fill="#93c5fd" font-size="7">
+                        <text x="18" y="729">• Beam formwork (9"×15" + 9"×20")</text>
+                        <text x="18" y="743">• Slab formwork (entire 20×25 + 5ft)</text>
+                        <text x="18" y="757">• Lay beam reinforcement</text>
+                        <text x="18" y="771">• Lay slab reinforcement (6" thick)</text>
+                        <text x="18" y="785">• Leave stair well opening (6×3ft)</text>
+                        <text x="18" y="799">• Cantilever bars on TOP at front</text>
+                        <text x="18" y="813">• Pour slab in ONE session (no joints)</text>
+                        <text x="18" y="827">• Cure 21-28 days (ponding)</text>
+                    </g>
+
+                    <rect x="213" y="697" width="195" height="160" fill="#1a2e1a" stroke="#22c55e" stroke-width="1" rx="4"/>
+                    <text x="310" y="713" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold">ELECTRICAL (BEFORE POUR!)</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="221" y="729">• Embed fan hook boxes in slab × 6</text>
+                        <text x="221" y="743">  (heavy duty, anchored in concrete)</text>
+                        <text x="221" y="757">• Embed conduits from wall to fan</text>
+                        <text x="221" y="771">  points through slab (for wiring)</text>
+                        <text x="221" y="785">• Place future conduit sleeves (25mm)</text>
+                        <text x="221" y="799">  through slab (3 nos. for 1F power)</text>
+                        <text x="221" y="813">• Solar conduit sleeve (32mm) thru slab</text>
+                        <text x="221" y="827">• CCTV conduit exits at camera points</text>
+                    </g>
+
+                    <rect x="416" y="697" width="195" height="160" fill="#1a2e2e" stroke="#06b6d4" stroke-width="1" rx="4"/>
+                    <text x="513" y="713" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PLUMBING (BEFORE POUR!)</text>
+                    <g fill="#67e8f9" font-size="7">
+                        <text x="424" y="729">• Place pipe sleeves in slab:</text>
+                        <text x="424" y="743">  - S1: 6" (future 1F bathroom soil)</text>
+                        <text x="424" y="757">  - S2: 2" (future 1F bathroom supply)</text>
+                        <text x="424" y="771">  - S3: 4" (future 1F kitchen waste)</text>
+                        <text x="424" y="785">• Vent pipe passes through slab (2")</text>
+                        <text x="424" y="799">• Rising main passes through slab (1")</text>
+                        <text x="424" y="813">• Downpipe openings at 4 corners</text>
+                        <text x="424" y="827">• Fill all sleeves with paper (prevent</text>
+                        <text x="424" y="841">  concrete from blocking them)</text>
+                    </g>
+
+                    <rect x="10" y="845" width="600" height="18" fill="#451a03" stroke="#f59e0b" stroke-width="1" rx="3"/>
+                    <text x="320" y="857" text-anchor="middle" fill="#fbbf24" font-size="7" font-weight="bold">⚠ Fan hooks + conduit sleeves + pipe sleeves: ONE CHANCE during slab pour! Cannot add later without core-cutting (₹₹₹)</text>
+
+                    <!-- ═══════ PHASE 5: PLASTERING ═══════ -->
+                    <rect x="0" y="875" width="620" height="170" fill="#1e1e2e" stroke="#a855f7" stroke-width="2" rx="6"/>
+                    <rect x="0" y="875" width="620" height="24" fill="#6b21a8" rx="6"/>
+                    <rect x="0" y="887" width="620" height="12" fill="#6b21a8"/>
+                    <text x="15" y="891" fill="white" font-size="11" font-weight="bold">PHASE 5: PLASTERING + WATERPROOFING (Week 10-11)</text>
+
+                    <rect x="10" y="907" width="195" height="130" fill="#1a2744" stroke="#3b82f6" stroke-width="1" rx="4"/>
+                    <text x="107" y="923" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">CIVIL</text>
+                    <g fill="#93c5fd" font-size="7">
+                        <text x="18" y="939">• External plaster (1:6, 12-15mm)</text>
+                        <text x="18" y="953">• Internal plaster (1:4, 12mm)</text>
+                        <text x="18" y="967">• Ceiling plaster (1:4, 10mm)</text>
+                        <text x="18" y="981">• Roof waterproofing (china mosaic)</text>
+                        <text x="18" y="995">• Toilet waterproofing (floor + walls)</text>
+                        <text x="18" y="1009">• IPS flooring in storage</text>
+                    </g>
+
+                    <rect x="213" y="907" width="195" height="130" fill="#1a2e1a" stroke="#22c55e" stroke-width="1" rx="4"/>
+                    <text x="310" y="923" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold">ELECTRICAL (VERIFY BEFORE!)</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="221" y="939">• VERIFY all conduits are in place</text>
+                        <text x="221" y="953">• VERIFY all switch boxes are set</text>
+                        <text x="221" y="967">• VERIFY draw wires pull smoothly</text>
+                        <text x="221" y="981">• Photo-document all conduit routes</text>
+                        <text x="221" y="995">  (for future reference — hidden</text>
+                        <text x="221" y="1009">   after plaster!)</text>
+                        <text x="221" y="1023">• Plaster covers conduits (concealed)</text>
+                    </g>
+
+                    <rect x="416" y="907" width="195" height="130" fill="#1a2e2e" stroke="#06b6d4" stroke-width="1" rx="4"/>
+                    <text x="513" y="923" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PLUMBING (VERIFY BEFORE!)</text>
+                    <g fill="#67e8f9" font-size="7">
+                        <text x="424" y="939">• PRESSURE TEST all supply pipes</text>
+                        <text x="424" y="953">  (fill with water, check 24hrs —</text>
+                        <text x="424" y="967">   no leaks before concealing!)</text>
+                        <text x="424" y="981">• FLOW TEST drain pipes (pour water,</text>
+                        <text x="424" y="995">  confirm exits at soak pit)</text>
+                        <text x="424" y="1009">• Mark all pipe locations on wall</text>
+                        <text x="424" y="1023">• Plaster covers pipes (concealed)</text>
+                    </g>
+
+                    <!-- ═══════ PHASE 6: INSTALLATIONS ═══════ -->
+                    <rect x="0" y="1060" width="620" height="210" fill="#1e1e2e" stroke="#14b8a6" stroke-width="2" rx="6"/>
+                    <rect x="0" y="1060" width="620" height="24" fill="#115e59" rx="6"/>
+                    <rect x="0" y="1072" width="620" height="12" fill="#115e59"/>
+                    <text x="15" y="1076" fill="white" font-size="11" font-weight="bold">PHASE 6: INSTALLATIONS + FINISHING (Week 11-13)</text>
+
+                    <rect x="10" y="1092" width="195" height="170" fill="#1a2744" stroke="#3b82f6" stroke-width="1" rx="4"/>
+                    <text x="107" y="1108" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">CIVIL</text>
+                    <g fill="#93c5fd" font-size="7">
+                        <text x="18" y="1124">• Install rolling shutter (10×10ft)</text>
+                        <text x="18" y="1138">• Install MS gate (3×7ft)</text>
+                        <text x="18" y="1152">• Install vent grills (6 nos.)</text>
+                        <text x="18" y="1166">• Install staircase handrails</text>
+                        <text x="18" y="1180">• Paint — external (weatherproof white)</text>
+                        <text x="18" y="1194">• Paint — internal (distemper)</text>
+                        <text x="18" y="1208">• Toilet tiles (anti-skid)</text>
+                        <text x="18" y="1222">• Gate steps (5 nos.) + landing</text>
+                        <text x="18" y="1236">• Final cleaning</text>
+                    </g>
+
+                    <rect x="213" y="1092" width="195" height="170" fill="#1a2e1a" stroke="#22c55e" stroke-width="1" rx="4"/>
+                    <text x="310" y="1108" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="bold">ELECTRICAL (FIX EVERYTHING)</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="221" y="1124">• Pull wires through all conduits</text>
+                        <text x="221" y="1138">• Wire DB — connect all MCBs</text>
+                        <text x="221" y="1152">• Install switches + sockets</text>
+                        <text x="221" y="1166">• Install LED tubes + bulbs</text>
+                        <text x="221" y="1180">• Install 6 ceiling fans (on hooks)</text>
+                        <text x="221" y="1194">• Install 4 indoor corner lamps</text>
+                        <text x="221" y="1208">• Install 4 outdoor pole lights</text>
+                        <text x="221" y="1222">• Install security floodlights (2)</text>
+                        <text x="221" y="1236">• Install CCTV cameras + NVR</text>
+                        <text x="221" y="1250">• Install inverter + batteries</text>
+                    </g>
+
+                    <rect x="416" y="1092" width="195" height="170" fill="#1a2e2e" stroke="#06b6d4" stroke-width="1" rx="4"/>
+                    <text x="513" y="1108" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="bold">PLUMBING (FIX EVERYTHING)</text>
+                    <g fill="#67e8f9" font-size="7">
+                        <text x="424" y="1124">• Install overhead tank on roof</text>
+                        <text x="424" y="1138">• Connect pump → rising main → tank</text>
+                        <text x="424" y="1152">• Install float valve in tank</text>
+                        <text x="424" y="1166">• Install commode + flush tank</text>
+                        <text x="424" y="1180">• Install wash basin + taps</text>
+                        <text x="424" y="1194">• Install external tap + platform</text>
+                        <text x="424" y="1208">• Install exhaust fan (toilet)</text>
+                        <text x="424" y="1222">• Connect all supply valves</text>
+                        <text x="424" y="1236">• Install 4 roof downpipes (3" PVC)</text>
+                        <text x="424" y="1250">• Test entire system end-to-end</text>
+                    </g>
+
+                    <!-- ═══════ PHASE 7: TESTING ═══════ -->
+                    <rect x="0" y="1280" width="620" height="130" fill="#1e1e2e" stroke="#fbbf24" stroke-width="2" rx="6"/>
+                    <rect x="0" y="1280" width="620" height="24" fill="#78350f" rx="6"/>
+                    <rect x="0" y="1292" width="620" height="12" fill="#78350f"/>
+                    <text x="15" y="1296" fill="white" font-size="11" font-weight="bold">PHASE 7: TESTING + COMMISSIONING (Week 13-14)</text>
+
+                    <g fill="#fde68a" font-size="8">
+                        <text x="20" y="1325">ELECTRICAL TESTING:</text>
+                        <text x="20" y="1340" font-size="7">• Megger test all circuits (insulation resistance)</text>
+                        <text x="20" y="1354" font-size="7">• Earth resistance test (&lt;5 ohms)</text>
+                        <text x="20" y="1368" font-size="7">• ELCB trip test (30mA)</text>
+                        <text x="20" y="1382" font-size="7">• Switch ON each MCB one by one — verify each circuit</text>
+                        <text x="20" y="1396" font-size="7">• Inverter changeover test (simulate power cut)</text>
+                    </g>
+                    <g fill="#a5f3fc" font-size="8">
+                        <text x="320" y="1325">PLUMBING TESTING:</text>
+                        <text x="320" y="1340" font-size="7">• Fill tank — check all taps flow</text>
+                        <text x="320" y="1354" font-size="7">• Flush commode 10 times — check drain to soak pit</text>
+                        <text x="320" y="1368" font-size="7">• Check all joints for leaks (24hr observation)</text>
+                        <text x="320" y="1382" font-size="7">• Verify pump auto-OFF (float valve working)</text>
+                        <text x="320" y="1396" font-size="7">• Roof rain test — pour water, check all 4 downpipes drain</text>
+                    </g>
+
+                    <!-- ═══════ SUMMARY TIMELINE ═══════ -->
+                    <rect x="0" y="1425" width="620" height="300" fill="#16213e" stroke="#94a3b8" stroke-width="1" rx="6"/>
+                    <text x="320" y="1448" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">TIMELINE OVERVIEW — What Goes Wrong vs. Right</text>
+
+                    <!-- Timeline bar -->
+                    <rect x="20" y="1465" width="580" height="20" fill="#1e293b" stroke="#475569" stroke-width="1" rx="4"/>
+                    <rect x="20" y="1465" width="83" height="20" fill="#e94560" rx="4"/>
+                    <rect x="103" y="1465" width="83" height="20" fill="#92400e"/>
+                    <rect x="186" y="1465" width="124" height="20" fill="#5b21b6"/>
+                    <rect x="310" y="1465" width="83" height="20" fill="#0c4a6e"/>
+                    <rect x="393" y="1465" width="83" height="20" fill="#6b21a8"/>
+                    <rect x="476" y="1465" width="124" height="20" fill="#115e59" rx="4"/>
+                    <g fill="white" font-size="6" text-anchor="middle">
+                        <text x="62" y="1478">Wk 1-2</text>
+                        <text x="145" y="1478">Wk 3-4</text>
+                        <text x="248" y="1478">Wk 5-7</text>
+                        <text x="352" y="1478">Wk 8-9</text>
+                        <text x="435" y="1478">Wk 10-11</text>
+                        <text x="538" y="1478">Wk 11-13</text>
+                    </g>
+
+                    <!-- Wrong approach -->
+                    <text x="30" y="1510" fill="#ef4444" font-size="8" font-weight="bold">❌ WRONG (typical contractor approach):</text>
+                    <g fill="#fca5a5" font-size="7">
+                        <text x="30" y="1526">"Pehle building bana lo, baad mein bijli-paani kar lenge" (First build, then MEP)</text>
+                        <text x="30" y="1540">→ Underground pipes forgotten → floor has to be broken (₹15,000 damage)</text>
+                        <text x="30" y="1554">→ No conduits in walls → walls chased after plaster (₹20,000 + ugly finish)</text>
+                        <text x="30" y="1568">→ No fan hooks in slab → drill into RCC (weak point, risk of bar cutting)</text>
+                        <text x="30" y="1582">→ No sleeves in slab → core-cut for future pipes (₹10,000 + structural risk)</text>
+                        <text x="30" y="1596">→ Total waste: ₹50,000-80,000 + delayed completion + ugly patchwork</text>
+                    </g>
+
+                    <!-- Right approach -->
+                    <text x="30" y="1620" fill="#4ade80" font-size="8" font-weight="bold">✓ RIGHT (integrated approach — this plan):</text>
+                    <g fill="#86efac" font-size="7">
+                        <text x="30" y="1636">Phase 1: Earth pits + underground drain pipes laid DURING foundation work</text>
+                        <text x="30" y="1650">Phase 2: Pole bases + floor conduits embedded DURING floor slab pour</text>
+                        <text x="30" y="1664">Phase 3: ALL wall conduits + pipes embedded DURING wall construction (before plaster!)</text>
+                        <text x="30" y="1678">Phase 4: Fan hooks + slab sleeves placed DURING roof slab pour</text>
+                        <text x="30" y="1692">Phase 5: Pressure test + photo documentation BEFORE plastering</text>
+                        <text x="30" y="1706">Phase 6: Pull wires + install fixtures AFTER plaster (clean, easy, no damage)</text>
+                        <text x="30" y="1720">→ Total extra cost of doing it right: ₹0 (same work, just done at the right TIME)</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="info-panel">
+                <h3>Key Principle: MEP Work is FREE If Done at the Right Time</h3>
+                <p>Embedding a conduit during wall construction costs ₹0 extra (the mason just lays it as he builds).
+                Doing the same work AFTER the wall is plastered costs ₹500-1000 per meter (chasing + re-plastering + re-painting).
+                This tab shows EXACTLY when each MEP task must happen. Print this and give it to your contractor on Day 1.
+                The yellow warning bars show the "point of no return" — after that phase, the work becomes 10× more expensive.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showView(name) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById('view-' + name).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        const tooltip = document.getElementById('tooltip');
+
+        document.querySelectorAll('.clickable').forEach(el => {
+            el.style.cursor = 'pointer';
+
+            el.addEventListener('mouseenter', (e) => {
+                const info = el.getAttribute('data-info');
+                if (info) {
+                    tooltip.textContent = info;
+                    tooltip.style.display = 'block';
+                }
+            });
+
+            el.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.clientX + 12) + 'px';
+                tooltip.style.top = (e.clientY - 30) + 'px';
+            });
+
+            el.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+            });
+
+            el.addEventListener('click', (e) => {
+                const info = el.getAttribute('data-info');
+                if (info) {
+                    tooltip.textContent = info;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (e.clientX + 12) + 'px';
+                    tooltip.style.top = (e.clientY - 30) + 'px';
+                    setTimeout(() => { tooltip.style.display = 'none'; }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
