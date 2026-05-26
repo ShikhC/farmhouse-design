@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Storage Building — 3D Video Recording</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0d0d1a;
+            color: #e0e0e0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* --- CONTROL PANEL (LEFT SIDEBAR) --- */
+        #control-panel {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            background: rgba(20, 20, 40, 0.95);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        #control-panel h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 4px;
+            margin-top: 8px;
+        }
+
+        #control-panel h2:first-child {
+            margin-top: 0;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #e94560;
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) { background: #ff6b85; }
+
+        .btn-secondary {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-secondary:hover:not(:disabled) { background: #60a5fa; }
+
+        .btn-success {
+            background: #4ade80;
+            color: #1a1a2e;
+        }
+        .btn-success:hover:not(:disabled) { background: #6ee7a0; }
+
+        .btn-outline {
+            background: transparent;
+            color: #ccc;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-outline:hover:not(:disabled) {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #e94560;
+        }
+
+        .speed-control {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .speed-control label {
+            font-size: 0.78rem;
+            color: #aaa;
+        }
+
+        .speed-control input[type="range"] {
+            width: 100%;
+            accent-color: #e94560;
+        }
+
+        .speed-value {
+            font-size: 0.78rem;
+            color: #e94560;
+            text-align: center;
+        }
+
+        .timer-display {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: #fff;
+            padding: 8px 0;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #e94560;
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 3px;
+        }
+
+        .info-text {
+            font-size: 0.75rem;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .video-info {
+            font-size: 0.78rem;
+            color: #aaa;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+        }
+
+        .video-info span {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 4px 0;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- CANVAS AREA --- */
+        #canvas-area {
+            flex: 1;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a2e;
+        }
+
+        #canvas-container {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            transform-origin: center center;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Recording indicator (top-right of canvas) */
+        .recording-indicator {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.75);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            z-index: 20;
+        }
+
+        .red-dot {
+            width: 12px;
+            height: 12px;
+            background: #e94560;
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .mode-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0,0,0,0.75);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #4ade80;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <!-- LEFT CONTROL PANEL -->
+    <div id="control-panel">
+        <div class="panel-title">3D Video Recorder</div>
+
+        <!-- PRE-RECORDING CONTROLS -->
+        <div id="pre-controls">
+            <h2>Camera Mode</h2>
+            <p class="info-text">Free camera enabled. Orbit, zoom, and pan to set your desired starting angle.</p>
+
+            <button class="btn btn-outline" id="btn-set-start">Set Start Position</button>
+            <p class="info-text" id="start-pos-info"></p>
+
+            <hr class="divider">
+            <h2>Segments</h2>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="chk-orbit" checked> 360° Orbit (45s)</label>
+                <label><input type="checkbox" id="chk-walkthrough" checked> Walkthrough (45s)</label>
+            </div>
+
+            <hr class="divider">
+            <h2>Actions</h2>
+            <button class="btn btn-secondary" id="btn-preview">Preview Animation</button>
+            <button class="btn btn-primary" id="btn-start-rec" style="margin-top:6px;">Start Recording</button>
+        </div>
+
+        <!-- DURING RECORDING CONTROLS -->
+        <div id="rec-controls" class="hidden">
+            <h2>Recording</h2>
+
+            <div class="timer-display" id="timer">00:00 / 01:30</div>
+            <div class="progress-container">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+
+            <hr class="divider">
+            <div class="speed-control">
+                <label>Playback Speed</label>
+                <input type="range" id="speed-slider" min="0.5" max="1.5" step="0.5" value="1">
+                <div class="speed-value" id="speed-value">1x</div>
+            </div>
+
+            <hr class="divider">
+            <button class="btn btn-outline" id="btn-pause">Pause</button>
+        </div>
+
+        <!-- POST-RECORDING CONTROLS -->
+        <div id="post-controls" class="hidden">
+            <h2>Complete</h2>
+
+            <div class="video-info" id="video-info">
+                <span>Duration: <strong id="info-duration">--</strong></span>
+                <span>File size: <strong id="info-size">--</strong></span>
+            </div>
+
+            <button class="btn btn-success" id="btn-download" style="margin-top:8px;">Download Video (.webm)</button>
+            <button class="btn btn-secondary" id="btn-record-again" style="margin-top:6px;">Record Again</button>
+        </div>
+    </div>
+
+    <!-- CANVAS AREA -->
+    <div id="canvas-area">
+        <div id="canvas-container">
+            <div class="mode-badge" id="mode-badge">FREE CAMERA</div>
+            <div class="recording-indicator hidden" id="rec-indicator">
+                <div class="red-dot"></div>
+                <span>REC</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- CONSTANTS ---
+        const WIDTH = 1920;
+        const HEIGHT = 1080;
+        const FPS = 30;
+        const ORBIT_DURATION = 45;
+        const WALKTHROUGH_DURATION = 45;
+
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
+
+        const camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 500);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+        renderer.setSize(WIDTH, HEIGHT);
+        renderer.setPixelRatio(1);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.getElementById('canvas-container').prepend(renderer.domElement);
+
+        // Scale canvas to fit viewport
+        function scaleCanvas() {
+            const area = document.getElementById('canvas-area');
+            const container = document.getElementById('canvas-container');
+            const scaleX = area.clientWidth / WIDTH;
+            const scaleY = area.clientHeight / HEIGHT;
+            const scale = Math.min(scaleX, scaleY, 1);
+            container.style.transform = `scale(${scale})`;
+        }
+        scaleCanvas();
+        window.addEventListener('resize', scaleCanvas);
+
+        // --- ORBIT CONTROLS ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.target.set(10, 5, 12.5);
+        controls.update();
+
+        // --- LIGHTING ---
+        scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+
+        const dirLight = new THREE.DirectionalLight(0xffeedd, 1.0);
+        dirLight.position.set(30, 40, 20);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 120;
+        dirLight.shadow.camera.left = -40;
+        dirLight.shadow.camera.right = 40;
+        dirLight.shadow.camera.top = 40;
+        dirLight.shadow.camera.bottom = -40;
+        scene.add(dirLight);
+
+        scene.add(new THREE.HemisphereLight(0x8888ff, 0x444422, 0.3));
+
+        // --- GROUND ---
+        const groundGeo = new THREE.PlaneGeometry(200, 200);
+        const groundMat = new THREE.MeshLambertMaterial({ color: 0x3D6B2E });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // --- MATERIALS ---
+        const matPlinth = new THREE.MeshLambertMaterial({ color: 0xB8862B });
+        const matWall = new THREE.MeshLambertMaterial({ color: 0xF5EDE0 });
+        const matColumn = new THREE.MeshLambertMaterial({ color: 0x4A4A55 });
+        const matBeam = new THREE.MeshLambertMaterial({ color: 0x4A4A55 });
+        const matSlab = new THREE.MeshLambertMaterial({ color: 0x6B6B75 });
+        const matStaircase = new THREE.MeshLambertMaterial({ color: 0xD4A574 });
+        const matRamp = new THREE.MeshLambertMaterial({ color: 0xC8A870, side: THREE.DoubleSide });
+        const matShutter = new THREE.MeshLambertMaterial({ color: 0x2D3038 });
+        const matGate = new THREE.MeshLambertMaterial({ color: 0x6B3A1E });
+        const matToilet = new THREE.MeshLambertMaterial({ color: 0x7DD4C8 });
+        const matWaterTank = new THREE.MeshLambertMaterial({ color: 0x3498DB });
+        const matFirstFloor = new THREE.MeshLambertMaterial({ color: 0xA0C8E6, transparent: true, opacity: 0.4 });
+        const matFirstFloorWall = new THREE.MeshLambertMaterial({ color: 0xD4E8F0, transparent: true, opacity: 0.35 });
+        const matBalconyRoof = new THREE.MeshLambertMaterial({ color: 0x7A8A90, transparent: true, opacity: 0.4 });
+
+        // --- HELPER ---
+        function createBox(w, h, d, mat, x, y, z) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        // --- BUILDING GEOMETRY ---
+        // PLINTH: 20ft x 25ft x 3ft
+        scene.add(createBox(20, 3, 25, matPlinth, 10, 1.5, 12.5));
+
+        // WALLS
+        const wallThickness = 0.75;
+        const wallHeight = 12;
+        const wallBaseY = 3 + wallHeight / 2;
+
+        // Back wall
+        scene.add(createBox(20, wallHeight, wallThickness, matWall, 10, wallBaseY, 25 - wallThickness / 2));
+        // Left wall (x=0)
+        scene.add(createBox(wallThickness, wallHeight, 25, matWall, wallThickness / 2, wallBaseY, 12.5));
+        // Right wall (x=20)
+        scene.add(createBox(wallThickness, wallHeight, 25, matWall, 20 - wallThickness / 2, wallBaseY, 12.5));
+
+        // Front wall segments (with openings for gate and shutter)
+        scene.add(createBox(3, 5, wallThickness, matWall, 18.5, 3 + 7 + 2.5, wallThickness / 2));
+        scene.add(createBox(4.5, wallHeight, wallThickness, matWall, 14.75, wallBaseY, wallThickness / 2));
+        scene.add(createBox(10, 2, wallThickness, matWall, 7.5, 3 + 10 + 1, wallThickness / 2));
+        scene.add(createBox(2.5, wallHeight, wallThickness, matWall, 1.25, wallBaseY, wallThickness / 2));
+
+        // COLUMNS (8 total)
+        const colW = 0.75, colD = 1.0, colH = 12;
+        function addColumn(x, z) {
+            scene.add(createBox(colW, colH, colD, matColumn, x, 3 + colH / 2, z));
+        }
+        addColumn(colW / 2, 25 - colD / 2);
+        addColumn(20 - colW / 2, 25 - colD / 2);
+        addColumn(colW / 2, 16);
+        addColumn(20 - colW / 2, 16);
+        addColumn(20 - colW / 2, colD / 2);
+        addColumn(12.5, colD / 2);
+        addColumn(2.5, colD / 2);
+        addColumn(colW / 2, colD / 2);
+
+        // BEAMS
+        scene.add(createBox(20, 1.67, 0.75, matBeam, 10, 15 - 1.67 / 2, 25 - 0.75 / 2));
+        scene.add(createBox(20, 1.67, 0.75, matBeam, 10, 15 - 1.67 / 2, 9));
+        scene.add(createBox(0.75, 1.25, 25, matBeam, 0.75 / 2, 15 - 1.25 / 2, 12.5));
+        scene.add(createBox(0.75, 1.25, 25, matBeam, 20 - 0.75 / 2, 15 - 1.25 / 2, 12.5));
+        scene.add(createBox(20, 1.25, 0.75, matBeam, 10, 15 - 1.25 / 2, 0.75 / 2));
+
+        // ROOF SLAB
+        scene.add(createBox(20, 0.5, 30, matSlab, 10, 15 + 0.25, 10));
+
+        // STAIRCASE
+        const stairBlock1 = createBox(3.5, 6, 7.5, matStaircase, 14.25, 6, 6.75);
+        scene.add(stairBlock1);
+        scene.add(createBox(7.5, 0.5, 1.5, matStaircase, 16.25, 9, 10.75));
+        const stairBlock2 = createBox(3.5, 6, 7.5, matStaircase, 18.25, 12, 6.75);
+        scene.add(stairBlock2);
+
+        // RAMP
+        const rampShape = new THREE.BufferGeometry();
+        const rampVerts = new Float32Array([
+            1.5, 3.0, 0,    13.5, 3.0, 0,    13.5, 0.0, -8,   1.5, 0.0, -8,
+            1.5, 2.7, 0,    13.5, 2.7, 0,    13.5, 0.0, -8,   1.5, 0.0, -8,
+        ]);
+        const rampIndices = new Uint16Array([
+            0,2,1, 0,3,2,
+            4,5,6, 4,6,7,
+            0,1,5, 0,5,4,
+            3,7,6, 3,6,2,
+            0,4,7, 0,7,3,
+            1,2,6, 1,6,5,
+        ]);
+        rampShape.setAttribute('position', new THREE.BufferAttribute(rampVerts, 3));
+        rampShape.setIndex(new THREE.BufferAttribute(rampIndices, 1));
+        rampShape.computeVertexNormals();
+        const rampMesh = new THREE.Mesh(rampShape, matRamp);
+        rampMesh.castShadow = true;
+        rampMesh.receiveShadow = true;
+        scene.add(rampMesh);
+
+        // GATE STEPS
+        for (let i = 0; i < 5; i++) {
+            const stepY = 3 - (i + 1) * 0.6;
+            const stepZ = -(i * 0.85);
+            scene.add(createBox(3, 0.6, 0.85, matStaircase, 18.5, stepY + 0.3, stepZ - 0.85 / 2));
+        }
+
+        // TOILET
+        scene.add(createBox(3.5, 8, 0.3, matToilet, 18.25, 3 + 4, 8));
+        scene.add(createBox(0.3, 8, 5, matToilet, 16.5, 3 + 4, 5.5));
+        scene.add(createBox(3.5, 8, 0.3, matToilet, 18.25, 3 + 4, 3));
+
+        // SHUTTER
+        scene.add(createBox(10, 10, 0.15, matShutter, 7.5, 3 + 5, 0));
+
+        // GATE
+        scene.add(createBox(3, 7, 0.15, matGate, 18.5, 3 + 3.5, 0));
+
+        // WATER TANK
+        scene.add(createBox(0.3, 2, 0.3, matColumn, 17, 15.5 + 1, 2));
+        scene.add(createBox(0.3, 2, 0.3, matColumn, 19, 15.5 + 1, 2));
+        scene.add(createBox(0.3, 2, 0.3, matColumn, 17, 15.5 + 1, 4));
+        scene.add(createBox(0.3, 2, 0.3, matColumn, 19, 15.5 + 1, 4));
+        scene.add(createBox(3, 2.5, 2.5, matWaterTank, 18, 15.5 + 2 + 1.25, 3));
+
+        // --- FIRST FLOOR ---
+        const ff_base = 15.5;
+        const ff_height = 10;
+        const ff_top = ff_base + ff_height;
+
+        scene.add(createBox(20, ff_height, 0.4, matFirstFloorWall, 10, ff_base + ff_height / 2, 25 - 0.2));
+        scene.add(createBox(0.4, ff_height, 16, matFirstFloorWall, 0.2, ff_base + ff_height / 2, 17));
+        scene.add(createBox(0.4, ff_height, 16, matFirstFloorWall, 19.8, ff_base + ff_height / 2, 17));
+        scene.add(createBox(20, ff_height, 0.4, matFirstFloorWall, 10, ff_base + ff_height / 2, 9.2));
+
+        scene.add(createBox(20, 3.5, 0.2, matFirstFloorWall, 10, ff_base + 3.5 / 2, -4.9));
+        scene.add(createBox(0.2, 3.5, 14, matFirstFloorWall, 0.1, ff_base + 3.5 / 2, 2));
+        scene.add(createBox(0.2, 3.5, 14, matFirstFloorWall, 19.9, ff_base + 3.5 / 2, 2));
+
+        scene.add(createBox(20, 0.5, 25, matBalconyRoof, 10, ff_top + 0.25, 12.5));
+        scene.add(createBox(20, 3, 0.3, matFirstFloorWall, 10, ff_top + 1.5, 25 - 0.15));
+
+        // --- ANIMATION SYSTEM ---
+        const buildingCenter = new THREE.Vector3(10, 5, 12.5);
+        const orbitRadius = 40;
+        const orbitHeight = 25;
+
+        // Walkthrough waypoints with timing:
+        // 0-8s: Approach gate from outside
+        // 8-12s: PAUSE at gate
+        // 12-18s: Move through gate into lobby
+        // 18-22s: PAUSE in lobby
+        // 22-32s: Rise along staircase
+        // 32-36s: PAUSE at roof
+        // 36-45s: Pull back for panoramic
+
+        const walkthroughWaypoints = [
+            { time: 0,  pos: new THREE.Vector3(18.5, 2, -12), target: new THREE.Vector3(18.5, 4, 0) },
+            { time: 8,  pos: new THREE.Vector3(18.5, 3.5, -3), target: new THREE.Vector3(18.5, 4, 3) },
+            { time: 12, pos: new THREE.Vector3(18.5, 3.5, -3), target: new THREE.Vector3(18.5, 4, 3) },
+            { time: 18, pos: new THREE.Vector3(16, 5, 5), target: new THREE.Vector3(14, 5, 7) },
+            { time: 22, pos: new THREE.Vector3(16, 5, 5), target: new THREE.Vector3(14, 5, 7) },
+            { time: 32, pos: new THREE.Vector3(17, 15.5, 4), target: new THREE.Vector3(10, 16, 12) },
+            { time: 36, pos: new THREE.Vector3(17, 15.5, 4), target: new THREE.Vector3(10, 16, 12) },
+            { time: 45, pos: new THREE.Vector3(10, 30, -15), target: new THREE.Vector3(10, 10, 12.5) },
+        ];
+
+        const walkPosCurve = new THREE.CatmullRomCurve3(
+            walkthroughWaypoints.map(w => w.pos)
+        );
+        const walkTargetCurve = new THREE.CatmullRomCurve3(
+            walkthroughWaypoints.map(w => w.target)
+        );
+
+        // Map walkthrough time (0-45s) to curve parameter (0-1) using the waypoint timings
+        function walkthroughTimeToT(seconds) {
+            const totalTime = WALKTHROUGH_DURATION;
+            const numPoints = walkthroughWaypoints.length;
+            const times = walkthroughWaypoints.map(w => w.time);
+
+            // Find which segment we're in
+            for (let i = 0; i < numPoints - 1; i++) {
+                if (seconds <= times[i + 1]) {
+                    const segStart = times[i];
+                    const segEnd = times[i + 1];
+                    const segFraction = (segEnd > segStart) ? (seconds - segStart) / (segEnd - segStart) : 0;
+                    const tStart = i / (numPoints - 1);
+                    const tEnd = (i + 1) / (numPoints - 1);
+                    return tStart + segFraction * (tEnd - tStart);
+                }
+            }
+            return 1;
+        }
+
+        function getCameraState(totalElapsed, orbitEnabled, walkthroughEnabled) {
+            const orbitDur = orbitEnabled ? ORBIT_DURATION : 0;
+            const walkDur = walkthroughEnabled ? WALKTHROUGH_DURATION : 0;
+            const totalDur = orbitDur + walkDur;
+
+            if (totalDur === 0) return { position: camera.position.clone(), target: buildingCenter.clone() };
+
+            const t = Math.min(totalElapsed, totalDur);
+
+            if (orbitEnabled && t < orbitDur) {
+                // Orbit phase
+                const orbitFrac = t / orbitDur;
+                const angle = orbitFrac * Math.PI * 2 - Math.PI / 4;
+                const x = buildingCenter.x + orbitRadius * Math.sin(angle);
+                const z = buildingCenter.z + orbitRadius * Math.cos(angle);
+                return {
+                    position: new THREE.Vector3(x, orbitHeight, z),
+                    target: buildingCenter.clone()
+                };
+            } else {
+                // Walkthrough phase
+                const walkElapsed = orbitEnabled ? (t - orbitDur) : t;
+                const curveT = walkthroughTimeToT(walkElapsed);
+                const clampedT = Math.min(Math.max(curveT, 0), 0.999);
+                return {
+                    position: walkPosCurve.getPoint(clampedT),
+                    target: walkTargetCurve.getPoint(clampedT)
+                };
+            }
+        }
+
+        function getTotalDuration(orbitEnabled, walkthroughEnabled) {
+            return (orbitEnabled ? ORBIT_DURATION : 0) + (walkthroughEnabled ? WALKTHROUGH_DURATION : 0);
+        }
+
+        // --- STATE ---
+        let savedStartPosition = null;
+        let savedStartTarget = null;
+        let isRecording = false;
+        let isPreviewing = false;
+        let isPaused = false;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let animElapsed = 0;
+        let lastFrameTime = 0;
+        let speedMultiplier = 1.0;
+        let animationId = null;
+
+        // --- DOM REFS ---
+        const preControls = document.getElementById('pre-controls');
+        const recControls = document.getElementById('rec-controls');
+        const postControls = document.getElementById('post-controls');
+        const btnSetStart = document.getElementById('btn-set-start');
+        const btnPreview = document.getElementById('btn-preview');
+        const btnStartRec = document.getElementById('btn-start-rec');
+        const btnPause = document.getElementById('btn-pause');
+        const btnDownload = document.getElementById('btn-download');
+        const btnRecordAgain = document.getElementById('btn-record-again');
+        const chkOrbit = document.getElementById('chk-orbit');
+        const chkWalkthrough = document.getElementById('chk-walkthrough');
+        const speedSlider = document.getElementById('speed-slider');
+        const speedValueEl = document.getElementById('speed-value');
+        const timerEl = document.getElementById('timer');
+        const progressBar = document.getElementById('progress-bar');
+        const recIndicator = document.getElementById('rec-indicator');
+        const modeBadge = document.getElementById('mode-badge');
+        const startPosInfo = document.getElementById('start-pos-info');
+        const infoDuration = document.getElementById('info-duration');
+        const infoSize = document.getElementById('info-size');
+
+        // --- INITIAL CAMERA POSITION ---
+        camera.position.set(
+            buildingCenter.x + orbitRadius * Math.sin(-Math.PI / 4),
+            orbitHeight,
+            buildingCenter.z + orbitRadius * Math.cos(-Math.PI / 4)
+        );
+        camera.lookAt(buildingCenter);
+        controls.update();
+
+        // --- FREE CAMERA RENDER LOOP ---
+        function renderFreeCamera() {
+            if (!isRecording && !isPreviewing) {
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            requestAnimationFrame(renderFreeCamera);
+        }
+        renderFreeCamera();
+
+        // --- EVENT HANDLERS ---
+        btnSetStart.addEventListener('click', () => {
+            savedStartPosition = camera.position.clone();
+            savedStartTarget = controls.target.clone();
+            startPosInfo.textContent = `Saved! (${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)}, ${camera.position.z.toFixed(1)})`;
+        });
+
+        speedSlider.addEventListener('input', () => {
+            speedMultiplier = parseFloat(speedSlider.value);
+            speedValueEl.textContent = `${speedMultiplier}x`;
+        });
+
+        btnPreview.addEventListener('click', () => {
+            if (isPreviewing) {
+                stopPreview();
+                return;
+            }
+            startAnimation(false);
+        });
+
+        btnStartRec.addEventListener('click', () => {
+            startAnimation(true);
+        });
+
+        btnPause.addEventListener('click', () => {
+            if (isPaused) {
+                isPaused = false;
+                btnPause.textContent = 'Pause';
+                lastFrameTime = performance.now();
+                if (isRecording) mediaRecorder.resume();
+                runAnimation();
+            } else {
+                isPaused = true;
+                btnPause.textContent = 'Resume';
+                if (isRecording) mediaRecorder.pause();
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }
+        });
+
+        btnDownload.addEventListener('click', downloadVideo);
+
+        btnRecordAgain.addEventListener('click', () => {
+            postControls.classList.add('hidden');
+            preControls.classList.remove('hidden');
+            recIndicator.classList.add('hidden');
+            modeBadge.classList.remove('hidden');
+            modeBadge.textContent = 'FREE CAMERA';
+            modeBadge.style.color = '#4ade80';
+            controls.enabled = true;
+            recordedChunks = [];
+
+            if (savedStartPosition) {
+                camera.position.copy(savedStartPosition);
+                controls.target.copy(savedStartTarget);
+            }
+            controls.update();
+        });
+
+        // --- ANIMATION LOGIC ---
+        function startAnimation(record) {
+            const orbitEnabled = chkOrbit.checked;
+            const walkthroughEnabled = chkWalkthrough.checked;
+
+            if (!orbitEnabled && !walkthroughEnabled) {
+                alert('Select at least one segment.');
+                return;
+            }
+
+            controls.enabled = false;
+            animElapsed = 0;
+            isPaused = false;
+            lastFrameTime = performance.now();
+            btnPause.textContent = 'Pause';
+
+            if (record) {
+                isRecording = true;
+                isPreviewing = false;
+                recordedChunks = [];
+
+                preControls.classList.add('hidden');
+                recControls.classList.remove('hidden');
+                recIndicator.classList.remove('hidden');
+                modeBadge.textContent = 'RECORDING';
+                modeBadge.style.color = '#e94560';
+
+                const stream = renderer.domElement.captureStream(30);
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm;codecs=vp9',
+                    videoBitsPerSecond: 8000000
+                });
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+                mediaRecorder.onstop = () => {
+                    finishRecording();
+                };
+                mediaRecorder.start(100);
+            } else {
+                isPreviewing = true;
+                isRecording = false;
+
+                preControls.classList.add('hidden');
+                recControls.classList.remove('hidden');
+                recIndicator.classList.add('hidden');
+                modeBadge.textContent = 'PREVIEW';
+                modeBadge.style.color = '#3b82f6';
+            }
+
+            runAnimation();
+        }
+
+        function runAnimation() {
+            const orbitEnabled = chkOrbit.checked;
+            const walkthroughEnabled = chkWalkthrough.checked;
+            const totalDur = getTotalDuration(orbitEnabled, walkthroughEnabled);
+
+            if (animElapsed >= totalDur) {
+                stopAnimation();
+                return;
+            }
+
+            const now = performance.now();
+            const delta = (now - lastFrameTime) / 1000;
+            lastFrameTime = now;
+
+            animElapsed += delta * speedMultiplier;
+            animElapsed = Math.min(animElapsed, totalDur);
+
+            const state = getCameraState(animElapsed, orbitEnabled, walkthroughEnabled);
+            camera.position.copy(state.position);
+            camera.lookAt(state.target);
+            renderer.render(scene, camera);
+
+            // Update UI
+            const elapsed = Math.floor(animElapsed);
+            const total = Math.floor(totalDur);
+            const eMins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const eSecs = (elapsed % 60).toString().padStart(2, '0');
+            const tMins = Math.floor(total / 60).toString().padStart(2, '0');
+            const tSecs = (total % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${eMins}:${eSecs} / ${tMins}:${tSecs}`;
+            progressBar.style.width = `${(animElapsed / totalDur) * 100}%`;
+
+            if (animElapsed < totalDur) {
+                animationId = requestAnimationFrame(runAnimation);
+            } else {
+                stopAnimation();
+            }
+        }
+
+        function stopAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+
+            if (isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+            } else if (isPreviewing) {
+                stopPreview();
+            }
+        }
+
+        function stopPreview() {
+            isPreviewing = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            recControls.classList.add('hidden');
+            preControls.classList.remove('hidden');
+            modeBadge.textContent = 'FREE CAMERA';
+            modeBadge.style.color = '#4ade80';
+            controls.enabled = true;
+
+            if (savedStartPosition) {
+                camera.position.copy(savedStartPosition);
+                controls.target.copy(savedStartTarget);
+            }
+            controls.update();
+            btnPreview.textContent = 'Preview Animation';
+        }
+
+        function finishRecording() {
+            recControls.classList.add('hidden');
+            postControls.classList.remove('hidden');
+            recIndicator.classList.add('hidden');
+            modeBadge.textContent = 'DONE';
+            modeBadge.style.color = '#4ade80';
+
+            const orbitEnabled = chkOrbit.checked;
+            const walkthroughEnabled = chkWalkthrough.checked;
+            const totalDur = getTotalDuration(orbitEnabled, walkthroughEnabled);
+            infoDuration.textContent = `${totalDur}s`;
+
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const sizeMB = (blob.size / (1024 * 1024)).toFixed(1);
+            infoSize.textContent = `${sizeMB} MB`;
+        }
+
+        function downloadVideo() {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'farm-storage-building-3d.webm';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
