@@ -48,20 +48,20 @@
          │                                         │  │
          │           O P E N   S T O R A G E       │  │
          │                                         │  │
-         │           14 ft × 25 ft = 350 sq ft     │  │
+         │           12.5 ft × 25 ft = 312 sq ft    │  │
          │           (clear usable area)           │  │  25 ft
          │                                         │  │
       [V]│                                         │[V]│ ← vents at 10ft
          │                                         │  │
          │  ┌───────┐                              │  │
          │  │       │ Flight 2 (coming forward)    │  │
-         │  │  2.75 │ ↓↓↓↓↓↓↓↓↓ (9 treads)       │  │
+         │  │  3.5  │ ↓↓↓↓↓↓↓↓↓ (9 treads)       │  │
          │  │       │                              │  │
          │  ├───────┤                              │  │
-         │  │LANDING│ (3 ft × 6 ft)               │  │
+         │  │LANDING│ (3 ft × 7.5 ft)             │  │
          │  ├───────┤                              │  │
          │  │       │ Flight 1 (going backward)    │  │
-         │  │  2.75 │ ↑↑↑↑↑↑↑↑↑ (9 treads)       │  │
+         │  │  3.5  │ ↑↑↑↑↑↑↑↑↑ (9 treads)       │  │
          │  │       │                              │  │
          │  ├──┬────┤                              │  │
          │  │WC│    │                              │  │
@@ -70,7 +70,7 @@
          │ GATE  │DR│    10 ft SHUTTER        │WALL│
          │ 3ft   │  │    (rolling, MS)        │ 4ft│
          └───────┴──┴─────────────────────────┴────┘
-         ←─ 6ft ──→ ←──────── 10 ft ─────────→←4ft→
+         ←─ 7.5ft ─→ ←──────── 10 ft ────────→←2.5ft→
 
          ┌─────────────────────────────────────────┐
          │         5 ft FRONT SHADE                 │ ← Pure cantilever slab
@@ -91,16 +91,16 @@
 
 | हिस्सा | चौड़ाई | गहराई | जगह |
 |---------|-------|-------|----------|
-| सीढ़ी (पूरी) | 6 ft | 10 ft | सामने-बायाँ कोना |
-| Flight 1 (नीचे वाली) | 2.75 ft | 7.5 ft | बायीं तरफ, पीछे की ओर जाती |
-| Flight 2 (ऊपर वाली) | 2.75 ft | 7.5 ft | दायीं तरफ, आगे की ओर आती |
-| बीच की लैंडिंग | 6 ft | 3 ft | सीढ़ी ज़ोन का पिछला हिस्सा |
+| सीढ़ी (पूरी) | 7.5 ft | 10 ft | सामने-बायाँ कोना |
+| Flight 1 (नीचे वाली) | 3.5 ft | 7.5 ft | बायीं तरफ, पीछे की ओर जाती |
+| Flight 2 (ऊपर वाली) | 3.5 ft | 7.5 ft | दायीं तरफ, आगे की ओर आती |
+| बीच की लैंडिंग | 7.5 ft | 3 ft | सीढ़ी ज़ोन का पिछला हिस्सा |
 | दोनों flights के बीच गैप | 0.5 ft | — | Flight 1 और 2 के बीच |
 | टॉयलेट (WC) | 3 ft | 5 ft | Flight 2 के नीचे, सामने की तरफ |
 | लॉबी | 3 ft | 3 ft | गेट, WC, और सीढ़ी के बीच |
-| रोलिंग शटर | 10 ft | — | सामने की दीवार, 6ft से 16ft तक |
+| रोलिंग शटर | 10 ft | — | सामने की दीवार, 7.5ft से 17.5ft तक |
 | गेट | 3 ft | — | सामने की दीवार, 0ft से 3ft तक |
-| स्टोरेज एरिया | ~14 ft | 25 ft | बिल्डिंग का दायाँ हिस्सा |
+| स्टोरेज एरिया | ~12.5 ft | 25 ft | बिल्डिंग का दायाँ हिस्सा |
 
 ---
 
@@ -114,11 +114,11 @@
 | कुल ऊँचाई | 12 ft (144 inches) |
 | Riser की ऊँचाई | 7.2" (कुल 20 risers) |
 | Tread की गहराई | 10" |
-| Flight की चौड़ाई (खाली) | 2 ft 9 in (2.75 ft) |
+| Flight की चौड़ाई (खाली) | 3 ft 6 in (3.5 ft) |
 | हर flight में risers | 10 |
 | हर flight में treads | 9 |
 | हर flight की लम्बाई | 7 ft 6 in |
-| लैंडिंग का साइज़ | 6 ft × 3 ft |
+| लैंडिंग का साइज़ | 7.5 ft × 3 ft |
 | Waist slab की मोटाई | 5" |
 | रेलिंग की ऊँचाई | 3 ft (दोनों तरफ) |
 | रेलिंग का मटेरियल | MS pipe 1.5" dia |
@@ -283,7 +283,7 @@
     │                                              │    │ 9 ft
     │                                              │    │ (front bay)
     C5──────────────C6──────────────C7────────────C8  ─┘
-    │     6 ft      │    10 ft      │    4 ft     │
+    │     7.5 ft     │    10 ft      │   2.5 ft    │
     FRONT WALL     (shutter edges)
     
     Front shade: PURE CANTILEVER (no columns)
@@ -299,7 +299,7 @@
     - C3: Left wall at 9ft from front (in left wall)
     - C4: Right wall at 9ft from front (in right wall)
     - C5: Front-left corner (in front + left wall)
-    - C6: Front wall at 6ft from left (stair/shutter boundary)
+    - C6: Front wall at 7.5ft from left (stair/shutter boundary)
     - C7: Front wall at 16ft from left (shutter right edge)
     - C8: Front-right corner (in front + right wall)
     
@@ -525,13 +525,13 @@ Deep beams के नीचे खाली ऊँचाई: 12ft - 20" = 10ft 4
     │   Sheet     │   ┌──────┐                             │  │
     │   roof      │   │STAIR │  RCC slab overhead          │  │
     │   above     │   │WELL  │  (future 2nd floor/solar)   │  │
-    │             │   │6ft×3ft│                             │  │
+    │             │   │7.5ft×3ft│                            │  │
     │   Railing   │   └──────┘                             │  │
     │   at edge   │                                        │  │
     └─────────────┴────────────────────────────────────────┘ ─┘
                                  FRONT
     
-    STAIR WELL: 6 ft × 3 ft opening in slab (with railing around)
+    STAIR WELL: 7.5 ft × 3 ft opening in slab (with railing around)
     ROOM entry: From balcony into room (door on the partition line)
     RAILING: 3.5 ft high MS pipe railing on balcony + extended area
 ```

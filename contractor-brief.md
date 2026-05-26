@@ -48,7 +48,7 @@
    - 8 columns ONLY — ALL in walls:
      - Back wall: 2 (left corner + right corner only)
      - Side walls: 2 (one on each side wall, at 9ft from front)
-     - Front wall: 4 (left corner, 6ft mark, 16ft mark, right corner)
+     - Front wall: 4 (left corner, 7.5ft mark, 17.5ft mark, right corner)
    - NO columns in the middle of the storage floor
    - NO shade columns at front (shade is pure cantilever)
    - Middle beam position: 9ft from front wall (this aligns with the first floor room partition above)
@@ -148,7 +148,7 @@
     
     Riser (unchai):     7 inch (175mm)
     Tread (chaudai):   10 inch (250mm)  
-    Width per flight:   2 ft 9 inch
+    Width per flight:   3 ft 6 inch (3.5 ft)
     Total rise:        12 ft
     Risers:            20 (10 per flight)
     Treads:             9 per flight
@@ -157,7 +157,7 @@
     - Type: Waist slab (patli slab ke upar seedhi)
     - Waist slab: 5" thick RCC
     - Steel: 10mm main @ 6" + 8mm distribution @ 8"
-    - Landing: 6ft × 3ft at middle (half height)
+    - Landing: 7.5ft × 3ft at middle (half height)
     - **KEY:** Pour waist slab + steps in one go (ek baar mein dhalna)
     - Cure 14 days
 
@@ -183,7 +183,7 @@
 17. **Slab formwork** (Chhat ka shuttering)
     - Cover entire 20ft × 25ft area
     - PLUS 5ft cantilever at front (shade projection)
-    - Leave staircase opening: 6ft × 3ft at front-left
+    - Leave staircase opening: 7.5ft × 3ft at front-left
     - Shuttering must be LEVEL (check multiple points)
     - Support every 3-4 ft with vertical props
 
@@ -331,7 +331,7 @@
 
 **Before roof slab pour:**
 1. ☐ All beams and slab steel verified by structural person
-2. ☐ Staircase opening boxed properly (6ft × 3ft)
+2. ☐ Staircase opening boxed properly (7.5ft × 3ft)
 3. ☐ Cantilever bars on TOP (not bottom!)
 4. ☐ Electrical conduits if any (future provision)
 5. ☐ Sufficient workers ready (8-10 minimum for 500 sft slab)

@@ -69,7 +69,7 @@
 ### 2A. Ceiling Fan Schedule (6 nos.)
 
 ```
-    CEILING FAN LAYOUT (storage area, 14ft × 25ft):
+    CEILING FAN LAYOUT (storage area, 12.5ft × 25ft):
     
     ┌──────────────────────────────────────┐
     │                                      │

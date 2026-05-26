@@ -69,7 +69,7 @@
 ### 2A. छत के पंखों की अनुसूची (6 नग)
 
 ```
-    CEILING FAN LAYOUT (storage area, 14ft × 25ft):
+    CEILING FAN LAYOUT (storage area, 12.5ft × 25ft):
     
     ┌──────────────────────────────────────┐
     │                                      │

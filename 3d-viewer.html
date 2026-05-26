@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>खेत का गोदाम — 3D Model</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .header {
+            background: rgba(22, 33, 62, 0.9);
+            padding: 12px 20px;
+            border-bottom: 1px solid #0f3460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+        }
+        .header h1 {
+            font-size: 1.1rem;
+            color: #e94560;
+            font-weight: 600;
+        }
+        .header .subtitle {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        .controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .controls button {
+            padding: 6px 12px;
+            border: 1px solid #0f3460;
+            background: #16213e;
+            color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            transition: all 0.2s;
+            pointer-events: auto;
+        }
+        .controls button:hover { background: #0f3460; }
+        .controls button.active {
+            background: #e94560;
+            border-color: #e94560;
+            color: white;
+        }
+        .legend-panel {
+            position: absolute;
+            top: 60px;
+            right: 12px;
+            background: rgba(22, 33, 62, 0.92);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 12px 14px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+            max-width: 220px;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+        }
+        .legend-panel.collapsed .legend-body { display: none; }
+        .legend-panel .legend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e94560;
+        }
+        .legend-panel .legend-header span { font-size: 0.9rem; }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        .legend-swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.15);
+            flex-shrink: 0;
+        }
+        .dimensions-panel {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(22, 33, 62, 0.9);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 10px 14px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+            font-size: 0.75rem;
+        }
+        .dimensions-panel h3 {
+            color: #e94560;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+        .dim-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 3px;
+        }
+        .dim-label { color: #aaa; }
+        .dim-value { color: #fff; font-weight: 500; }
+        .label-2d {
+            position: absolute;
+            color: #fff;
+            font-size: 11px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 6px;
+            border-radius: 3px;
+            white-space: nowrap;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 0.95rem; }
+            .controls button { padding: 5px 8px; font-size: 0.7rem; }
+            .legend-panel { max-width: 180px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="overlay">
+        <div class="header">
+            <div>
+                <h1>खेत का गोदाम — 3D Model</h1>
+                <div class="subtitle">Farm Storage Building · Moradabad · 20ft × 25ft</div>
+            </div>
+            <div class="controls">
+                <button id="btn-walls" class="active" onclick="toggleGroup('walls')">Walls</button>
+                <button id="btn-columns" class="active" onclick="toggleGroup('columns')">Columns</button>
+                <button id="btn-beams" class="active" onclick="toggleGroup('beams')">Beams</button>
+                <button id="btn-slab" class="active" onclick="toggleGroup('slab')">Slab</button>
+                <button id="btn-staircase" class="active" onclick="toggleGroup('staircase')">Staircase</button>
+                <button id="btn-paths" class="active" onclick="toggleGroup('paths')" style="background:#f59e0b;color:#000">🚶 Paths</button>
+            </div>
+        </div>
+
+        <div class="legend-panel" id="legend-panel">
+            <div class="legend-header" onclick="toggleLegend()">
+                <span>Legend</span>
+                <span id="legend-arrow">▼</span>
+            </div>
+            <div class="legend-body">
+                <div class="legend-item"><div class="legend-swatch" style="background:#8B6914"></div>Plinth (चबूतरा)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#F5E6D3"></div>Walls (दीवारें)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A4A50"></div>Columns (स्तम्भ)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#5A5A60"></div>Beams (बीम)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#6B6B70"></div>Roof Slab (छत)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#7A6B5A"></div>Staircase (सीढ़ी)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#8A7B65"></div>Ramp (ढलान)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#2A2A30"></div>Shutter (शटर)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A3020"></div>Gate (गेट)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A8A7A"></div>Toilet (शौचालय)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#2A6090"></div>Water Tank (टंकी)</div>
+                <div class="legend-item" style="margin-top:8px; font-weight:bold; font-size:10px;">Circulation Paths (रास्ते):</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4ade80"></div>① गेट → गोदाम (Gate→Storage)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#22d3ee"></div>② गेट → शौचालय (Gate→Toilet)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#f59e0b"></div>③ गेट → छत (Gate→Roof)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#d946ef"></div>④ गोदाम → शौचालय (Storage→Toilet)</div>
+            </div>
+        </div>
+
+        <div class="dimensions-panel">
+            <h3>Key Dimensions</h3>
+            <div class="dim-row"><span class="dim-label">Width (x)</span><span class="dim-value">20 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Depth (z)</span><span class="dim-value">25 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Room Height</span><span class="dim-value">12 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Plinth</span><span class="dim-value">3 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Total Height</span><span class="dim-value">15 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Shade Cantilever</span><span class="dim-value">5 ft</span></div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        try {
+
+        // Groups for toggling
+        const groups = {
+            walls: new THREE.Group(),
+            columns: new THREE.Group(),
+            beams: new THREE.Group(),
+            slab: new THREE.Group(),
+            staircase: new THREE.Group()
+        };
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
+        scene.fog = new THREE.Fog(0x1a1a2e, 80, 200);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 500);
+        camera.position.set(10, 12, -30);
+        camera.lookAt(10, 7, 12);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // CSS2D Renderer for labels
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0';
+        labelRenderer.domElement.style.left = '0';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.getElementById('canvas-container').appendChild(labelRenderer.domElement);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.autoRotateSpeed = 0.5;
+        controls.target.set(10, 7, 5);
+        controls.maxPolarAngle = Math.PI / 2.05;
+        controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffeedd, 1.0);
+        dirLight.position.set(30, 40, 20);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 120;
+        dirLight.shadow.camera.left = -40;
+        dirLight.shadow.camera.right = 40;
+        dirLight.shadow.camera.top = 40;
+        dirLight.shadow.camera.bottom = -40;
+        scene.add(dirLight);
+
+        const hemiLight = new THREE.HemisphereLight(0x8888ff, 0x444422, 0.3);
+        scene.add(hemiLight);
+
+        // Ground plane
+        const groundGeo = new THREE.PlaneGeometry(200, 200);
+        const groundMat = new THREE.MeshLambertMaterial({ color: 0x2A4A2A });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // Grid helper
+        const gridHelper = new THREE.GridHelper(100, 50, 0x335533, 0x223322);
+        gridHelper.position.y = 0.01;
+        scene.add(gridHelper);
+
+        // Materials
+        const matPlinth = new THREE.MeshLambertMaterial({ color: 0x8B6914 });
+        const matWall = new THREE.MeshLambertMaterial({ color: 0xF5E6D3 });
+        const matColumn = new THREE.MeshLambertMaterial({ color: 0x4A4A50 });
+        const matBeam = new THREE.MeshLambertMaterial({ color: 0x5A5A60 });
+        const matSlab = new THREE.MeshLambertMaterial({ color: 0x6B6B70 });
+        const matStaircase = new THREE.MeshLambertMaterial({ color: 0x7A6B5A });
+        const matRamp = new THREE.MeshLambertMaterial({ color: 0x8A7B65, side: THREE.DoubleSide });
+        const matShutter = new THREE.MeshLambertMaterial({ color: 0x2A2A30, metalness: 0.6 });
+        const matGate = new THREE.MeshLambertMaterial({ color: 0x4A3020 });
+        const matToilet = new THREE.MeshLambertMaterial({ color: 0x4A8A7A });
+        const matWaterTank = new THREE.MeshLambertMaterial({ color: 0x2A6090 });
+        const matShade = new THREE.MeshLambertMaterial({ color: 0x5A7A9A, transparent: true, opacity: 0.6 });
+
+        // Helper: create box at center position
+        function createBox(w, h, d, mat, x, y, z) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        // Coordinate system:
+        // x: 0 to 20 (when viewed from front: x=20 is LEFT, x=0 is RIGHT)
+        // y: bottom(0) to top
+        // z: front(0) to back(25)
+        // In Three.js looking from -z toward +z: x is mirrored.
+        // So: gate/stair at HIGH x values = appears on LEFT in view
+        //     shutter in middle, 4ft wall at LOW x = appears on RIGHT
+
+        // LAYOUT (as seen from front):
+        // LEFT: Gate(3ft) + Stair zone(4.5ft wall) = x=12.5 to x=20 (7.5ft)
+        // CENTER: Shutter(10ft) = x=2.5 to x=12.5
+        // RIGHT: Wall(2.5ft) = x=0 to x=2.5
+
+        // PLINTH: 20ft × 25ft × 3ft (the building platform)
+        const plinth = createBox(20, 3, 25, matPlinth, 10, 1.5, 12.5);
+        scene.add(plinth);
+
+        // WALLS (on top of plinth: base y=3, top y=15)
+        const wallThickness = 0.75;
+        const wallHeight = 12;
+        const wallBaseY = 3 + wallHeight / 2; // center at y=9
+
+        // Back wall: full, at z=25
+        const backWall = createBox(20, wallHeight, wallThickness, matWall, 10, wallBaseY, 25 - wallThickness / 2);
+        groups.walls.add(backWall);
+
+        // Left wall: full, at x=0
+        const leftWall = createBox(wallThickness, wallHeight, 25, matWall, wallThickness / 2, wallBaseY, 12.5);
+        groups.walls.add(leftWall);
+
+        // Right wall: full, at x=20
+        const rightWall = createBox(wallThickness, wallHeight, 25, matWall, 20 - wallThickness / 2, wallBaseY, 12.5);
+        groups.walls.add(rightWall);
+
+        // Front wall at z=0, with openings:
+        // Gate: 3ft wide × 7ft high at LEFT (x=17 to x=20 in code = LEFT when viewed)
+        // Shutter: 10ft wide × 10ft high (x=2.5 to x=12.5 in code = CENTER when viewed)
+        // Wall segments:
+        // 1. Above gate (x=17 to x=20, y=10 to y=15) -> 3ft wide × 5ft high
+        const frontWallAboveGate = createBox(3, 5, wallThickness, matWall, 18.5, 3 + 7 + 2.5, wallThickness / 2);
+        groups.walls.add(frontWallAboveGate);
+
+        // 2. Between gate and shutter (x=12.5 to x=17, full height 12ft)
+        const frontWallMid1 = createBox(4.5, wallHeight, wallThickness, matWall, 14.75, wallBaseY, wallThickness / 2);
+        groups.walls.add(frontWallMid1);
+
+        // 3. Above shutter (x=2.5 to x=12.5, y=13 to y=15) -> 10ft wide × 2ft high
+        const frontWallAboveShutter = createBox(10, 2, wallThickness, matWall, 7.5, 3 + 10 + 1, wallThickness / 2);
+        groups.walls.add(frontWallAboveShutter);
+
+        // 4. Right of shutter (x=0 to x=2.5, full height 12ft)
+        const frontWallRight = createBox(2.5, wallHeight, wallThickness, matWall, 1.25, wallBaseY, wallThickness / 2);
+        groups.walls.add(frontWallRight);
+
+        // COLUMNS (0.75ft x × 1ft z × 12ft tall)
+        const colW = 0.75, colD = 1.0, colH = 12;
+        function addColumn(x, z) {
+            const col = createBox(colW, colH, colD, matColumn, x, 3 + colH / 2, z);
+            groups.columns.add(col);
+        }
+
+        // C1: back-left corner
+        addColumn(colW / 2, 25 - colD / 2);
+        // C2: back-right corner
+        addColumn(20 - colW / 2, 25 - colD / 2);
+        // C3: left wall at 16ft from front (z=16)
+        addColumn(colW / 2, 16);
+        // C4: right wall at 16ft from front (z=16)
+        addColumn(20 - colW / 2, 16);
+        // C5: front-left corner (LEFT when viewed = high x in code)
+        addColumn(20 - colW / 2, colD / 2);
+        // C6: front wall at boundary of stair/shutter zone (x=12.5 in code)
+        addColumn(12.5, colD / 2);
+        // C7: front wall at right edge of shutter (x=2.5 in code)
+        addColumn(2.5, colD / 2);
+        // C8: front-right corner (RIGHT when viewed = low x in code)
+        addColumn(colW / 2, colD / 2);
+
+        // BEAMS (at top of columns, y = 3 + 12 = 15, beam hangs below slab)
+        // Back beam: 20ft span, 0.75ft wide × 1.67ft deep
+        const backBeam = createBox(20, 1.67, 0.75, matBeam, 10, 15 - 1.67 / 2, 25 - 0.75 / 2);
+        groups.beams.add(backBeam);
+
+        // Middle beam: 20ft span at 9ft from front (z=9), 0.75ft wide × 1.67ft deep
+        const midBeam = createBox(20, 1.67, 0.75, matBeam, 10, 15 - 1.67 / 2, 9);
+        groups.beams.add(midBeam);
+
+        // Left side beam: along left wall, 25ft span, 0.75ft wide × 1.25ft deep
+        const leftBeam = createBox(0.75, 1.25, 25, matBeam, 0.75 / 2, 15 - 1.25 / 2, 12.5);
+        groups.beams.add(leftBeam);
+
+        // Right side beam: along right wall
+        const rightBeam = createBox(0.75, 1.25, 25, matBeam, 20 - 0.75 / 2, 15 - 1.25 / 2, 12.5);
+        groups.beams.add(rightBeam);
+
+        // Front beam: along front wall, 20ft, 0.75ft × 1.25ft
+        const frontBeam = createBox(20, 1.25, 0.75, matBeam, 10, 15 - 1.25 / 2, 0.75 / 2);
+        groups.beams.add(frontBeam);
+
+        // ROOF SLAB: 20ft × 30ft (25 + 5 cantilever) × 0.5ft at y=15
+        const roofSlab = createBox(20, 0.5, 30, matSlab, 10, 15 + 0.25, 10);
+        // slab center z: from -5 to 25, center = 10
+        groups.slab.add(roofSlab);
+
+        // Shade indication (transparent overlay on cantilever portion)
+        const shadeOverlay = createBox(20, 0.1, 5, matShade, 10, 15.6, -2.5);
+        groups.slab.add(shadeOverlay);
+
+        // STAIRCASE (front-LEFT corner when viewed = x=12.5-20 in code)
+        // Flight width = 3.5ft each, gap = 0.5ft
+        // IMPORTANT: Stairs start at z=3 (NOT z=0) — z=0-3 is the LOBBY
+        const stepHeight = 0.6; // 12ft / 20 steps = 0.6ft per step
+        const stepDepthF1 = 0.75; // 7.5ft / 10 steps (fits in z=3 to z=10.5)
+
+        // Flight 1 (x=12.5 to x=16, going back from z=3 to z=10)
+        for (let i = 0; i < 10; i++) {
+            const step = createBox(3.5, stepHeight, stepDepthF1, matStaircase,
+                14.25, 3 + stepHeight * (i + 0.5), 3 + stepDepthF1 * i + stepDepthF1 / 2);
+            groups.staircase.add(step);
+        }
+        // Landing at z=10.5, y=9 (halfway up)
+        const landing = createBox(7.5, 0.5, 1.5, matStaircase, 16.25, 9, 10.75);
+        groups.staircase.add(landing);
+
+        // Flight 2 (x=16.5 to x=20, coming front from z=10 to z=3)
+        for (let i = 0; i < 10; i++) {
+            const step = createBox(3.5, stepHeight, stepDepthF1, matStaircase,
+                18.25, 9 + stepHeight * (i + 0.5), 10.5 - stepDepthF1 * i - stepDepthF1 / 2);
+            groups.staircase.add(step);
+        }
+
+        // RAMP: 12ft wide × 8ft long, from plinth level (y=3) down to ground (y=0)
+        // Shutter at x=2.5 to x=12.5 in code, ramp centered (x=1.5 to x=13.5)
+        // Top connects FLUSH with plinth face at z=0, y=3
+        // Bottom at z=-8, y=0 (ground level)
+        const rampShape = new THREE.BufferGeometry();
+        const rampVerts = new Float32Array([
+            // Top face (sloped): plinth edge to ground
+            1.5, 3.0, 0,       // top-left (at plinth edge)
+            13.5, 3.0, 0,      // top-right (at plinth edge)
+            13.5, 0.0, -8,     // bottom-right (at ground, 8ft away)
+            1.5, 0.0, -8,      // bottom-left (at ground, 8ft away)
+            // Bottom face (0.3ft below top)
+            1.5, 2.7, 0,
+            13.5, 2.7, 0,
+            13.5, 0.0, -8,
+            1.5, 0.0, -8,
+        ]);
+        const rampIndices = new Uint16Array([
+            0,2,1, 0,3,2,    // top face
+            4,5,6, 4,6,7,    // bottom face
+            0,1,5, 0,5,4,    // front edge (at plinth)
+            3,7,6, 3,6,2,    // back edge (at ground)
+            0,4,7, 0,7,3,    // left side
+            1,2,6, 1,6,5,    // right side
+        ]);
+        rampShape.setAttribute('position', new THREE.BufferAttribute(rampVerts, 3));
+        rampShape.setIndex(new THREE.BufferAttribute(rampIndices, 1));
+        rampShape.computeVertexNormals();
+        const rampMesh = new THREE.Mesh(rampShape, matRamp);
+        rampMesh.castShadow = true;
+        rampMesh.receiveShadow = true;
+        scene.add(rampMesh);
+
+        // GATE STEPS (5 steps descending from plinth to ground, x=17-20, going in -z)
+        // Step 1 is at the top (closest to gate, near plinth level)
+        // Step 5 is at the bottom (ground level)
+        const gateStepDepth = 0.85;
+        for (let i = 0; i < 5; i++) {
+            const stepY = 3 - (i + 1) * 0.6; // descends from 3ft to ~0ft
+            const stepZ = -(i * gateStepDepth); // extends outward from z=0
+            const gs = createBox(3, 0.6, gateStepDepth, matStaircase,
+                18.5, stepY + 0.3, stepZ - gateStepDepth / 2);
+            scene.add(gs);
+        }
+
+        // TOILET (under Flight 2, x=16.5-20, z=3 to z=8)
+        // 3.5ft wide × 5ft deep × 8ft high
+        const toiletWall1 = createBox(3.5, 8, 0.3, matToilet, 18.25, 3 + 4, 8); // back wall at z=8
+        const toiletWall2 = createBox(0.3, 8, 5, matToilet, 16.5, 3 + 4, 5.5); // partition at x=16.5
+        const toiletWall3 = createBox(3.5, 8, 0.3, matToilet, 18.25, 3 + 4, 3); // front wall at z=3
+        scene.add(toiletWall1);
+        scene.add(toiletWall2);
+        scene.add(toiletWall3);
+
+        // LOBBY (z=0 to z=3, full width of stair zone x=12.5-20 = 7.5ft wide)
+        const matLobby = new THREE.MeshLambertMaterial({ color: 0x5A7A5A });
+        const lobbyFloor = createBox(7.5, 0.15, 3, matLobby, 16.25, 3.08, 1.5);
+        scene.add(lobbyFloor);
+        // Lobby partition wall (between lobby and storage, at x=6 from z=0 to z=5)
+        // Already covered by stair partition wall above
+
+        // WATER TANK (on roof, above toilet/stair zone = x=16-19 in code)
+        // Near front-left (above toilet)
+        const tankStand = createBox(0.3, 2, 0.3, matColumn, 17, 15.5 + 1, 2);
+        const tankStand2 = createBox(0.3, 2, 0.3, matColumn, 19, 15.5 + 1, 2);
+        const tankStand3 = createBox(0.3, 2, 0.3, matColumn, 17, 15.5 + 1, 4);
+        const tankStand4 = createBox(0.3, 2, 0.3, matColumn, 19, 15.5 + 1, 4);
+        scene.add(tankStand); scene.add(tankStand2); scene.add(tankStand3); scene.add(tankStand4);
+
+        const waterTank = createBox(3, 2.5, 2.5, matWaterTank, 18, 15.5 + 2 + 1.25, 3);
+        scene.add(waterTank);
+
+        // SHUTTER (10ft wide × 10ft high, at x=2.5-12.5 = CENTER when viewed from front)
+        const shutter = createBox(10, 10, 0.1, matShutter, 7.5, 3 + 5, 0);
+        scene.add(shutter);
+
+        // GATE (3ft wide × 7ft high, at x=17-20 = LEFT when viewed from front)
+        const gate = createBox(3, 7, 0.1, matGate, 18.5, 3 + 3.5, 0);
+        scene.add(gate);
+
+        // ============ FIRST FLOOR (future, shown semi-transparent) ============
+        const matFirstFloor = new THREE.MeshLambertMaterial({ color: 0xA0C4E8, transparent: true, opacity: 0.35 });
+        const matFirstFloorWall = new THREE.MeshLambertMaterial({ color: 0xD4E8F0, transparent: true, opacity: 0.3 });
+        const matBalconyRoof = new THREE.MeshLambertMaterial({ color: 0x7A8A90, transparent: true, opacity: 0.4 });
+
+        // First floor level starts at y=15.5 (top of roof slab)
+        const ff_base = 15.5;
+        const ff_height = 10; // 10ft room height
+        const ff_top = ff_base + ff_height; // y=25.5
+
+        // Room walls (20ft × 16ft, at the back, from z=9 to z=25)
+        // Back wall (1F)
+        const ff_backWall = createBox(20, ff_height, 0.4, matFirstFloorWall, 10, ff_base + ff_height/2, 25 - 0.2);
+        scene.add(ff_backWall);
+        // Left wall (1F)
+        const ff_leftWall = createBox(0.4, ff_height, 16, matFirstFloorWall, 0.2, ff_base + ff_height/2, 17);
+        scene.add(ff_leftWall);
+        // Right wall (1F)
+        const ff_rightWall = createBox(0.4, ff_height, 16, matFirstFloorWall, 19.8, ff_base + ff_height/2, 17);
+        scene.add(ff_rightWall);
+        // Room partition wall (between room and balcony at z=9)
+        const ff_partition = createBox(20, ff_height, 0.4, matFirstFloorWall, 10, ff_base + ff_height/2, 9.2);
+        scene.add(ff_partition);
+
+        // Balcony railing (at front, z=0 to z=9, 3.5ft high)
+        const railing_h = 3.5;
+        // Front railing (at z=-5, edge of cantilever)
+        const ff_frontRailing = createBox(20, railing_h, 0.2, matFirstFloorWall, 10, ff_base + railing_h/2, -4.9);
+        scene.add(ff_frontRailing);
+        // Left railing for balcony
+        const ff_leftRailing = createBox(0.2, railing_h, 14, matFirstFloorWall, 0.1, ff_base + railing_h/2, 2);
+        scene.add(ff_leftRailing);
+        // Right railing for balcony
+        const ff_rightRailing = createBox(0.2, railing_h, 14, matFirstFloorWall, 19.9, ff_base + railing_h/2, 2);
+        scene.add(ff_rightRailing);
+
+        // First floor roof slab (over room area only, 20×25)
+        const ff_roofSlab = createBox(20, 0.5, 25, matBalconyRoof, 10, ff_top + 0.25, 12.5);
+        scene.add(ff_roofSlab);
+
+        // Parapet on top
+        const ff_parapet = createBox(20, 3, 0.3, matFirstFloorWall, 10, ff_top + 1.5, 25 - 0.15);
+        scene.add(ff_parapet);
+
+        // Add groups to scene
+        Object.values(groups).forEach(g => scene.add(g));
+
+        // LABELS (CSS2D) - define function BEFORE usage
+        function createLabel(text, x, y, z) {
+            const div = document.createElement('div');
+            div.className = 'label-2d';
+            div.textContent = text;
+            const label = new CSS2DObject(div);
+            label.position.set(x, y, z);
+            return label;
+        }
+
+        // Labels for first floor
+        scene.add(createLabel('कमरा (20×16ft)', 10, ff_base + 5, 17));
+        scene.add(createLabel('बालकनी (20×9ft)', 10, ff_base + 2, 4));
+        scene.add(createLabel('छज्जा (5ft)', 10, ff_base + 2, -3));
+
+        scene.add(createLabel('शटर 10ft', 7.5, 8, -0.5));
+        scene.add(createLabel('गेट', 18.5, 6.5, -0.5));
+        scene.add(createLabel('सीढ़ी', 16, 9, 7));
+        scene.add(createLabel('लॉबी', 16, 4, 1.5));
+        scene.add(createLabel('शौचालय', 18.25, 5, 5.5));
+        scene.add(createLabel('छत (6" slab)', 10, 16, 10));
+        scene.add(createLabel('चबूतरा 3ft', 10, 1.5, -1));
+        scene.add(createLabel('गहरा बीम 9"×20"', 10, 14, 9));
+        scene.add(createLabel('20 ft', 10, 0.5, -7));
+        scene.add(createLabel('25 ft', -2, 0.5, 12.5));
+
+        // Dimension lines (simple line geometry)
+        const dimMat = new THREE.LineBasicMaterial({ color: 0xffaa00 });
+
+        // 20ft width line at front
+        const widthPts = [new THREE.Vector3(0, 0.3, -6.5), new THREE.Vector3(20, 0.3, -6.5)];
+        const widthGeo = new THREE.BufferGeometry().setFromPoints(widthPts);
+        scene.add(new THREE.Line(widthGeo, dimMat));
+
+        // 25ft depth line at left
+        const depthPts = [new THREE.Vector3(-1.5, 0.3, 0), new THREE.Vector3(-1.5, 0.3, 25)];
+        const depthGeo = new THREE.BufferGeometry().setFromPoints(depthPts);
+        scene.add(new THREE.Line(depthGeo, dimMat));
+
+        // ============ CIRCULATION PATHS (walkthrough routes) ============
+        const pathGroup = new THREE.Group();
+        pathGroup.visible = true;
+
+        // Path height (slightly above floor so it's visible)
+        const pH = 3.3; // just above platform level
+
+        // Helper: create a tube path with arrows
+        function createPath(points, color, label) {
+            const mat = new THREE.LineBasicMaterial({ color: color });
+
+            const geo = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geo, mat);
+            line.computeLineDistances();
+            pathGroup.add(line);
+
+            // Add spheres at key waypoints
+            const sphereGeo = new THREE.SphereGeometry(0.25, 8, 8);
+            const sphereMat = new THREE.MeshBasicMaterial({ color: color });
+            points.forEach((p, i) => {
+                if (i === 0 || i === points.length - 1) {
+                    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+                    sphere.position.copy(p);
+                    pathGroup.add(sphere);
+                }
+            });
+
+            // Arrow cone at end point
+            const lastPt = points[points.length - 1];
+            const prevPt = points[points.length - 2];
+            const dir = new THREE.Vector3().subVectors(lastPt, prevPt).normalize();
+            const coneGeo = new THREE.ConeGeometry(0.3, 0.8, 8);
+            const coneMat = new THREE.MeshBasicMaterial({ color: color });
+            const cone = new THREE.Mesh(coneGeo, coneMat);
+            cone.position.copy(lastPt);
+            cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            pathGroup.add(cone);
+        }
+
+        // Route 1: Gate → Lobby → Storage (GREEN path)
+        const route1 = [
+            new THREE.Vector3(18.5, 0.3, -4),    // ground, bottom of steps
+            new THREE.Vector3(18.5, 2, -1),      // climbing steps
+            new THREE.Vector3(18.5, pH, 0.5),    // at gate (entering)
+            new THREE.Vector3(16, pH, 1.5),      // in lobby
+            new THREE.Vector3(12.5, pH, 1.5),    // at partition door (x=12.5)
+            new THREE.Vector3(10, pH, 3),        // through door into storage
+            new THREE.Vector3(8, pH, 8),         // in storage
+        ];
+        createPath(route1, 0x4ade80, 'गेट → गोदाम');
+
+        // Route 2: Gate → Lobby → Toilet (CYAN path)
+        const route2 = [
+            new THREE.Vector3(18.5, 0.3, -4),    // ground
+            new THREE.Vector3(18.5, 2, -1),      // climbing steps
+            new THREE.Vector3(18.5, pH, 0.5),    // at gate
+            new THREE.Vector3(16, pH, 1.5),      // in lobby
+            new THREE.Vector3(18, pH, 2.5),      // turn toward toilet
+            new THREE.Vector3(18.25, pH, 3.5),   // entering toilet (at z=3)
+        ];
+        createPath(route2, 0x22d3ee, 'गेट → शौचालय');
+
+        // Route 3: Gate → Lobby → Stairs → Roof (ORANGE path)
+        const route3 = [
+            new THREE.Vector3(18.5, 0.3, -4),    // ground
+            new THREE.Vector3(18.5, 2, -1),      // climbing steps
+            new THREE.Vector3(18.5, pH, 0.5),    // at gate
+            new THREE.Vector3(15, pH, 1.5),      // in lobby
+            new THREE.Vector3(14.25, pH, 3.5),   // at stair base (Flight 1 at z=3)
+            new THREE.Vector3(14.25, 6, 6),      // going up Flight 1
+            new THREE.Vector3(14.25, 9, 10),     // at landing
+            new THREE.Vector3(18.25, 9, 10),     // turn on landing
+            new THREE.Vector3(18.25, 12, 7),     // going up Flight 2
+            new THREE.Vector3(18.25, 15, 3.5),   // arriving at roof
+            new THREE.Vector3(18.25, 15.5, 2),   // on roof
+        ];
+        createPath(route3, 0xf59e0b, 'गेट → छत/पहली मंजिल');
+
+        // Route 4: Storage → Lobby → Toilet (MAGENTA path)
+        const route4 = [
+            new THREE.Vector3(8, pH, 10),        // in storage
+            new THREE.Vector3(10, pH, 4),        // walking toward front-left
+            new THREE.Vector3(12.5, pH, 1.5),    // at partition door (x=12.5)
+            new THREE.Vector3(15, pH, 1.5),      // through door into lobby
+            new THREE.Vector3(18, pH, 2.5),      // turn toward toilet
+            new THREE.Vector3(18.25, pH, 3.5),   // entering toilet
+        ];
+        createPath(route4, 0xd946ef, 'गोदाम → शौचालय');
+
+        scene.add(pathGroup);
+
+        // Path labels (floating in 3D)
+        const pathLabel1 = createLabel('① गेट → गोदाम', 12, 5, 5);
+        const pathLabel2 = createLabel('② गेट → शौचालय', 18, 4.5, 4);
+        const pathLabel3 = createLabel('③ गेट → छत', 17, 12, 6);
+        const pathLabel4 = createLabel('④ गोदाम → शौचालय', 12, 4.5, 6);
+        pathGroup.add(pathLabel1);
+        pathGroup.add(pathLabel2);
+        pathGroup.add(pathLabel3);
+        pathGroup.add(pathLabel4);
+
+        // Add path group to toggle system
+        groups.paths = pathGroup;
+
+        // Toggle functions
+        window.toggleGroup = function(name) {
+            const group = groups[name];
+            group.visible = !group.visible;
+            const btn = document.getElementById('btn-' + name);
+            btn.classList.toggle('active');
+        };
+
+        window.toggleLegend = function() {
+            const panel = document.getElementById('legend-panel');
+            panel.classList.toggle('collapsed');
+            document.getElementById('legend-arrow').textContent =
+                panel.classList.contains('collapsed') ? '▶' : '▼';
+        };
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        } catch(e) {
+            document.getElementById('canvas-container').innerHTML = '<div style="color:red;padding:50px;font-size:16px;"><b>ERROR:</b> ' + e.message + '<br><br><pre>' + e.stack + '</pre></div>';
+        }
+    </script>
+</body>
+</html>

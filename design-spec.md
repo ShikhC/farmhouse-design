@@ -48,29 +48,29 @@
          │                                         │  │
          │           O P E N   S T O R A G E       │  │
          │                                         │  │
-         │           14 ft × 25 ft = 350 sq ft     │  │
+         │           12.5 ft × 25 ft = 312 sq ft    │  │
          │           (clear usable area)           │  │  25 ft
          │                                         │  │
       [V]│                                         │[V]│ ← vents at 10ft
          │                                         │  │
          │  ┌───────┐                              │  │
          │  │       │ Flight 2 (coming forward)    │  │
-         │  │  2.75 │ ↓↓↓↓↓↓↓↓↓ (9 treads)       │  │
+         │  │  3.5  │ ↓↓↓↓↓↓↓↓↓ (9 treads)       │  │
          │  │       │                              │  │
          │  ├───────┤                              │  │
-         │  │LANDING│ (3 ft × 6 ft)               │  │
+         │  │LANDING│ (3 ft × 7.5 ft)             │  │
          │  ├───────┤                              │  │
          │  │       │ Flight 1 (going backward)    │  │
-         │  │  2.75 │ ↑↑↑↑↑↑↑↑↑ (9 treads)       │  │
+         │  │  3.5  │ ↑↑↑↑↑↑↑↑↑ (9 treads)       │  │
          │  │       │                              │  │
          │  ├──┬────┤                              │  │
          │  │WC│    │                              │  │
          │  │  │LOBY│                              │  │
          ├──┴──┴─┬──┼─────────────────────────┬────┤ ─┘
          │ GATE  │DR│    10 ft SHUTTER        │WALL│
-         │ 3ft   │  │    (rolling, MS)        │ 4ft│
+         │ 3ft   │  │    (rolling, MS)        │2.5│
          └───────┴──┴─────────────────────────┴────┘
-         ←─ 6ft ──→ ←──────── 10 ft ─────────→←4ft→
+         ←─ 7.5ft ─→ ←──────── 10 ft ─────────→←2.5→
 
          ┌─────────────────────────────────────────┐
          │         5 ft FRONT SHADE                 │ ← Pure cantilever slab
@@ -91,16 +91,16 @@
 
 | Element | Width | Depth | Position |
 |---------|-------|-------|----------|
-| Staircase total | 6 ft | 10 ft | Front-left corner |
-| Flight 1 (lower) | 2.75 ft | 7.5 ft | Left side, going backward |
-| Flight 2 (upper) | 2.75 ft | 7.5 ft | Right side, coming forward |
-| Half-landing | 6 ft | 3 ft | Back end of stair zone |
+| Staircase total | 7.5 ft | 10 ft | Front-left corner |
+| Flight 1 (lower) | 3.5 ft | 7.5 ft | Left side, going backward |
+| Flight 2 (upper) | 3.5 ft | 7.5 ft | Right side, coming forward |
+| Half-landing | 7.5 ft | 3 ft | Back end of stair zone |
 | Gap between flights | 0.5 ft | — | Between F1 and F2 |
 | Toilet (WC) | 3 ft | 5 ft | Under Flight 2, near front |
 | Lobby | 3 ft | 3 ft | Between gate, WC, and stair |
-| Rolling shutter | 10 ft | — | Front wall, 6ft to 16ft mark |
+| Rolling shutter | 10 ft | — | Front wall, 7.5ft to 17.5ft mark |
 | Gate | 3 ft | — | Front wall, 0ft to 3ft mark |
-| Storage area | ~14 ft | 25 ft | Right portion of building |
+| Storage area | ~12.5 ft | 25 ft | Right portion of building |
 
 ---
 
@@ -114,11 +114,11 @@
 | Total rise | 12 ft (144 inches) |
 | Riser height | 7.2" (20 risers total) |
 | Tread depth | 10" |
-| Flight width (clear) | 2 ft 9 in (2.75 ft) |
+| Flight width (clear) | 3 ft 6 in (3.5 ft) |
 | Risers per flight | 10 |
 | Treads per flight | 9 |
 | Run per flight | 7 ft 6 in |
-| Landing size | 6 ft × 3 ft |
+| Landing size | 7.5 ft × 3 ft |
 | Waist slab thickness | 5" |
 | Handrail height | 3 ft (both sides) |
 | Handrail material | MS pipe 1.5" dia |
@@ -190,7 +190,7 @@
     │    │   │                      │    │    AREA   │ 12 ft
     │    │   │   10ft × 10ft        │    │           │ height
     │GATE│   │   ROLLING SHUTTER    │    │           │
-    │3ft │   │                      │ 4ft│   [COL]  │
+    │3ft │   │                      │2.5│   [COL]  │
     │    │   │                      │    │           │
     ├────┴───┴──────────────────────┴────┼───────────┤ +3 ft
     │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ PLINTH ▓▓▓▓▓▓▓▓▓▓│▓▓▓▓▓▓▓▓▓▓▓│ (3 ft)
@@ -276,7 +276,7 @@
     │                                              │    │ 9 ft
     │                                              │    │ (front bay)
     C5──────────────C6──────────────C7────────────C8  ─┘
-    │     6 ft      │    10 ft      │    4 ft     │
+    │     7.5 ft    │    10 ft      │    2.5 ft   │
     FRONT WALL     (shutter edges)
     
     Front shade: PURE CANTILEVER (no columns)
@@ -292,8 +292,8 @@
     - C3: Left wall at 9ft from front (in left wall)
     - C4: Right wall at 9ft from front (in right wall)
     - C5: Front-left corner (in front + left wall)
-    - C6: Front wall at 6ft from left (stair/shutter boundary)
-    - C7: Front wall at 16ft from left (shutter right edge)
+    - C6: Front wall at 7.5ft from left (stair/shutter boundary)
+    - C7: Front wall at 17.5ft from left (shutter right edge)
     - C8: Front-right corner (in front + right wall)
     
     KEY DESIGN DECISIONS:
@@ -319,7 +319,7 @@
 | Side beams (C3-C5) | 9"×15" | 9 ft | Left wall, middle to front |
 | Side beams (C2-C4) | 9"×15" | 16 ft | Right wall, back to middle |
 | Side beams (C4-C8) | 9"×15" | 9 ft | Right wall, middle to front |
-| Front beam (C5-C6-C7-C8) | 9"×15" | 6/10/4 ft | Segmented, supports shutter |
+| Front beam (C5-C6-C7-C8) | 9"×15" | 7.5/10/2.5 ft | Segmented, supports shutter |
 | Shutter beam | 9"×15" | 10 ft | Above shutter (C6-C7, 10ft span) |
 | Cantilever slab | — | 5 ft | Pure cantilever, 6" root to 4" tip, top bars 10mm @ 5" anchored 10ft |
 | Lintels (vents) | 9"×6" | 1.5 ft | Above all vent openings |
@@ -502,13 +502,13 @@ Clear height under deep beams: 12ft - 20" = 10ft 4in. Rest of ceiling at 12ft - 
     │   Sheet     │   ┌──────┐                             │  │
     │   roof      │   │STAIR │  RCC slab overhead          │  │
     │   above     │   │WELL  │  (future 2nd floor/solar)   │  │
-    │             │   │6ft×3ft│                             │  │
+    │             │   │7.5ft×3ft│                           │  │
     │   Railing   │   └──────┘                             │  │
     │   at edge   │                                        │  │
     └─────────────┴────────────────────────────────────────┘ ─┘
                                  FRONT
     
-    STAIR WELL: 6 ft × 3 ft opening in slab (with railing around)
+    STAIR WELL: 7.5 ft × 3 ft opening in slab (with railing around)
     ROOM entry: From balcony into room (door on the partition line)
     RAILING: 3.5 ft high MS pipe railing on balcony + extended area
 ```
