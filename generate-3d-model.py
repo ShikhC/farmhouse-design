@@ -23,29 +23,33 @@ WALL_INT = 4.5 * IN_TO_M   # 0.1143m
 SHADE_PROJ = 5 * FT_TO_M   # 1.524m
 RAMP_L = 8 * FT_TO_M       # 2.4384m
 RAMP_W = 12 * FT_TO_M      # 3.6576m
-STAIR_W = 6 * FT_TO_M      # 1.8288m
+STAIR_W = 7.5 * FT_TO_M    # 2.286m (total zone: 3.5 + 0.5 + 3.5)
 STAIR_D = 10 * FT_TO_M     # 3.048m
+STAIR_FLIGHT_W = 3.5 * FT_TO_M  # 1.0668m per flight
 SHUTTER_W = 10 * FT_TO_M   # 3.048m
 SHUTTER_H = 10 * FT_TO_M   # 3.048m
 GATE_W = 3 * FT_TO_M       # 0.9144m
 GATE_H = 7 * FT_TO_M       # 2.1336m
 
-# Colors (RGBA, 0-1)
+# Colors (RGBA, 0-1) — Vibrant, aesthetic palette
 COLORS = {
-    'plinth': (0.6, 0.4, 0.2, 1.0),       # brown
-    'wall_ext': (0.9, 0.85, 0.75, 1.0),    # cream
-    'wall_int': (0.95, 0.9, 0.85, 1.0),    # light cream
-    'slab_floor': (0.7, 0.7, 0.7, 1.0),    # grey
-    'slab_roof': (0.5, 0.5, 0.55, 1.0),    # dark grey
-    'column': (0.4, 0.4, 0.45, 1.0),       # concrete grey
-    'beam': (0.45, 0.45, 0.5, 1.0),        # slightly different grey
-    'stair': (0.6, 0.55, 0.5, 1.0),        # warm grey
-    'ramp': (0.65, 0.6, 0.5, 1.0),         # warm concrete
-    'shade': (0.5, 0.6, 0.7, 0.8),         # blue-grey translucent
-    'shutter': (0.3, 0.3, 0.35, 1.0),      # dark metal
-    'gate': (0.35, 0.25, 0.15, 1.0),       # dark brown
-    'toilet': (0.8, 0.9, 0.85, 1.0),       # light teal
-    'tank': (0.2, 0.5, 0.7, 1.0),          # blue
+    'plinth': (0.72, 0.53, 0.26, 1.0),        # warm terracotta brown
+    'wall_ext': (0.96, 0.93, 0.85, 1.0),       # warm white/cream
+    'wall_int': (0.92, 0.87, 0.78, 1.0),       # soft beige
+    'slab_floor': (0.78, 0.75, 0.70, 1.0),     # polished concrete
+    'slab_roof': (0.55, 0.58, 0.62, 1.0),      # slate grey
+    'column': (0.35, 0.38, 0.42, 1.0),         # dark concrete
+    'beam': (0.42, 0.44, 0.48, 1.0),           # steel grey
+    'stair': (0.85, 0.72, 0.55, 1.0),          # sandstone warm
+    'ramp': (0.78, 0.68, 0.52, 1.0),           # sandy concrete
+    'shade': (0.4, 0.65, 0.85, 0.7),           # sky blue translucent
+    'shutter': (0.18, 0.22, 0.28, 1.0),        # dark charcoal metal
+    'gate': (0.45, 0.25, 0.12, 1.0),           # rich mahogany wood
+    'toilet': (0.55, 0.82, 0.78, 1.0),         # fresh mint/teal
+    'tank': (0.2, 0.55, 0.82, 1.0),            # ocean blue
+    'first_floor': (0.65, 0.78, 0.92, 0.45),   # light sky (translucent)
+    'lobby': (0.6, 0.75, 0.55, 1.0),           # sage green
+    'ground': (0.28, 0.45, 0.22, 1.0),         # grass green
 }
 
 def box_mesh(x, y, z, w, d, h):
@@ -231,22 +235,30 @@ def build_model():
         cb.add_material(name, color)
 
     # Ground level = 0, Plinth top = PLINTH_H, Roof = PLINTH_H + ROOM_H
+    # Front wall layout (left to right as viewed from front):
+    #   LEFT: Gate(3ft) + Wall(4.5ft) = 7.5ft stair zone
+    #   CENTER: Shutter(10ft)
+    #   RIGHT: Wall(2.5ft)
+
+    stair_zone_w = STAIR_W  # 7.5ft
+    shutter_start_x = stair_zone_w  # shutter starts after stair zone
+    right_wall_start = stair_zone_w + SHUTTER_W  # 17.5ft
+    right_wall_w = WIDTH - right_wall_start  # 2.5ft
 
     # ============ PLINTH ============
-    # Plinth base (solid block representing the raised platform)
     v, t = box_mesh(0, 0, 0, WIDTH, DEPTH, PLINTH_H)
     cb.add_geometry('plinth', v, t, 'plinth')
 
     # ============ FLOOR SLAB ============
     floor_z = PLINTH_H
-    v, t = box_mesh(0, 0, floor_z, WIDTH, DEPTH, 0.1)  # 4" slab
+    v, t = box_mesh(0, 0, floor_z, WIDTH, DEPTH, 0.1)
     cb.add_geometry('floor_slab', v, t, 'slab_floor')
 
     # ============ EXTERNAL WALLS ============
     wall_z = floor_z + 0.1
-    wall_h = ROOM_H - 0.1  # wall height below slab
+    wall_h = ROOM_H - 0.1
 
-    # Back wall (full, no openings)
+    # Back wall (full)
     v, t = box_mesh(0, DEPTH - WALL_EXT, wall_z, WIDTH, WALL_EXT, wall_h)
     cb.add_geometry('wall_back', v, t, 'wall_ext')
 
@@ -258,55 +270,65 @@ def build_model():
     v, t = box_mesh(WIDTH - WALL_EXT, 0, wall_z, WALL_EXT, DEPTH, wall_h)
     cb.add_geometry('wall_right', v, t, 'wall_ext')
 
-    # Front wall - left of shutter (gate area + stair zone wall)
-    front_stair_w = 6 * FT_TO_M
-    v, t = box_mesh(0, 0, wall_z, front_stair_w, WALL_EXT, wall_h)
-    cb.add_geometry('wall_front_left', v, t, 'wall_ext')
-
-    # Front wall - right of shutter
-    right_wall_start = (6 + 10) * FT_TO_M  # after stair zone + shutter
-    right_wall_w = WIDTH - right_wall_start
-    v, t = box_mesh(right_wall_start, 0, wall_z, right_wall_w, WALL_EXT, wall_h)
-    cb.add_geometry('wall_front_right', v, t, 'wall_ext')
-
-    # Front wall - above shutter (lintel area)
-    shutter_start_x = 6 * FT_TO_M
-    above_shutter_z = wall_z + SHUTTER_H
-    above_shutter_h = wall_h - SHUTTER_H
-    v, t = box_mesh(shutter_start_x, 0, above_shutter_z, SHUTTER_W, WALL_EXT, above_shutter_h)
-    cb.add_geometry('wall_above_shutter', v, t, 'wall_ext')
-
-    # Front wall - above gate
+    # Front wall - stair zone (left: gate + wall above + mid wall)
+    # Gate opening: 0 to GATE_W (3ft), height GATE_H (7ft)
+    # Above gate:
     above_gate_z = wall_z + GATE_H
     above_gate_h = wall_h - GATE_H
     v, t = box_mesh(0, 0, above_gate_z, GATE_W, WALL_EXT, above_gate_h)
     cb.add_geometry('wall_above_gate', v, t, 'wall_ext')
 
-    # ============ SHUTTER (as a thin panel) ============
+    # Wall between gate and shutter (3ft to 7.5ft = 4.5ft wide, full height)
+    mid_wall_start = GATE_W
+    mid_wall_w = stair_zone_w - GATE_W  # 4.5ft
+    v, t = box_mesh(mid_wall_start, 0, wall_z, mid_wall_w, WALL_EXT, wall_h)
+    cb.add_geometry('wall_front_mid', v, t, 'wall_ext')
+
+    # Above shutter (7.5ft to 17.5ft, 2ft height above shutter)
+    above_shutter_z = wall_z + SHUTTER_H
+    above_shutter_h = wall_h - SHUTTER_H
+    v, t = box_mesh(shutter_start_x, 0, above_shutter_z, SHUTTER_W, WALL_EXT, above_shutter_h)
+    cb.add_geometry('wall_above_shutter', v, t, 'wall_ext')
+
+    # Right of shutter wall (17.5ft to 20ft = 2.5ft, full height)
+    v, t = box_mesh(right_wall_start, 0, wall_z, right_wall_w, WALL_EXT, wall_h)
+    cb.add_geometry('wall_front_right', v, t, 'wall_ext')
+
+    # ============ SHUTTER ============
     v, t = box_mesh(shutter_start_x, 0, wall_z, SHUTTER_W, 0.05, SHUTTER_H)
     cb.add_geometry('shutter', v, t, 'shutter')
 
-    # ============ GATE (as a thin panel) ============
+    # ============ GATE ============
     v, t = box_mesh(0, 0, wall_z, GATE_W, 0.05, GATE_H)
     cb.add_geometry('gate', v, t, 'gate')
 
-    # ============ INTERNAL WALL (stair partition) ============
-    v, t = box_mesh(STAIR_W, WALL_EXT, wall_z, WALL_INT, STAIR_D, wall_h)
+    # ============ STAIR PARTITION WALL ============
+    # At x = STAIR_W (7.5ft), running from front to 10ft deep
+    v, t = box_mesh(STAIR_W - WALL_INT, WALL_EXT, wall_z, WALL_INT, STAIR_D, wall_h)
     cb.add_geometry('wall_stair_partition', v, t, 'wall_int')
 
-    # ============ TOILET ENCLOSURE ============
-    toilet_w = 3 * FT_TO_M
+    # ============ TOILET (under Flight 2, LEFT side = x=0 to 3.5ft) ============
+    # When looking from outside: Gate(left) → Lobby → Toilet(leftmost, under Flight 2)
+    # Flight 2 is the upper flight, placed at LEFT (x=0 to STAIR_FLIGHT_W)
+    # Toilet is under it, starts after lobby (y = lobby_depth)
+    lobby_depth = 3 * FT_TO_M
+    toilet_w = STAIR_FLIGHT_W  # 3.5ft
     toilet_d = 5 * FT_TO_M
-    toilet_h = 8 * FT_TO_M * FT_TO_M / FT_TO_M  # 8ft
     toilet_h = 8 * FT_TO_M
-    # Back wall of toilet
-    v, t = box_mesh(0, WALL_EXT + toilet_d, wall_z, toilet_w, WALL_INT, toilet_h)
-    cb.add_geometry('toilet_back_wall', v, t, 'toilet')
-    # Side wall of toilet
-    v, t = box_mesh(toilet_w, WALL_EXT, wall_z, WALL_INT, toilet_d, toilet_h)
-    cb.add_geometry('toilet_side_wall', v, t, 'toilet')
+    toilet_x = 0  # starts at left edge (under Flight 2 which is also at x=0)
+    toilet_y = WALL_EXT + lobby_depth  # starts after lobby (y=3ft from front)
 
-    # ============ COLUMNS (8 total, shown as visible elements) ============
+    # Toilet back wall (at y = lobby + toilet_depth)
+    v, t = box_mesh(toilet_x, toilet_y + toilet_d, wall_z, toilet_w, WALL_INT, toilet_h)
+    cb.add_geometry('toilet_back_wall', v, t, 'toilet')
+    # Toilet right wall (partition between toilet and Flight 1)
+    v, t = box_mesh(toilet_x + toilet_w, toilet_y, wall_z, WALL_INT, toilet_d, toilet_h)
+    cb.add_geometry('toilet_side_wall', v, t, 'toilet')
+    # Toilet front wall at lobby boundary (with door)
+    v, t = box_mesh(toilet_x, toilet_y - WALL_INT, wall_z, toilet_w, WALL_INT, toilet_h)
+    cb.add_geometry('toilet_front_wall', v, t, 'toilet')
+
+    # ============ COLUMNS (8 total, all in walls) ============
     col_w = 9 * IN_TO_M
     col_d = 12 * IN_TO_M
     col_h = wall_h
@@ -314,118 +336,100 @@ def build_model():
     # C1: back-left corner
     v, t = box_mesh(0, DEPTH - col_d, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C1', v, t, 'column')
-
     # C2: back-right corner
     v, t = box_mesh(WIDTH - col_w, DEPTH - col_d, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C2', v, t, 'column')
-
-    # C3: left wall at 9ft from front
-    beam_y = 9 * FT_TO_M
+    # C3: left wall at 16ft from front (9ft from front = 16ft from back)
+    beam_y = 16 * FT_TO_M  # 16ft from front... wait, 9ft from front
+    beam_y = 9 * FT_TO_M  # middle beam at 9ft from front
     v, t = box_mesh(0, beam_y, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C3', v, t, 'column')
-
     # C4: right wall at 9ft from front
     v, t = box_mesh(WIDTH - col_w, beam_y, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C4', v, t, 'column')
-
     # C5: front-left corner
     v, t = box_mesh(0, 0, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C5', v, t, 'column')
-
-    # C6: front wall at 6ft (stair/shutter boundary)
-    c6_x = 6 * FT_TO_M
-    v, t = box_mesh(c6_x, 0, wall_z, col_w, col_d, col_h)
+    # C6: front wall at 7.5ft (stair/shutter boundary)
+    c6_x = STAIR_W
+    v, t = box_mesh(c6_x - col_w, 0, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C6', v, t, 'column')
-
-    # C7: front wall at 16ft (shutter right edge)
-    c7_x = 16 * FT_TO_M
+    # C7: front wall at 17.5ft (shutter right edge)
+    c7_x = right_wall_start
     v, t = box_mesh(c7_x, 0, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C7', v, t, 'column')
-
     # C8: front-right corner
     v, t = box_mesh(WIDTH - col_w, 0, wall_z, col_w, col_d, col_h)
     cb.add_geometry('col_C8', v, t, 'column')
 
     # ============ BEAMS ============
-    beam_depth = 20 * IN_TO_M  # deep beams
+    beam_depth_deep = 20 * IN_TO_M  # deep beams (9"×20")
+    beam_depth_std = 15 * IN_TO_M   # standard beams
     beam_w = 9 * IN_TO_M
     roof_z = floor_z + ROOM_H
-    beam_z = roof_z - beam_depth
+    deep_beam_z = roof_z - beam_depth_deep
+    std_beam_z = roof_z - beam_depth_std
 
-    # Back beam (C1-C2, deep, spans 20ft)
-    v, t = box_mesh(0, DEPTH - beam_w, beam_z, WIDTH, beam_w, beam_depth)
+    # Back beam (deep, C1-C2)
+    v, t = box_mesh(0, DEPTH - beam_w, deep_beam_z, WIDTH, beam_w, beam_depth_deep)
     cb.add_geometry('beam_back', v, t, 'beam')
-
-    # Middle beam (C3-C4, deep, at 9ft from front)
-    v, t = box_mesh(0, beam_y, beam_z, WIDTH, beam_w, beam_depth)
+    # Middle beam (deep, C3-C4, at 9ft from front)
+    v, t = box_mesh(0, beam_y, deep_beam_z, WIDTH, beam_w, beam_depth_deep)
     cb.add_geometry('beam_middle', v, t, 'beam')
-
-    # Front beam (along front wall)
-    std_beam_depth = 15 * IN_TO_M
-    front_beam_z = roof_z - std_beam_depth
-    v, t = box_mesh(0, 0, front_beam_z, WIDTH, beam_w, std_beam_depth)
+    # Front beam (standard)
+    v, t = box_mesh(0, 0, std_beam_z, WIDTH, beam_w, beam_depth_std)
     cb.add_geometry('beam_front', v, t, 'beam')
-
-    # Side beams (left wall)
-    v, t = box_mesh(0, 0, front_beam_z, beam_w, DEPTH, std_beam_depth)
+    # Left side beam
+    v, t = box_mesh(0, 0, std_beam_z, beam_w, DEPTH, beam_depth_std)
     cb.add_geometry('beam_left', v, t, 'beam')
-
-    # Side beams (right wall)
-    v, t = box_mesh(WIDTH - beam_w, 0, front_beam_z, beam_w, DEPTH, std_beam_depth)
+    # Right side beam
+    v, t = box_mesh(WIDTH - beam_w, 0, std_beam_z, beam_w, DEPTH, beam_depth_std)
     cb.add_geometry('beam_right', v, t, 'beam')
 
-    # ============ ROOF SLAB ============
-    v, t = box_mesh(-SHADE_PROJ, 0, roof_z, WIDTH + SHADE_PROJ, DEPTH, SLAB_T)
+    # ============ ROOF SLAB (with 5ft cantilever at FRONT = -y direction) ============
+    # Front wall is at y=0. Shade extends toward -y (in front of building)
+    v, t = box_mesh(0, -SHADE_PROJ, roof_z, WIDTH, DEPTH + SHADE_PROJ, SLAB_T)
     cb.add_geometry('roof_slab', v, t, 'slab_roof')
 
-    # ============ SHADE (cantilevered portion highlighted) ============
-    v, t = box_mesh(-SHADE_PROJ, 0, roof_z + SLAB_T, SHADE_PROJ, DEPTH, 0.02)
-    cb.add_geometry('shade_indicator', v, t, 'shade')
-
-    # ============ STAIRCASE (simplified as stepped blocks) ============
-    # Flight 1: starts at front, goes backward (y+)
-    stair_flight_w = 2.75 * FT_TO_M
+    # ============ STAIRCASE ============
+    # Lobby: 0 to lobby_depth (3ft) from front wall, full stair zone width
+    # Stairs start at lobby_depth going back
+    # Layout (viewed from outside, left to right):
+    #   LEFT (x=0 to 3.5ft): Flight 2 (upper, toilet underneath)
+    #   GAP (x=3.5 to 4ft): wall/gap between flights
+    #   RIGHT (x=4 to 7.5ft): Flight 1 (lower, starts at ground)
+    # ALL stairs must fit within x=0 to STAIR_W (7.5ft zone)
     tread_d = 10 * IN_TO_M
     riser_h = 7.2 * IN_TO_M
-    stair_x = WALL_EXT
-    stair_y = WALL_EXT + (5 * FT_TO_M)  # after lobby/toilet area
+    gap = 0.5 * FT_TO_M
 
-    v, t = stair_mesh(stair_x, stair_y, wall_z, 10, riser_h, tread_d, stair_flight_w, going_y=True)
+    # Flight 1 (lower flight, RIGHT side of stair zone)
+    flight1_x = STAIR_FLIGHT_W + gap  # starts after Flight 2 + gap
+    flight1_y = WALL_EXT + lobby_depth  # starts after lobby
+    v, t = stair_mesh(flight1_x, flight1_y, wall_z, 10, riser_h, tread_d, STAIR_FLIGHT_W, going_y=True)
     cb.add_geometry('stair_flight1', v, t, 'stair')
 
-    # Flight 2: starts at back of stair zone, comes forward
-    flight2_x = stair_x + stair_flight_w + 0.15  # gap
-    flight2_y = stair_y + 9 * tread_d  # start at the far end
-    v, t = stair_mesh(flight2_x, flight2_y, wall_z + 10 * riser_h, 10, riser_h, tread_d, stair_flight_w, going_y=False)
+    # Flight 2 (upper flight, LEFT side of stair zone, toilet underneath)
+    flight2_x = 0  # starts at left edge
+    flight2_y_start = flight1_y + 9 * tread_d  # starts at far end (landing)
+    v, t = stair_mesh(flight2_x, flight2_y_start, wall_z + 10 * riser_h, 10, riser_h, tread_d, STAIR_FLIGHT_W, going_y=False)
     cb.add_geometry('stair_flight2', v, t, 'stair')
 
-    # Landing
+    # Landing (at the back of stair zone, full width)
     landing_z = wall_z + 10 * riser_h
-    landing_y = stair_y + 9 * tread_d
-    v, t = box_mesh(stair_x, landing_y, landing_z - riser_h, STAIR_W - 2*WALL_EXT, 3*FT_TO_M, riser_h)
+    landing_y = flight1_y + 9 * tread_d
+    v, t = box_mesh(0, landing_y, landing_z - riser_h, STAIR_W, 3*FT_TO_M, riser_h)
     cb.add_geometry('stair_landing', v, t, 'stair')
 
     # ============ RAMP ============
-    # Ramp in front of shutter, going from ground (z=0) up to plinth top (z=PLINTH_H)
-    ramp_x = (WIDTH - RAMP_W) / 2  # centered roughly on shutter
+    # In front of shutter (front wall at y=0), extending in -y direction
+    # Centered on shutter: shutter is at x=7.5 to x=17.5, ramp 12ft wide centered
+    ramp_center_x = shutter_start_x + SHUTTER_W / 2  # center of shutter
+    ramp_x = ramp_center_x - RAMP_W / 2
     v, t = ramp_mesh(ramp_x, -RAMP_L, 0, PLINTH_H, RAMP_W, RAMP_L)
     cb.add_geometry('ramp', v, t, 'ramp')
 
-    # ============ WATER TANK (on roof) ============
-    tank_x = 0.3
-    tank_y = 0.3
-    tank_z = roof_z + SLAB_T + 0.6  # on stand
-    v, t = box_mesh(tank_x, tank_y, tank_z, 1.0, 0.8, 0.8)
-    cb.add_geometry('water_tank', v, t, 'tank')
-    # Tank stand
-    v, t = box_mesh(tank_x, tank_y, roof_z + SLAB_T, 1.0, 0.8, 0.6)
-    cb.add_geometry('tank_stand', v, t, 'column')
-
-    # ============ PLINTH EXTENSION (for shade area at front) ============
-    v, t = box_mesh(-SHADE_PROJ, 0, 0, SHADE_PROJ, DEPTH, PLINTH_H)
-    cb.add_geometry('plinth_shade_ext', v, t, 'plinth')
-
-    # ============ STEPS (at gate) ============
+    # ============ GATE STEPS ============
     step_w = GATE_W
     step_riser = 7 * IN_TO_M
     step_tread = 10 * IN_TO_M
@@ -434,6 +438,59 @@ def build_model():
         sy = -(5 - i) * step_tread
         v, t = box_mesh(0, sy, sz, step_w, step_tread, step_riser)
         cb.add_geometry(f'step_{i}', v, t, 'stair')
+
+    # ============ WATER TANK ============
+    tank_x = 0.3
+    tank_y = 0.3
+    tank_z = roof_z + SLAB_T + 0.6
+    v, t = box_mesh(tank_x, tank_y, tank_z, 1.0, 0.8, 0.8)
+    cb.add_geometry('water_tank', v, t, 'tank')
+    v, t = box_mesh(tank_x, tank_y, roof_z + SLAB_T, 1.0, 0.8, 0.6)
+    cb.add_geometry('tank_stand', v, t, 'column')
+
+    # ============ FIRST FLOOR (future) ============
+    ff_z = roof_z + SLAB_T
+    ff_h = 10 * FT_TO_M  # 10ft room height
+    ff_room_depth = 16 * FT_TO_M
+    ff_balcony_depth = 9 * FT_TO_M
+
+    # Room walls (using first_floor color from COLORS dict)
+    # Back wall (1F)
+    v, t = box_mesh(0, DEPTH - WALL_INT, ff_z, WIDTH, WALL_INT, ff_h)
+    cb.add_geometry('ff_wall_back', v, t, 'first_floor')
+    # Left wall (1F room portion)
+    v, t = box_mesh(0, ff_balcony_depth, ff_z, WALL_INT, ff_room_depth, ff_h)
+    cb.add_geometry('ff_wall_left', v, t, 'first_floor')
+    # Right wall (1F room portion)
+    v, t = box_mesh(WIDTH - WALL_INT, ff_balcony_depth, ff_z, WALL_INT, ff_room_depth, ff_h)
+    cb.add_geometry('ff_wall_right', v, t, 'first_floor')
+    # Room partition (at 9ft from front)
+    v, t = box_mesh(0, ff_balcony_depth, ff_z, WIDTH, WALL_INT, ff_h)
+    cb.add_geometry('ff_partition', v, t, 'first_floor')
+
+    # First floor roof slab
+    ff_roof_z = ff_z + ff_h
+    v, t = box_mesh(0, 0, ff_roof_z, WIDTH, DEPTH, SLAB_T)
+    cb.add_geometry('ff_roof_slab', v, t, 'slab_roof')
+
+    # ============ LOBBY FLOOR (highlighted) ============
+    # Lobby is x=0 to STAIR_W, y=0 to lobby_depth (3ft from front wall)
+    lobby_floor_z = floor_z + 0.11  # just above floor slab
+    v, t = box_mesh(0, WALL_EXT, lobby_floor_z, STAIR_W, lobby_depth, 0.02)
+    cb.add_geometry('lobby_floor', v, t, 'lobby')
+
+    # ============ GROUND PLANE ============
+    # Large flat area around the building at z=0
+    ground_size = 30 * FT_TO_M
+    ground_offset = 10 * FT_TO_M
+    v, t = box_mesh(-ground_offset, -ground_offset, -0.05,
+                    WIDTH + 2*ground_offset, DEPTH + 2*ground_offset, 0.05)
+    cb.add_geometry('ground_plane', v, t, 'ground')
+
+    # ============ SHADE CANTILEVER HIGHLIGHT ============
+    # Thin colored layer on the underside of the roof slab cantilever
+    v, t = box_mesh(0, -SHADE_PROJ, roof_z - 0.02, WIDTH, SHADE_PROJ, 0.02)
+    cb.add_geometry('shade_highlight', v, t, 'shade')
 
     return cb
 

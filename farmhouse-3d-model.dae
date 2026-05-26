@@ -10,7 +10,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.6 0.4 0.2 1.0</color>
+              <color>0.72 0.53 0.26 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -21,7 +21,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.9 0.85 0.75 1.0</color>
+              <color>0.96 0.93 0.85 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -32,7 +32,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.95 0.9 0.85 1.0</color>
+              <color>0.92 0.87 0.78 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -43,7 +43,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.7 0.7 0.7 1.0</color>
+              <color>0.78 0.75 0.7 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -54,7 +54,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.5 0.5 0.55 1.0</color>
+              <color>0.55 0.58 0.62 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -65,7 +65,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.4 0.4 0.45 1.0</color>
+              <color>0.35 0.38 0.42 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -76,7 +76,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.45 0.45 0.5 1.0</color>
+              <color>0.42 0.44 0.48 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -87,7 +87,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.6 0.55 0.5 1.0</color>
+              <color>0.85 0.72 0.55 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -98,7 +98,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.65 0.6 0.5 1.0</color>
+              <color>0.78 0.68 0.52 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -109,7 +109,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.5 0.6 0.7 0.8</color>
+              <color>0.4 0.65 0.85 0.7</color>
             </diffuse>
           </phong>
         </technique>
@@ -120,7 +120,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.3 0.3 0.35 1.0</color>
+              <color>0.18 0.22 0.28 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -131,7 +131,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.35 0.25 0.15 1.0</color>
+              <color>0.45 0.25 0.12 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -142,7 +142,7 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.8 0.9 0.85 1.0</color>
+              <color>0.55 0.82 0.78 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -153,7 +153,40 @@
         <technique sid="common">
           <phong>
             <diffuse>
-              <color>0.2 0.5 0.7 1.0</color>
+              <color>0.2 0.55 0.82 1.0</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="first_floor-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.65 0.78 0.92 0.45</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="lobby-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.6 0.75 0.55 1.0</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="ground-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.28 0.45 0.22 1.0</color>
             </diffuse>
           </phong>
         </technique>
@@ -202,6 +235,15 @@
     </material>
     <material id="tank-mat" name="tank">
       <instance_effect url="#tank-effect"/>
+    </material>
+    <material id="first_floor-mat" name="first_floor">
+      <instance_effect url="#first_floor-effect"/>
+    </material>
+    <material id="lobby-mat" name="lobby">
+      <instance_effect url="#lobby-effect"/>
+    </material>
+    <material id="ground-mat" name="ground">
+      <instance_effect url="#ground-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -310,69 +352,6 @@
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="wall_front_left-geom" name="wall_front_left">
-      <mesh>
-        <source id="wall_front_left-positions">
-          <float_array id="wall_front_left-positions-array" count="24">0.0000 0.0000 1.0144 1.8288 0.0000 1.0144 1.8288 0.2286 1.0144 0.0000 0.2286 1.0144 0.0000 0.0000 4.5720 1.8288 0.0000 4.5720 1.8288 0.2286 4.5720 0.0000 0.2286 4.5720</float_array>
-          <technique_common>
-            <accessor source="#wall_front_left-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="wall_front_left-vertices">
-          <input semantic="POSITION" source="#wall_front_left-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#wall_front_left-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="wall_front_right-geom" name="wall_front_right">
-      <mesh>
-        <source id="wall_front_right-positions">
-          <float_array id="wall_front_right-positions-array" count="24">4.8768 0.0000 1.0144 6.0960 0.0000 1.0144 6.0960 0.2286 1.0144 4.8768 0.2286 1.0144 4.8768 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 0.2286 4.5720 4.8768 0.2286 4.5720</float_array>
-          <technique_common>
-            <accessor source="#wall_front_right-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="wall_front_right-vertices">
-          <input semantic="POSITION" source="#wall_front_right-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#wall_front_right-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="wall_above_shutter-geom" name="wall_above_shutter">
-      <mesh>
-        <source id="wall_above_shutter-positions">
-          <float_array id="wall_above_shutter-positions-array" count="24">1.8288 0.0000 4.0624 4.8768 0.0000 4.0624 4.8768 0.2286 4.0624 1.8288 0.2286 4.0624 1.8288 0.0000 4.5720 4.8768 0.0000 4.5720 4.8768 0.2286 4.5720 1.8288 0.2286 4.5720</float_array>
-          <technique_common>
-            <accessor source="#wall_above_shutter-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="wall_above_shutter-vertices">
-          <input semantic="POSITION" source="#wall_above_shutter-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#wall_above_shutter-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
     <geometry id="wall_above_gate-geom" name="wall_above_gate">
       <mesh>
         <source id="wall_above_gate-positions">
@@ -394,10 +373,73 @@
         </triangles>
       </mesh>
     </geometry>
+    <geometry id="wall_front_mid-geom" name="wall_front_mid">
+      <mesh>
+        <source id="wall_front_mid-positions">
+          <float_array id="wall_front_mid-positions-array" count="24">0.9144 0.0000 1.0144 2.2860 0.0000 1.0144 2.2860 0.2286 1.0144 0.9144 0.2286 1.0144 0.9144 0.0000 4.5720 2.2860 0.0000 4.5720 2.2860 0.2286 4.5720 0.9144 0.2286 4.5720</float_array>
+          <technique_common>
+            <accessor source="#wall_front_mid-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_front_mid-vertices">
+          <input semantic="POSITION" source="#wall_front_mid-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_front_mid-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_above_shutter-geom" name="wall_above_shutter">
+      <mesh>
+        <source id="wall_above_shutter-positions">
+          <float_array id="wall_above_shutter-positions-array" count="24">2.2860 0.0000 4.0624 5.3340 0.0000 4.0624 5.3340 0.2286 4.0624 2.2860 0.2286 4.0624 2.2860 0.0000 4.5720 5.3340 0.0000 4.5720 5.3340 0.2286 4.5720 2.2860 0.2286 4.5720</float_array>
+          <technique_common>
+            <accessor source="#wall_above_shutter-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_above_shutter-vertices">
+          <input semantic="POSITION" source="#wall_above_shutter-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_above_shutter-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_front_right-geom" name="wall_front_right">
+      <mesh>
+        <source id="wall_front_right-positions">
+          <float_array id="wall_front_right-positions-array" count="24">5.3340 0.0000 1.0144 6.0960 0.0000 1.0144 6.0960 0.2286 1.0144 5.3340 0.2286 1.0144 5.3340 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 0.2286 4.5720 5.3340 0.2286 4.5720</float_array>
+          <technique_common>
+            <accessor source="#wall_front_right-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_front_right-vertices">
+          <input semantic="POSITION" source="#wall_front_right-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_front_right-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
     <geometry id="shutter-geom" name="shutter">
       <mesh>
         <source id="shutter-positions">
-          <float_array id="shutter-positions-array" count="24">1.8288 0.0000 1.0144 4.8768 0.0000 1.0144 4.8768 0.0500 1.0144 1.8288 0.0500 1.0144 1.8288 0.0000 4.0624 4.8768 0.0000 4.0624 4.8768 0.0500 4.0624 1.8288 0.0500 4.0624</float_array>
+          <float_array id="shutter-positions-array" count="24">2.2860 0.0000 1.0144 5.3340 0.0000 1.0144 5.3340 0.0500 1.0144 2.2860 0.0500 1.0144 2.2860 0.0000 4.0624 5.3340 0.0000 4.0624 5.3340 0.0500 4.0624 2.2860 0.0500 4.0624</float_array>
           <technique_common>
             <accessor source="#shutter-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -439,7 +481,7 @@
     <geometry id="wall_stair_partition-geom" name="wall_stair_partition">
       <mesh>
         <source id="wall_stair_partition-positions">
-          <float_array id="wall_stair_partition-positions-array" count="24">1.8288 0.2286 1.0144 1.9431 0.2286 1.0144 1.9431 3.2766 1.0144 1.8288 3.2766 1.0144 1.8288 0.2286 4.5720 1.9431 0.2286 4.5720 1.9431 3.2766 4.5720 1.8288 3.2766 4.5720</float_array>
+          <float_array id="wall_stair_partition-positions-array" count="24">2.1717 0.2286 1.0144 2.2860 0.2286 1.0144 2.2860 3.2766 1.0144 2.1717 3.2766 1.0144 2.1717 0.2286 4.5720 2.2860 0.2286 4.5720 2.2860 3.2766 4.5720 2.1717 3.2766 4.5720</float_array>
           <technique_common>
             <accessor source="#wall_stair_partition-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -460,7 +502,7 @@
     <geometry id="toilet_back_wall-geom" name="toilet_back_wall">
       <mesh>
         <source id="toilet_back_wall-positions">
-          <float_array id="toilet_back_wall-positions-array" count="24">0.0000 1.7526 1.0144 0.9144 1.7526 1.0144 0.9144 1.8669 1.0144 0.0000 1.8669 1.0144 0.0000 1.7526 3.4528 0.9144 1.7526 3.4528 0.9144 1.8669 3.4528 0.0000 1.8669 3.4528</float_array>
+          <float_array id="toilet_back_wall-positions-array" count="24">0.0000 2.6670 1.0144 1.0668 2.6670 1.0144 1.0668 2.7813 1.0144 0.0000 2.7813 1.0144 0.0000 2.6670 3.4528 1.0668 2.6670 3.4528 1.0668 2.7813 3.4528 0.0000 2.7813 3.4528</float_array>
           <technique_common>
             <accessor source="#toilet_back_wall-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -481,7 +523,7 @@
     <geometry id="toilet_side_wall-geom" name="toilet_side_wall">
       <mesh>
         <source id="toilet_side_wall-positions">
-          <float_array id="toilet_side_wall-positions-array" count="24">0.9144 0.2286 1.0144 1.0287 0.2286 1.0144 1.0287 1.7526 1.0144 0.9144 1.7526 1.0144 0.9144 0.2286 3.4528 1.0287 0.2286 3.4528 1.0287 1.7526 3.4528 0.9144 1.7526 3.4528</float_array>
+          <float_array id="toilet_side_wall-positions-array" count="24">1.0668 1.1430 1.0144 1.1811 1.1430 1.0144 1.1811 2.6670 1.0144 1.0668 2.6670 1.0144 1.0668 1.1430 3.4528 1.1811 1.1430 3.4528 1.1811 2.6670 3.4528 1.0668 2.6670 3.4528</float_array>
           <technique_common>
             <accessor source="#toilet_side_wall-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -495,6 +537,27 @@
         </vertices>
         <triangles count="12">
           <input semantic="VERTEX" source="#toilet_side_wall-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="toilet_front_wall-geom" name="toilet_front_wall">
+      <mesh>
+        <source id="toilet_front_wall-positions">
+          <float_array id="toilet_front_wall-positions-array" count="24">0.0000 1.0287 1.0144 1.0668 1.0287 1.0144 1.0668 1.1430 1.0144 0.0000 1.1430 1.0144 0.0000 1.0287 3.4528 1.0668 1.0287 3.4528 1.0668 1.1430 3.4528 0.0000 1.1430 3.4528</float_array>
+          <technique_common>
+            <accessor source="#toilet_front_wall-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="toilet_front_wall-vertices">
+          <input semantic="POSITION" source="#toilet_front_wall-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#toilet_front_wall-vertices" offset="0"/>
           <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
         </triangles>
       </mesh>
@@ -607,7 +670,7 @@
     <geometry id="col_C6-geom" name="col_C6">
       <mesh>
         <source id="col_C6-positions">
-          <float_array id="col_C6-positions-array" count="24">1.8288 0.0000 1.0144 2.0574 0.0000 1.0144 2.0574 0.3048 1.0144 1.8288 0.3048 1.0144 1.8288 0.0000 4.5720 2.0574 0.0000 4.5720 2.0574 0.3048 4.5720 1.8288 0.3048 4.5720</float_array>
+          <float_array id="col_C6-positions-array" count="24">2.0574 0.0000 1.0144 2.2860 0.0000 1.0144 2.2860 0.3048 1.0144 2.0574 0.3048 1.0144 2.0574 0.0000 4.5720 2.2860 0.0000 4.5720 2.2860 0.3048 4.5720 2.0574 0.3048 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C6-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -628,7 +691,7 @@
     <geometry id="col_C7-geom" name="col_C7">
       <mesh>
         <source id="col_C7-positions">
-          <float_array id="col_C7-positions-array" count="24">4.8768 0.0000 1.0144 5.1054 0.0000 1.0144 5.1054 0.3048 1.0144 4.8768 0.3048 1.0144 4.8768 0.0000 4.5720 5.1054 0.0000 4.5720 5.1054 0.3048 4.5720 4.8768 0.3048 4.5720</float_array>
+          <float_array id="col_C7-positions-array" count="24">5.3340 0.0000 1.0144 5.5626 0.0000 1.0144 5.5626 0.3048 1.0144 5.3340 0.3048 1.0144 5.3340 0.0000 4.5720 5.5626 0.0000 4.5720 5.5626 0.3048 4.5720 5.3340 0.3048 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C7-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -775,7 +838,7 @@
     <geometry id="roof_slab-geom" name="roof_slab">
       <mesh>
         <source id="roof_slab-positions">
-          <float_array id="roof_slab-positions-array" count="24">-1.5240 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 7.6200 4.5720 -1.5240 7.6200 4.5720 -1.5240 0.0000 4.7244 6.0960 0.0000 4.7244 6.0960 7.6200 4.7244 -1.5240 7.6200 4.7244</float_array>
+          <float_array id="roof_slab-positions-array" count="24">0.0000 -1.5240 4.5720 6.0960 -1.5240 4.5720 6.0960 7.6200 4.5720 0.0000 7.6200 4.5720 0.0000 -1.5240 4.7244 6.0960 -1.5240 4.7244 6.0960 7.6200 4.7244 0.0000 7.6200 4.7244</float_array>
           <technique_common>
             <accessor source="#roof_slab-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -793,31 +856,10 @@
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="shade_indicator-geom" name="shade_indicator">
-      <mesh>
-        <source id="shade_indicator-positions">
-          <float_array id="shade_indicator-positions-array" count="24">-1.5240 0.0000 4.7244 0.0000 0.0000 4.7244 0.0000 7.6200 4.7244 -1.5240 7.6200 4.7244 -1.5240 0.0000 4.7444 0.0000 0.0000 4.7444 0.0000 7.6200 4.7444 -1.5240 7.6200 4.7444</float_array>
-          <technique_common>
-            <accessor source="#shade_indicator-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="shade_indicator-vertices">
-          <input semantic="POSITION" source="#shade_indicator-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#shade_indicator-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
     <geometry id="stair_flight1-geom" name="stair_flight1">
       <mesh>
         <source id="stair_flight1-positions">
-          <float_array id="stair_flight1-positions-array" count="240">0.2286 1.7526 1.0144 1.0668 1.7526 1.0144 1.0668 2.0066 1.0144 0.2286 2.0066 1.0144 0.2286 1.7526 1.1973 1.0668 1.7526 1.1973 1.0668 2.0066 1.1973 0.2286 2.0066 1.1973 0.2286 2.0066 1.1973 1.0668 2.0066 1.1973 1.0668 2.2606 1.1973 0.2286 2.2606 1.1973 0.2286 2.0066 1.3802 1.0668 2.0066 1.3802 1.0668 2.2606 1.3802 0.2286 2.2606 1.3802 0.2286 2.2606 1.3802 1.0668 2.2606 1.3802 1.0668 2.5146 1.3802 0.2286 2.5146 1.3802 0.2286 2.2606 1.5630 1.0668 2.2606 1.5630 1.0668 2.5146 1.5630 0.2286 2.5146 1.5630 0.2286 2.5146 1.5630 1.0668 2.5146 1.5630 1.0668 2.7686 1.5630 0.2286 2.7686 1.5630 0.2286 2.5146 1.7459 1.0668 2.5146 1.7459 1.0668 2.7686 1.7459 0.2286 2.7686 1.7459 0.2286 2.7686 1.7459 1.0668 2.7686 1.7459 1.0668 3.0226 1.7459 0.2286 3.0226 1.7459 0.2286 2.7686 1.9288 1.0668 2.7686 1.9288 1.0668 3.0226 1.9288 0.2286 3.0226 1.9288 0.2286 3.0226 1.9288 1.0668 3.0226 1.9288 1.0668 3.2766 1.9288 0.2286 3.2766 1.9288 0.2286 3.0226 2.1117 1.0668 3.0226 2.1117 1.0668 3.2766 2.1117 0.2286 3.2766 2.1117 0.2286 3.2766 2.1117 1.0668 3.2766 2.1117 1.0668 3.5306 2.1117 0.2286 3.5306 2.1117 0.2286 3.2766 2.2946 1.0668 3.2766 2.2946 1.0668 3.5306 2.2946 0.2286 3.5306 2.2946 0.2286 3.5306 2.2946 1.0668 3.5306 2.2946 1.0668 3.7846 2.2946 0.2286 3.7846 2.2946 0.2286 3.5306 2.4774 1.0668 3.5306 2.4774 1.0668 3.7846 2.4774 0.2286 3.7846 2.4774 0.2286 3.7846 2.4774 1.0668 3.7846 2.4774 1.0668 4.0386 2.4774 0.2286 4.0386 2.4774 0.2286 3.7846 2.6603 1.0668 3.7846 2.6603 1.0668 4.0386 2.6603 0.2286 4.0386 2.6603 0.2286 4.0386 2.6603 1.0668 4.0386 2.6603 1.0668 4.2926 2.6603 0.2286 4.2926 2.6603 0.2286 4.0386 2.8432 1.0668 4.0386 2.8432 1.0668 4.2926 2.8432 0.2286 4.2926 2.8432</float_array>
+          <float_array id="stair_flight1-positions-array" count="240">1.2192 1.1430 1.0144 2.2860 1.1430 1.0144 2.2860 1.3970 1.0144 1.2192 1.3970 1.0144 1.2192 1.1430 1.1973 2.2860 1.1430 1.1973 2.2860 1.3970 1.1973 1.2192 1.3970 1.1973 1.2192 1.3970 1.1973 2.2860 1.3970 1.1973 2.2860 1.6510 1.1973 1.2192 1.6510 1.1973 1.2192 1.3970 1.3802 2.2860 1.3970 1.3802 2.2860 1.6510 1.3802 1.2192 1.6510 1.3802 1.2192 1.6510 1.3802 2.2860 1.6510 1.3802 2.2860 1.9050 1.3802 1.2192 1.9050 1.3802 1.2192 1.6510 1.5630 2.2860 1.6510 1.5630 2.2860 1.9050 1.5630 1.2192 1.9050 1.5630 1.2192 1.9050 1.5630 2.2860 1.9050 1.5630 2.2860 2.1590 1.5630 1.2192 2.1590 1.5630 1.2192 1.9050 1.7459 2.2860 1.9050 1.7459 2.2860 2.1590 1.7459 1.2192 2.1590 1.7459 1.2192 2.1590 1.7459 2.2860 2.1590 1.7459 2.2860 2.4130 1.7459 1.2192 2.4130 1.7459 1.2192 2.1590 1.9288 2.2860 2.1590 1.9288 2.2860 2.4130 1.9288 1.2192 2.4130 1.9288 1.2192 2.4130 1.9288 2.2860 2.4130 1.9288 2.2860 2.6670 1.9288 1.2192 2.6670 1.9288 1.2192 2.4130 2.1117 2.2860 2.4130 2.1117 2.2860 2.6670 2.1117 1.2192 2.6670 2.1117 1.2192 2.6670 2.1117 2.2860 2.6670 2.1117 2.2860 2.9210 2.1117 1.2192 2.9210 2.1117 1.2192 2.6670 2.2946 2.2860 2.6670 2.2946 2.2860 2.9210 2.2946 1.2192 2.9210 2.2946 1.2192 2.9210 2.2946 2.2860 2.9210 2.2946 2.2860 3.1750 2.2946 1.2192 3.1750 2.2946 1.2192 2.9210 2.4774 2.2860 2.9210 2.4774 2.2860 3.1750 2.4774 1.2192 3.1750 2.4774 1.2192 3.1750 2.4774 2.2860 3.1750 2.4774 2.2860 3.4290 2.4774 1.2192 3.4290 2.4774 1.2192 3.1750 2.6603 2.2860 3.1750 2.6603 2.2860 3.4290 2.6603 1.2192 3.4290 2.6603 1.2192 3.4290 2.6603 2.2860 3.4290 2.6603 2.2860 3.6830 2.6603 1.2192 3.6830 2.6603 1.2192 3.4290 2.8432 2.2860 3.4290 2.8432 2.2860 3.6830 2.8432 1.2192 3.6830 2.8432</float_array>
           <technique_common>
             <accessor source="#stair_flight1-positions-array" count="80" stride="3">
               <param name="X" type="float"/>
@@ -838,7 +880,7 @@
     <geometry id="stair_flight2-geom" name="stair_flight2">
       <mesh>
         <source id="stair_flight2-positions">
-          <float_array id="stair_flight2-positions-array" count="240">1.2168 3.7846 2.8432 2.0550 3.7846 2.8432 2.0550 4.0386 2.8432 1.2168 4.0386 2.8432 1.2168 3.7846 3.0261 2.0550 3.7846 3.0261 2.0550 4.0386 3.0261 1.2168 4.0386 3.0261 1.2168 3.5306 3.0261 2.0550 3.5306 3.0261 2.0550 3.7846 3.0261 1.2168 3.7846 3.0261 1.2168 3.5306 3.2090 2.0550 3.5306 3.2090 2.0550 3.7846 3.2090 1.2168 3.7846 3.2090 1.2168 3.2766 3.2090 2.0550 3.2766 3.2090 2.0550 3.5306 3.2090 1.2168 3.5306 3.2090 1.2168 3.2766 3.3918 2.0550 3.2766 3.3918 2.0550 3.5306 3.3918 1.2168 3.5306 3.3918 1.2168 3.0226 3.3918 2.0550 3.0226 3.3918 2.0550 3.2766 3.3918 1.2168 3.2766 3.3918 1.2168 3.0226 3.5747 2.0550 3.0226 3.5747 2.0550 3.2766 3.5747 1.2168 3.2766 3.5747 1.2168 2.7686 3.5747 2.0550 2.7686 3.5747 2.0550 3.0226 3.5747 1.2168 3.0226 3.5747 1.2168 2.7686 3.7576 2.0550 2.7686 3.7576 2.0550 3.0226 3.7576 1.2168 3.0226 3.7576 1.2168 2.5146 3.7576 2.0550 2.5146 3.7576 2.0550 2.7686 3.7576 1.2168 2.7686 3.7576 1.2168 2.5146 3.9405 2.0550 2.5146 3.9405 2.0550 2.7686 3.9405 1.2168 2.7686 3.9405 1.2168 2.2606 3.9405 2.0550 2.2606 3.9405 2.0550 2.5146 3.9405 1.2168 2.5146 3.9405 1.2168 2.2606 4.1234 2.0550 2.2606 4.1234 2.0550 2.5146 4.1234 1.2168 2.5146 4.1234 1.2168 2.0066 4.1234 2.0550 2.0066 4.1234 2.0550 2.2606 4.1234 1.2168 2.2606 4.1234 1.2168 2.0066 4.3062 2.0550 2.0066 4.3062 2.0550 2.2606 4.3062 1.2168 2.2606 4.3062 1.2168 1.7526 4.3062 2.0550 1.7526 4.3062 2.0550 2.0066 4.3062 1.2168 2.0066 4.3062 1.2168 1.7526 4.4891 2.0550 1.7526 4.4891 2.0550 2.0066 4.4891 1.2168 2.0066 4.4891 1.2168 1.4986 4.4891 2.0550 1.4986 4.4891 2.0550 1.7526 4.4891 1.2168 1.7526 4.4891 1.2168 1.4986 4.6720 2.0550 1.4986 4.6720 2.0550 1.7526 4.6720 1.2168 1.7526 4.6720</float_array>
+          <float_array id="stair_flight2-positions-array" count="240">0.0000 3.1750 2.8432 1.0668 3.1750 2.8432 1.0668 3.4290 2.8432 0.0000 3.4290 2.8432 0.0000 3.1750 3.0261 1.0668 3.1750 3.0261 1.0668 3.4290 3.0261 0.0000 3.4290 3.0261 0.0000 2.9210 3.0261 1.0668 2.9210 3.0261 1.0668 3.1750 3.0261 0.0000 3.1750 3.0261 0.0000 2.9210 3.2090 1.0668 2.9210 3.2090 1.0668 3.1750 3.2090 0.0000 3.1750 3.2090 0.0000 2.6670 3.2090 1.0668 2.6670 3.2090 1.0668 2.9210 3.2090 0.0000 2.9210 3.2090 0.0000 2.6670 3.3918 1.0668 2.6670 3.3918 1.0668 2.9210 3.3918 0.0000 2.9210 3.3918 0.0000 2.4130 3.3918 1.0668 2.4130 3.3918 1.0668 2.6670 3.3918 0.0000 2.6670 3.3918 0.0000 2.4130 3.5747 1.0668 2.4130 3.5747 1.0668 2.6670 3.5747 0.0000 2.6670 3.5747 0.0000 2.1590 3.5747 1.0668 2.1590 3.5747 1.0668 2.4130 3.5747 0.0000 2.4130 3.5747 0.0000 2.1590 3.7576 1.0668 2.1590 3.7576 1.0668 2.4130 3.7576 0.0000 2.4130 3.7576 0.0000 1.9050 3.7576 1.0668 1.9050 3.7576 1.0668 2.1590 3.7576 0.0000 2.1590 3.7576 0.0000 1.9050 3.9405 1.0668 1.9050 3.9405 1.0668 2.1590 3.9405 0.0000 2.1590 3.9405 0.0000 1.6510 3.9405 1.0668 1.6510 3.9405 1.0668 1.9050 3.9405 0.0000 1.9050 3.9405 0.0000 1.6510 4.1234 1.0668 1.6510 4.1234 1.0668 1.9050 4.1234 0.0000 1.9050 4.1234 0.0000 1.3970 4.1234 1.0668 1.3970 4.1234 1.0668 1.6510 4.1234 0.0000 1.6510 4.1234 0.0000 1.3970 4.3062 1.0668 1.3970 4.3062 1.0668 1.6510 4.3062 0.0000 1.6510 4.3062 0.0000 1.1430 4.3062 1.0668 1.1430 4.3062 1.0668 1.3970 4.3062 0.0000 1.3970 4.3062 0.0000 1.1430 4.4891 1.0668 1.1430 4.4891 1.0668 1.3970 4.4891 0.0000 1.3970 4.4891 0.0000 0.8890 4.4891 1.0668 0.8890 4.4891 1.0668 1.1430 4.4891 0.0000 1.1430 4.4891 0.0000 0.8890 4.6720 1.0668 0.8890 4.6720 1.0668 1.1430 4.6720 0.0000 1.1430 4.6720</float_array>
           <technique_common>
             <accessor source="#stair_flight2-positions-array" count="80" stride="3">
               <param name="X" type="float"/>
@@ -859,7 +901,7 @@
     <geometry id="stair_landing-geom" name="stair_landing">
       <mesh>
         <source id="stair_landing-positions">
-          <float_array id="stair_landing-positions-array" count="24">0.2286 4.0386 2.6603 1.6002 4.0386 2.6603 1.6002 4.9530 2.6603 0.2286 4.9530 2.6603 0.2286 4.0386 2.8432 1.6002 4.0386 2.8432 1.6002 4.9530 2.8432 0.2286 4.9530 2.8432</float_array>
+          <float_array id="stair_landing-positions-array" count="24">0.0000 3.4290 2.6603 2.2860 3.4290 2.6603 2.2860 4.3434 2.6603 0.0000 4.3434 2.6603 0.0000 3.4290 2.8432 2.2860 3.4290 2.8432 2.2860 4.3434 2.8432 0.0000 4.3434 2.8432</float_array>
           <technique_common>
             <accessor source="#stair_landing-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -880,7 +922,7 @@
     <geometry id="ramp-geom" name="ramp">
       <mesh>
         <source id="ramp-positions">
-          <float_array id="ramp-positions-array" count="36">1.2192 -2.4384 0.0000 4.8768 -2.4384 0.0000 4.8768 0.0000 0.9144 1.2192 0.0000 0.9144 1.2192 -2.4384 0.0000 4.8768 -2.4384 0.0000 4.8768 0.0000 0.9144 1.2192 0.0000 0.9144 1.2192 -2.4384 -0.1500 4.8768 -2.4384 -0.1500 4.8768 0.0000 0.7644 1.2192 0.0000 0.7644</float_array>
+          <float_array id="ramp-positions-array" count="36">1.9812 -2.4384 0.0000 5.6388 -2.4384 0.0000 5.6388 0.0000 0.9144 1.9812 0.0000 0.9144 1.9812 -2.4384 0.0000 5.6388 -2.4384 0.0000 5.6388 0.0000 0.9144 1.9812 0.0000 0.9144 1.9812 -2.4384 -0.1500 5.6388 -2.4384 -0.1500 5.6388 0.0000 0.7644 1.9812 0.0000 0.7644</float_array>
           <technique_common>
             <accessor source="#ramp-positions-array" count="12" stride="3">
               <param name="X" type="float"/>
@@ -895,69 +937,6 @@
         <triangles count="12">
           <input semantic="VERTEX" source="#ramp-vertices" offset="0"/>
           <p>0 1 2 0 2 3 8 10 9 8 11 10 0 1 9 0 9 8 2 3 11 2 11 10 0 3 11 0 11 8 1 2 10 1 10 9</p>
-        </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="water_tank-geom" name="water_tank">
-      <mesh>
-        <source id="water_tank-positions">
-          <float_array id="water_tank-positions-array" count="24">0.3000 0.3000 5.3244 1.3000 0.3000 5.3244 1.3000 1.1000 5.3244 0.3000 1.1000 5.3244 0.3000 0.3000 6.1244 1.3000 0.3000 6.1244 1.3000 1.1000 6.1244 0.3000 1.1000 6.1244</float_array>
-          <technique_common>
-            <accessor source="#water_tank-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="water_tank-vertices">
-          <input semantic="POSITION" source="#water_tank-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#water_tank-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="tank_stand-geom" name="tank_stand">
-      <mesh>
-        <source id="tank_stand-positions">
-          <float_array id="tank_stand-positions-array" count="24">0.3000 0.3000 4.7244 1.3000 0.3000 4.7244 1.3000 1.1000 4.7244 0.3000 1.1000 4.7244 0.3000 0.3000 5.3244 1.3000 0.3000 5.3244 1.3000 1.1000 5.3244 0.3000 1.1000 5.3244</float_array>
-          <technique_common>
-            <accessor source="#tank_stand-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="tank_stand-vertices">
-          <input semantic="POSITION" source="#tank_stand-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#tank_stand-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="plinth_shade_ext-geom" name="plinth_shade_ext">
-      <mesh>
-        <source id="plinth_shade_ext-positions">
-          <float_array id="plinth_shade_ext-positions-array" count="24">-1.5240 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 7.6200 0.0000 -1.5240 7.6200 0.0000 -1.5240 0.0000 0.9144 0.0000 0.0000 0.9144 0.0000 7.6200 0.9144 -1.5240 7.6200 0.9144</float_array>
-          <technique_common>
-            <accessor source="#plinth_shade_ext-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="plinth_shade_ext-vertices">
-          <input semantic="POSITION" source="#plinth_shade_ext-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#plinth_shade_ext-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
         </triangles>
       </mesh>
     </geometry>
@@ -1066,6 +1045,216 @@
         </triangles>
       </mesh>
     </geometry>
+    <geometry id="water_tank-geom" name="water_tank">
+      <mesh>
+        <source id="water_tank-positions">
+          <float_array id="water_tank-positions-array" count="24">0.3000 0.3000 5.3244 1.3000 0.3000 5.3244 1.3000 1.1000 5.3244 0.3000 1.1000 5.3244 0.3000 0.3000 6.1244 1.3000 0.3000 6.1244 1.3000 1.1000 6.1244 0.3000 1.1000 6.1244</float_array>
+          <technique_common>
+            <accessor source="#water_tank-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="water_tank-vertices">
+          <input semantic="POSITION" source="#water_tank-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#water_tank-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="tank_stand-geom" name="tank_stand">
+      <mesh>
+        <source id="tank_stand-positions">
+          <float_array id="tank_stand-positions-array" count="24">0.3000 0.3000 4.7244 1.3000 0.3000 4.7244 1.3000 1.1000 4.7244 0.3000 1.1000 4.7244 0.3000 0.3000 5.3244 1.3000 0.3000 5.3244 1.3000 1.1000 5.3244 0.3000 1.1000 5.3244</float_array>
+          <technique_common>
+            <accessor source="#tank_stand-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="tank_stand-vertices">
+          <input semantic="POSITION" source="#tank_stand-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#tank_stand-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ff_wall_back-geom" name="ff_wall_back">
+      <mesh>
+        <source id="ff_wall_back-positions">
+          <float_array id="ff_wall_back-positions-array" count="24">0.0000 7.5057 4.7244 6.0960 7.5057 4.7244 6.0960 7.6200 4.7244 0.0000 7.6200 4.7244 0.0000 7.5057 7.7724 6.0960 7.5057 7.7724 6.0960 7.6200 7.7724 0.0000 7.6200 7.7724</float_array>
+          <technique_common>
+            <accessor source="#ff_wall_back-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ff_wall_back-vertices">
+          <input semantic="POSITION" source="#ff_wall_back-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#ff_wall_back-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ff_wall_left-geom" name="ff_wall_left">
+      <mesh>
+        <source id="ff_wall_left-positions">
+          <float_array id="ff_wall_left-positions-array" count="24">0.0000 2.7432 4.7244 0.1143 2.7432 4.7244 0.1143 7.6200 4.7244 0.0000 7.6200 4.7244 0.0000 2.7432 7.7724 0.1143 2.7432 7.7724 0.1143 7.6200 7.7724 0.0000 7.6200 7.7724</float_array>
+          <technique_common>
+            <accessor source="#ff_wall_left-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ff_wall_left-vertices">
+          <input semantic="POSITION" source="#ff_wall_left-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#ff_wall_left-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ff_wall_right-geom" name="ff_wall_right">
+      <mesh>
+        <source id="ff_wall_right-positions">
+          <float_array id="ff_wall_right-positions-array" count="24">5.9817 2.7432 4.7244 6.0960 2.7432 4.7244 6.0960 7.6200 4.7244 5.9817 7.6200 4.7244 5.9817 2.7432 7.7724 6.0960 2.7432 7.7724 6.0960 7.6200 7.7724 5.9817 7.6200 7.7724</float_array>
+          <technique_common>
+            <accessor source="#ff_wall_right-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ff_wall_right-vertices">
+          <input semantic="POSITION" source="#ff_wall_right-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#ff_wall_right-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ff_partition-geom" name="ff_partition">
+      <mesh>
+        <source id="ff_partition-positions">
+          <float_array id="ff_partition-positions-array" count="24">0.0000 2.7432 4.7244 6.0960 2.7432 4.7244 6.0960 2.8575 4.7244 0.0000 2.8575 4.7244 0.0000 2.7432 7.7724 6.0960 2.7432 7.7724 6.0960 2.8575 7.7724 0.0000 2.8575 7.7724</float_array>
+          <technique_common>
+            <accessor source="#ff_partition-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ff_partition-vertices">
+          <input semantic="POSITION" source="#ff_partition-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#ff_partition-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ff_roof_slab-geom" name="ff_roof_slab">
+      <mesh>
+        <source id="ff_roof_slab-positions">
+          <float_array id="ff_roof_slab-positions-array" count="24">0.0000 0.0000 7.7724 6.0960 0.0000 7.7724 6.0960 7.6200 7.7724 0.0000 7.6200 7.7724 0.0000 0.0000 7.9248 6.0960 0.0000 7.9248 6.0960 7.6200 7.9248 0.0000 7.6200 7.9248</float_array>
+          <technique_common>
+            <accessor source="#ff_roof_slab-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ff_roof_slab-vertices">
+          <input semantic="POSITION" source="#ff_roof_slab-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#ff_roof_slab-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="lobby_floor-geom" name="lobby_floor">
+      <mesh>
+        <source id="lobby_floor-positions">
+          <float_array id="lobby_floor-positions-array" count="24">0.0000 0.2286 1.0244 2.2860 0.2286 1.0244 2.2860 1.1430 1.0244 0.0000 1.1430 1.0244 0.0000 0.2286 1.0444 2.2860 0.2286 1.0444 2.2860 1.1430 1.0444 0.0000 1.1430 1.0444</float_array>
+          <technique_common>
+            <accessor source="#lobby_floor-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="lobby_floor-vertices">
+          <input semantic="POSITION" source="#lobby_floor-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#lobby_floor-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="ground_plane-geom" name="ground_plane">
+      <mesh>
+        <source id="ground_plane-positions">
+          <float_array id="ground_plane-positions-array" count="24">-3.0480 -3.0480 -0.0500 9.1440 -3.0480 -0.0500 9.1440 10.6680 -0.0500 -3.0480 10.6680 -0.0500 -3.0480 -3.0480 0.0000 9.1440 -3.0480 0.0000 9.1440 10.6680 0.0000 -3.0480 10.6680 0.0000</float_array>
+          <technique_common>
+            <accessor source="#ground_plane-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="ground_plane-vertices">
+          <input semantic="POSITION" source="#ground_plane-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#ground_plane-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="shade_highlight-geom" name="shade_highlight">
+      <mesh>
+        <source id="shade_highlight-positions">
+          <float_array id="shade_highlight-positions-array" count="24">0.0000 -1.5240 4.5520 6.0960 -1.5240 4.5520 6.0960 0.0000 4.5520 0.0000 0.0000 4.5520 0.0000 -1.5240 4.5720 6.0960 -1.5240 4.5720 6.0960 0.0000 4.5720 0.0000 0.0000 4.5720</float_array>
+          <technique_common>
+            <accessor source="#shade_highlight-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="shade_highlight-vertices">
+          <input semantic="POSITION" source="#shade_highlight-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#shade_highlight-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
   </library_geometries>
   <library_visual_scenes>
     <visual_scene id="Scene" name="FarmStorage">
@@ -1114,8 +1303,8 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="wall_front_left-node" name="wall_front_left" type="NODE">
-        <instance_geometry url="#wall_front_left-geom">
+      <node id="wall_above_gate-node" name="wall_above_gate" type="NODE">
+        <instance_geometry url="#wall_above_gate-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="wall_ext" target="#wall_ext-mat"/>
@@ -1123,8 +1312,8 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="wall_front_right-node" name="wall_front_right" type="NODE">
-        <instance_geometry url="#wall_front_right-geom">
+      <node id="wall_front_mid-node" name="wall_front_mid" type="NODE">
+        <instance_geometry url="#wall_front_mid-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="wall_ext" target="#wall_ext-mat"/>
@@ -1141,8 +1330,8 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="wall_above_gate-node" name="wall_above_gate" type="NODE">
-        <instance_geometry url="#wall_above_gate-geom">
+      <node id="wall_front_right-node" name="wall_front_right" type="NODE">
+        <instance_geometry url="#wall_front_right-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="wall_ext" target="#wall_ext-mat"/>
@@ -1188,6 +1377,15 @@
       </node>
       <node id="toilet_side_wall-node" name="toilet_side_wall" type="NODE">
         <instance_geometry url="#toilet_side_wall-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="toilet" target="#toilet-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="toilet_front_wall-node" name="toilet_front_wall" type="NODE">
+        <instance_geometry url="#toilet_front_wall-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="toilet" target="#toilet-mat"/>
@@ -1321,15 +1519,6 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="shade_indicator-node" name="shade_indicator" type="NODE">
-        <instance_geometry url="#shade_indicator-geom">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="shade" target="#shade-mat"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
       <node id="stair_flight1-node" name="stair_flight1" type="NODE">
         <instance_geometry url="#stair_flight1-geom">
           <bind_material>
@@ -1362,33 +1551,6 @@
           <bind_material>
             <technique_common>
               <instance_material symbol="ramp" target="#ramp-mat"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
-      <node id="water_tank-node" name="water_tank" type="NODE">
-        <instance_geometry url="#water_tank-geom">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="tank" target="#tank-mat"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
-      <node id="tank_stand-node" name="tank_stand" type="NODE">
-        <instance_geometry url="#tank_stand-geom">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="column" target="#column-mat"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
-      <node id="plinth_shade_ext-node" name="plinth_shade_ext" type="NODE">
-        <instance_geometry url="#plinth_shade_ext-geom">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="plinth" target="#plinth-mat"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
@@ -1434,6 +1596,96 @@
           <bind_material>
             <technique_common>
               <instance_material symbol="stair" target="#stair-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="water_tank-node" name="water_tank" type="NODE">
+        <instance_geometry url="#water_tank-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="tank" target="#tank-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="tank_stand-node" name="tank_stand" type="NODE">
+        <instance_geometry url="#tank_stand-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ff_wall_back-node" name="ff_wall_back" type="NODE">
+        <instance_geometry url="#ff_wall_back-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="first_floor" target="#first_floor-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ff_wall_left-node" name="ff_wall_left" type="NODE">
+        <instance_geometry url="#ff_wall_left-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="first_floor" target="#first_floor-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ff_wall_right-node" name="ff_wall_right" type="NODE">
+        <instance_geometry url="#ff_wall_right-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="first_floor" target="#first_floor-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ff_partition-node" name="ff_partition" type="NODE">
+        <instance_geometry url="#ff_partition-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="first_floor" target="#first_floor-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ff_roof_slab-node" name="ff_roof_slab" type="NODE">
+        <instance_geometry url="#ff_roof_slab-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slab_roof" target="#slab_roof-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="lobby_floor-node" name="lobby_floor" type="NODE">
+        <instance_geometry url="#lobby_floor-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="lobby" target="#lobby-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="ground_plane-node" name="ground_plane" type="NODE">
+        <instance_geometry url="#ground_plane-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="ground" target="#ground-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="shade_highlight-node" name="shade_highlight" type="NODE">
+        <instance_geometry url="#shade_highlight-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="shade" target="#shade-mat"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
