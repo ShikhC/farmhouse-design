@@ -14,19 +14,91 @@ Once the floor slab (4" RCC with wire mesh) is poured, **you CANNOT access under
 
 ## PART 1: WHAT THE PLUMBER MUST DO DURING FOUNDATION PHASE
 
-### 1.1 Underground Drain Pipe (Toilet → Soak Pit)
+### 1.0 UPDATED LAYOUT: Toilet → Septic Tank → Soak Pit
+
+**Why we added a septic tank:**
+- Your land is flood-prone (that's why 3ft plinth)
+- During floods, a direct soak pit overflows = raw sewage on your farm
+- A septic tank TREATS waste first — only clean liquid reaches the soak pit
+- Soak pit lasts 15-20 years instead of 5-7 years
+- Much less groundwater contamination (submersible pulls from same water table)
+
+**Layout diagram:**
+
+```
+TOILET (front-left corner)
+    │
+    │ 4" PVC SWR pipe (5ft, slope 1:40)
+    │
+    ▼
+┌───────────────────┐
+│   SEPTIC TANK     │  ← 5ft from building wall
+│   (1000L Sintex   │     Buried underground
+│    prefab, 2      │     Top cover at ground level
+│    chamber)       │     
+└────────┬──────────┘
+         │
+         │ 4" PVC SWR pipe (5ft, slope 1:40)
+         │ (carries only CLEAR liquid overflow)
+         ▼
+┌───────────────────┐
+│    SOAK PIT       │  ← 10ft from building wall (5ft from tank)
+│    (4ft × 6ft)    │     50ft from borewell
+│    Honeycomb      │     
+└───────────────────┘
+```
+
+**Total underground pipe length:** ~12-15 feet (toilet → tank → soak pit)
+**Extra cost vs direct soak pit:** ₹8,000-12,000 (for Sintex 1000L prefab tank)
+**Benefit:** 3× longer soak pit life, safe during floods, less contamination
+
+---
+
+### 1.1 Septic Tank (NEW — Between Toilet and Soak Pit)
+
+| Item | Specification | Why it matters |
+|------|--------------|----------------|
+| Type | Prefab Sintex/Supreme 1000L, 2-chamber | Factory-made = no leaks, proper baffles |
+| Location | 5 feet from building wall (front-left side) | Close enough for short pipe run |
+| Depth | Buried so that top cover is at ground level | Accessible for future pumping |
+| Inlet | 4" PVC pipe from toilet enters Chamber 1 | Waste enters first chamber for settling |
+| Outlet | 4" PVC pipe exits from Chamber 2 to soak pit | Only pre-treated clear liquid exits |
+| Vent | 2" PVC pipe going up (can connect to building vent later) | Gases must escape (methane) |
+| Cover | Factory lid with inspection opening | For pumping every 5 years |
+| Bedding | Place on 6" sand/PCC bed (level!) | Tank must sit level, not tilted |
+
+**How it works (tell the plumber):**
+1. Toilet waste enters Chamber 1 → solids sink to bottom, grease floats
+2. Bacteria (already present naturally) eat the solids — reduce volume by 60-70%
+3. Clear liquid from middle layer flows to Chamber 2 (through internal baffle)
+4. Chamber 2: final settling — cleanest liquid overflows to soak pit
+5. Soak pit only receives pre-treated liquid — lasts 3× longer, almost no smell
+
+**Questions to ask plumber:**
+- "Sintex septic tank install kiya hai pehle?" — Check if he has experience
+- "Tank level rakhna hai — spirit level se check karna" — If tilted, baffles don't work
+- "Inlet pipe chamber 1 mein aur outlet chamber 2 se — confirm karo direction"
+- "Tank ke upar se access hona chahiye — pumping ke liye" — Don't bury it too deep
+
+**Purchase:** Sintex 1000L septic tank available at any large hardware/plumbing store or order online. Brands: Sintex, Supreme, Ashirvad. Price: ₹6,000-9,000.
+
+---
+
+### 1.2 Underground Drain Pipe (Toilet → Septic Tank → Soak Pit)
 
 **The most critical piece — discuss these EXACT specifications:**
 
 | Item | Specification | Why it matters |
 |------|--------------|----------------|
 | Pipe | 4" PVC SWR (Soil, Waste, Rain grade) | Regular PVC will crack under earth load |
-| Length | ~15-18 feet (from toilet position to soak pit) | Measure and confirm on site |
+| Section 1 | Toilet stub → Septic Tank inlet (~5ft) | Short run, slope 1:40 |
+| Section 2 | Septic Tank outlet → Soak Pit inlet (~5-7ft) | Carries only clear liquid |
+| Total length | ~12-15 feet | Measure and confirm on site |
 | Depth | 1.5 feet below floor slab level | Deep enough to not interfere with floor mesh |
 | Bedding | 6" sand bed below pipe | Prevents point loading, pipe won't crack |
 | Slope | **1:40 minimum (2.5% fall)** | Water MUST flow by gravity — this is NON-NEGOTIABLE |
 | Joints | Solvent cement (PVC weld) — NOT rubber rings for underground | Rubber rings can leak underground |
-| Direction | From toilet (front-left corner) to soak pit (10ft from building, back or side) | Shortest path, no sharp turns |
+| Direction | From toilet (front-left corner) → tank (5ft away) → soak pit (10ft away) | Shortest path, no sharp turns |
 | Bends | Maximum 2 bends, use 45° bends (NOT 90°) | 90° bends cause blockages |
 | End at toilet | Stub up 6" above floor level (for future commode connection) | Will connect to commode P-trap later |
 | End at soak pit | Enter soak pit wall at top (below cover level) | Effluent enters high, seeps down |
@@ -38,18 +110,24 @@ Once the floor slab (4" RCC with wire mesh) is poured, **you CANNOT access under
 - "Joints mein kya lagaoge?" — Must be solvent cement, NOT just rubber gasket
 - "Pipe ke upar kya daaloge before mitti?" — Should cover with sand first, then earth
 
-### 1.2 Soak Pit Construction
+### 1.3 Soak Pit Construction
 
 | Item | Specification |
 |------|--------------|
-| Location | Minimum 10 feet from building (any side, preferably downhill) |
+| Location | **10 feet from building** (5 feet from septic tank) — any side, preferably downhill |
 | Distance from water source | Minimum 50 feet from borewell/submersible |
 | Diameter | 4 feet |
 | Depth | 6 feet |
 | Wall type | Brick HONEYCOMB (gaps between bricks for water to seep into earth) |
 | Bottom | NO concrete — open earth with 1 foot gravel/stone aggregate |
 | Cover | RCC slab (4.5ft × 4.5ft × 3") with CI inspection opening (12"×12") |
-| Inlet | 4" PVC pipe enters near the top of the pit (1ft below cover) |
+| Inlet | 4" PVC pipe from septic tank overflow enters near the top of the pit (1ft below cover) |
+
+**Note:** Because septic tank pre-treats the waste, only clear liquid reaches the soak pit. This means:
+- Much less smell
+- Pit lasts 15-20 years (vs 5-7 without septic tank)
+- Less groundwater contamination
+- Safer during floods (cleaner overflow)
 
 **Questions to ask:**
 - "Honeycomb brickwork samajh mein aaya? Gap chodna hai!" — Plumber must leave gaps, NOT solid wall
@@ -146,19 +224,26 @@ Tell the plumber these will happen LATER but he should be aware:
 
 | Material | Quantity | Purpose |
 |----------|----------|---------|
-| 4" PVC SWR pipe | 6 meters (20 ft) | Underground drain (toilet → soak pit) |
+| **Sintex/Supreme 1000L septic tank (2-chamber, prefab)** | **1** | **Pre-treats waste before soak pit (NEW)** |
+| 4" PVC SWR pipe | 5 meters (16 ft) | Underground drain (toilet → tank → soak pit) |
 | 4" PVC SWR bends (45°) | 2-3 nos. | Direction changes in drain |
 | 4" PVC SWR Y-junction | 1 | Where basin waste joins soil pipe |
 | PVC solvent cement + cleaner | 1 tin each | Jointing underground pipes |
 | 4" CI floor trap with SS jali | 1 | Toilet floor drain (nahani) |
-| 4" PVC pipes (short, 2ft) | 4 nos. | Rain drain sleeves through plinth |
-| Sand | 0.5 trolley | Pipe bedding (6" under and around pipe) |
+| 4" PVC pipes (short, 2ft) | **6 nos.** | Rain drain sleeves (4) + drain exit (1) + **future grey water exit (1 extra)** |
+| Sand | 0.5 trolley | Pipe bedding + septic tank bed |
 | Bricks (for soak pit) | 200-250 nos. | Honeycomb walls of soak pit |
 | Stone aggregate (20mm) | 5 cft | Bottom of soak pit |
 | Cement | 2 bags | Soak pit cover slab |
 | Steel (8mm) | 5 kg | For soak pit cover reinforcement |
 | CI inspection cover | 1 (12"×12") | Access to soak pit for cleaning |
 | Thread tape | 2 rolls | For any threaded connections |
+
+**NEW: Extra pipe exit for future grey water separation:**
+- 1 additional 4" PVC pipe through plinth wall (on the same side as soak pit)
+- Cost: ₹200 (one PVC piece)
+- Purpose: When first floor kitchen/bathroom is built, grey water (soap water) will exit separately here → can go to a simple sand filter → farm irrigation
+- If you don't put this pipe NOW, you'll have to break the plinth wall later (₹3,000-4,000)
 
 ---
 
@@ -193,33 +278,36 @@ This is the #1 failure point. If slope is wrong:
 - Toilet won't flush
 - Sewage sits in pipe, smells
 - Cannot fix without breaking floor
-**How to verify:** Pour water at toilet stub. It must flow smoothly to soak pit in under 10 seconds for the full length. No pooling.
+**How to verify:** Pour water at toilet stub. It must flow smoothly to septic tank in under 5 seconds. Then from tank to soak pit in another 5 seconds. No pooling.
 
-### 🔴 2. SOAK PIT DISTANCE + CONSTRUCTION
+### 🔴 2. SEPTIC TANK INSTALLATION (NEW)
+- Must be LEVEL (spirit level check) — if tilted, baffles don't work
+- Inlet enters Chamber 1 (closest to toilet)
+- Outlet exits Chamber 2 (closest to soak pit)
+- Top cover MUST be accessible from ground level (for pumping every 5 years)
+- Place on 6" PCC/sand bed (not raw earth — tank will settle unevenly)
+
+### 🔴 3. SOAK PIT DISTANCE + CONSTRUCTION
 - Must be 10ft+ from building (moisture weakens foundation)
 - Must be 50ft+ from borewell (contamination risk)
 - Must have HONEYCOMB brickwork (NOT solid — water needs to seep out)
 - Must have NO concrete bottom (needs to drain into earth)
+- Now receives only PRE-TREATED liquid from septic tank (much safer)
 
-### 🔴 3. PIPE BEDDING (SAND)
+### 🔴 4. PIPE BEDDING (SAND) + SEPTIC TANK BED
 The pipe sits underground with earth fill above it. Without a sand bed:
 - Stones/rocks create point loads
 - Pipe cracks over time
 - Leak goes unnoticed until smell/blockage
 **Insist on:** 6" sand below + 6" sand above pipe before earth fill.
+**Septic tank:** Also needs a level sand/PCC bed (or it tilts over time).
 
-### 🔴 4. FLOOR TRAP POSITION + LEVEL
-Mark the EXACT position on the PCC surface:
-- If too high → stands above floor = trip hazard
-- If too low → creates a depression = water pools
-- If wrong position → commode won't align later
-**Get the plumber to mark it with the mistri TOGETHER** — both need to agree on position.
-
-### 🔴 5. TESTING BEFORE POUR
+### 🔴 5. TESTING BEFORE POUR + FUTURE GREY WATER EXIT
 **Non-negotiable:** 24 hours before floor slab pour:
-- Water test entire drain line
+- Water test entire drain line (toilet → tank → soak pit)
 - Check every joint
-- Verify flow to soak pit
+- Verify flow through septic tank (water in at toilet end → exits at soak pit end)
+- Verify extra plinth pipe exit is in place (for future grey water)
 - Take photos of everything
 Once concrete goes over it — it's sealed forever. No second chance.
 
