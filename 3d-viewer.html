@@ -170,6 +170,7 @@
                 <button id="btn-slab" class="active" onclick="toggleGroup('slab')">Slab</button>
                 <button id="btn-staircase" class="active" onclick="toggleGroup('staircase')">Staircase</button>
                 <button id="btn-paths" class="active" onclick="toggleGroup('paths')" style="background:#f59e0b;color:#000">🚶 Paths</button>
+                <button id="btn-septic" class="active" onclick="toggleGroup('septic')" style="background:#6B4423;color:white">🔧 Septic</button>
             </div>
         </div>
 
@@ -190,6 +191,9 @@
                 <div class="legend-item"><div class="legend-swatch" style="background:#4A3020"></div>Gate (गेट)</div>
                 <div class="legend-item"><div class="legend-swatch" style="background:#4A8A7A"></div>Toilet (शौचालय)</div>
                 <div class="legend-item"><div class="legend-swatch" style="background:#2A6090"></div>Water Tank (टंकी)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#6B4423"></div>Septic Tank (सेप्टिक टैंक)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#3D2814"></div>Soak Pit (सोक पिट)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#E87B35"></div>Underground Pipe (पाइप)</div>
                 <div class="legend-item" style="margin-top:8px; font-weight:bold; font-size:10px;">Circulation Paths (रास्ते):</div>
                 <div class="legend-item"><div class="legend-swatch" style="background:#4ade80"></div>① गेट → गोदाम (Gate→Storage)</div>
                 <div class="legend-item"><div class="legend-swatch" style="background:#22d3ee"></div>② गेट → शौचालय (Gate→Toilet)</div>
@@ -231,7 +235,8 @@
             columns: new THREE.Group(),
             beams: new THREE.Group(),
             slab: new THREE.Group(),
-            staircase: new THREE.Group()
+            staircase: new THREE.Group(),
+            septic: new THREE.Group()
         };
 
         // Scene setup
@@ -315,6 +320,10 @@
         const matToilet = new THREE.MeshLambertMaterial({ color: 0x4A8A7A });
         const matWaterTank = new THREE.MeshLambertMaterial({ color: 0x2A6090 });
         const matShade = new THREE.MeshLambertMaterial({ color: 0x5A7A9A, transparent: true, opacity: 0.6 });
+        const matSeptic = new THREE.MeshLambertMaterial({ color: 0x6B4423 });
+        const matSoakPit = new THREE.MeshLambertMaterial({ color: 0x3D2814 });
+        const matPipeUG = new THREE.MeshLambertMaterial({ color: 0xE87B35 });
+        const matLiquid = new THREE.MeshLambertMaterial({ color: 0x7CB9E8, transparent: true, opacity: 0.5 });
 
         // Helper: create box at center position
         function createBox(w, h, d, mat, x, y, z) {
@@ -528,6 +537,66 @@
 
         const waterTank = createBox(3, 2.5, 2.5, matWaterTank, 18, 15.5 + 2 + 1.25, 3);
         scene.add(waterTank);
+
+        // ============ SEPTIC SYSTEM (underground) ============
+        // Septic tank: 8ft×4ft×5.5ft, 5ft from building (z=-5), near toilet side (x=15-19)
+        // Top of tank at ground level (y=0), bottom at y=-5.5
+
+        // Tank body (external shell)
+        const tankOuter = createBox(4, 5.5, 8, matSeptic, 17, -2.75, -9);
+        groups.septic.add(tankOuter);
+
+        // Tank interior (hollow - slightly smaller, lighter color to show chambers)
+        const matTankInner = new THREE.MeshLambertMaterial({ color: 0x8B6B4A });
+        const tankInner = createBox(3, 4.5, 7.5, matTankInner, 17, -2.5, -9);
+        groups.septic.add(tankInner);
+
+        // Liquid inside tank (blue, transparent)
+        const tankLiquid = createBox(2.8, 3, 7, matLiquid, 17, -2, -9);
+        groups.septic.add(tankLiquid);
+
+        // Baffle wall (divides tank into 2 chambers)
+        const baffleWall = createBox(0.5, 4.5, 3, matSeptic, 17, -2.5, -7.5);
+        groups.septic.add(baffleWall);
+
+        // Manhole covers on top (2 squares at y=0)
+        const matManhole = new THREE.MeshLambertMaterial({ color: 0x555555 });
+        const manhole1 = createBox(1.5, 0.3, 1.5, matManhole, 16, 0.15, -11);
+        groups.septic.add(manhole1);
+        const manhole2 = createBox(1.5, 0.3, 1.5, matManhole, 18, 0.15, -7);
+        groups.septic.add(manhole2);
+
+        // Soak pit: 5ft diameter × 7ft deep, 10ft from building (z=-14)
+        const pitGeo = new THREE.CylinderGeometry(2.5, 2.5, 7, 16);
+        const pitMesh = new THREE.Mesh(pitGeo, matSoakPit);
+        pitMesh.position.set(17, -3.5, -14);
+        pitMesh.castShadow = true;
+        groups.septic.add(pitMesh);
+
+        // Soak pit cover (circular disc at ground level)
+        const pitCoverGeo = new THREE.CylinderGeometry(2.8, 2.8, 0.3, 16);
+        const pitCover = new THREE.Mesh(pitCoverGeo, matManhole);
+        pitCover.position.set(17, 0.15, -14);
+        groups.septic.add(pitCover);
+
+        // Underground pipes (4" = 0.33ft, shown as thin boxes)
+        // Pipe 1: from building (toilet stub at x=18, y=0, z=0) to septic tank inlet (x=17, y=-1, z=-5)
+        const pipe1 = createBox(0.33, 0.33, 5, matPipeUG, 17.5, -0.5, -2.5);
+        groups.septic.add(pipe1);
+
+        // Pipe 2: from septic tank outlet (x=17, y=-1.5, z=-13) to soak pit (x=17, y=-1.5, z=-14)
+        const pipe2 = createBox(0.33, 0.33, 3, matPipeUG, 17, -1, -12.5);
+        groups.septic.add(pipe2);
+
+        // Ground surface indicator (transparent plane showing "underground" area)
+        const matGroundCut = new THREE.MeshLambertMaterial({ color: 0x4A6B3A, transparent: true, opacity: 0.3 });
+        const groundCut = createBox(10, 0.05, 20, matGroundCut, 17, -0.02, -10);
+        groups.septic.add(groundCut);
+
+        // Septic labels
+        scene.add(createLabel('सेप्टिक टैंक (8ft×4ft×5.5ft)', 17, 1, -9));
+        scene.add(createLabel('सोक पिट (5ft×7ft)', 17, 1, -14));
+        scene.add(createLabel('4" PVC SWR पाइप', 17.5, 0.5, -2.5));
 
         // SHUTTER (10ft wide × 10ft high, at x=2.5-12.5 = CENTER when viewed from front)
         const shutter = createBox(10, 10, 0.1, matShutter, 7.5, 3 + 5, 0);

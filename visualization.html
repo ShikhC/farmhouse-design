@@ -172,6 +172,7 @@
             <button onclick="showView('structure')">Structure</button>
             <button onclick="showView('electrical')">Electrical</button>
             <button onclick="showView('plumbing')">Plumbing</button>
+            <button onclick="showView('septic')">सेप्टिक सिस्टम</button>
             <button onclick="showView('future')">Future Provisions</button>
             <button onclick="showView('construction')">Construction Steps</button>
         </div>
@@ -1681,6 +1682,176 @@
                 <p>Water flows by gravity from rooftop tank to all fixtures. Underground drain pipes must be laid BEFORE the floor slab is poured.
                 The vent pipe (2" going above roof) is critical — without it, toilet drains slowly due to air lock. Floor drain channel runs the length of
                 the storage for wash-down cleaning. 4 roof downpipes handle monsoon rainwater — directed away from the building to prevent plinth erosion.</p>
+            </div>
+        </div>
+
+        <!-- SEPTIC SYSTEM VIEW -->
+        <div class="view" id="view-septic">
+            <div class="svg-container">
+                <h3 style="text-align:center; color:#E87B35;">सेप्टिक सिस्टम — साइट प्लान</h3>
+                <svg viewBox="-60 -40 720 700" width="100%" style="max-width:650px; height:auto;">
+                    <!-- Building outline -->
+                    <rect x="0" y="0" width="480" height="600" fill="none" stroke="#888" stroke-width="2" stroke-dasharray="8,4" class="clickable" data-info="भवन की सीमा (40ft × 50ft)"/>
+                    <text x="240" y="-10" text-anchor="middle" fill="#888" font-size="14">भवन (40ft × 50ft)</text>
+
+                    <!-- Toilet location -->
+                    <circle cx="80" cy="80" r="12" fill="#2BA5B5" class="clickable" data-info="शौचालय — यहाँ से 4 inch PVC pipe सेप्टिक टैंक तक जाएगा"/>
+                    <text x="80" y="110" text-anchor="middle" fill="#2BA5B5" font-size="12">शौचालय</text>
+
+                    <!-- 4" pipe from toilet to septic tank (going down and out) -->
+                    <line x1="80" y1="92" x2="80" y2="600" stroke="#E87B35" stroke-width="3" stroke-dasharray="10,5" class="clickable" data-info="4 inch PVC SWR पाइप — 1:40 ढलान (Solvent cement joints)"/>
+                    <line x1="80" y1="600" x2="80" y2="720" stroke="#E87B35" stroke-width="3" stroke-dasharray="10,5"/>
+                    <text x="95" y="650" fill="#E87B35" font-size="11">← 1:40 ढलान →</text>
+
+                    <!-- Distance label: building to tank -->
+                    <line x1="140" y1="600" x2="140" y2="720" stroke="#ccc" stroke-width="1" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+                    <text x="155" y="665" fill="#ccc" font-size="11">5 ft</text>
+
+                    <!-- Septic Tank -->
+                    <rect x="-15" y="720" width="190" height="96" fill="none" stroke="#6B4423" stroke-width="3" class="clickable" data-info="RCC सेप्टिक टैंक — 8ft × 4ft × 5.5ft, M20 concrete, 2 चैम्बर"/>
+                    <!-- Baffle wall divider -->
+                    <line x1="112" y1="720" x2="112" y2="816" stroke="#6B4423" stroke-width="2" stroke-dasharray="4,3"/>
+                    <text x="45" y="760" text-anchor="middle" fill="#D4A574" font-size="10">चैम्बर 1</text>
+                    <text x="45" y="775" text-anchor="middle" fill="#D4A574" font-size="9">(5ft)</text>
+                    <text x="150" y="760" text-anchor="middle" fill="#D4A574" font-size="10">चैम्बर 2</text>
+                    <text x="150" y="775" text-anchor="middle" fill="#D4A574" font-size="9">(2.5ft)</text>
+                    <text x="80" y="845" text-anchor="middle" fill="#6B4423" font-size="11">सेप्टिक टैंक (RCC, 8ft × 4ft × 5.5ft)</text>
+
+                    <!-- Pipe from tank to soak pit -->
+                    <line x1="175" y1="768" x2="320" y2="768" stroke="#E87B35" stroke-width="3" stroke-dasharray="10,5" class="clickable" data-info="4 inch outlet pipe — टैंक से सोक पिट तक"/>
+                    <line x1="320" y1="768" x2="320" y2="860" stroke="#E87B35" stroke-width="3" stroke-dasharray="10,5"/>
+
+                    <!-- Distance label: tank to soak pit -->
+                    <text x="250" y="755" fill="#ccc" font-size="11">5 ft</text>
+
+                    <!-- Soak Pit -->
+                    <circle cx="320" cy="920" r="60" fill="none" stroke="#3D2814" stroke-width="3" class="clickable" data-info="सोक पिट — 5ft गोल × 7ft गहरा, Honeycomb ईंट, तल में 1ft गिट्टी"/>
+                    <text x="320" y="915" text-anchor="middle" fill="#3D2814" font-size="11">सोक पिट</text>
+                    <text x="320" y="932" text-anchor="middle" fill="#3D2814" font-size="10">(5ft × 7ft)</text>
+                    <text x="320" y="1000" text-anchor="middle" fill="#3D2814" font-size="10">सोक पिट (5ft × 7ft)</text>
+
+                    <!-- Distance from building to soak pit -->
+                    <line x1="360" y1="600" x2="360" y2="920" stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="375" y="760" fill="#ccc" font-size="11">10 ft</text>
+
+                    <!-- Borewell distance indicator -->
+                    <text x="500" y="770" fill="#E87B35" font-size="12">बोरवेल से 50ft दूर →</text>
+                    <line x1="490" y1="765" x2="500" y2="765" stroke="#E87B35" stroke-width="1.5" marker-end="url(#arrowEnd)"/>
+
+                    <!-- Dragon fruit zone -->
+                    <text x="420" y="200" fill="#4CAF50" font-size="12">🐉 Dragon Fruit</text>
+                    <text x="420" y="218" fill="#4CAF50" font-size="10">(25-30ft दूर, सुरक्षित)</text>
+                    <rect x="410" y="230" width="120" height="80" fill="none" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="5,3" rx="5"/>
+                </svg>
+            </div>
+
+            <div class="svg-container">
+                <h3 style="text-align:center; color:#6B4423;">सेप्टिक टैंक — काट दृश्य (Cross Section)</h3>
+                <svg viewBox="0 0 600 400" width="100%" style="max-width:600px; height:auto;">
+                    <!-- External outline -->
+                    <rect x="60" y="30" width="480" height="340" fill="none" stroke="#888" stroke-width="3" class="clickable" data-info="टैंक बाहरी माप: 8ft × 5.5ft (RCC M20 concrete)"/>
+
+                    <!-- Base slab (6") -->
+                    <rect x="60" y="340" width="480" height="30" fill="#4A4A55" class="clickable" data-info="Base slab: 6 inch RCC + 3 inch PCC bed नीचे — 10mm@6 inch steel"/>
+                    <text x="300" y="360" text-anchor="middle" fill="#fff" font-size="10">6&quot; base slab (RCC + 3&quot; PCC bed)</text>
+
+                    <!-- Top slab (6") -->
+                    <rect x="60" y="30" width="480" height="30" fill="#4A4A55" class="clickable" data-info="Top slab: 6 inch RCC — 2 मैनहोल (18 inch × 18 inch) CI ढक्कन"/>
+                    <!-- Manhole openings -->
+                    <rect x="160" y="30" width="50" height="30" fill="#333" stroke="#888" stroke-width="1" class="clickable" data-info="मैनहोल 1: चैम्बर 1 की सफाई के लिए (18 inch × 18 inch CI ढक्कन)"/>
+                    <rect x="400" y="30" width="50" height="30" fill="#333" stroke="#888" stroke-width="1" class="clickable" data-info="मैनहोल 2: चैम्बर 2 की जाँच के लिए (18 inch × 18 inch CI ढक्कन)"/>
+                    <text x="185" y="22" text-anchor="middle" fill="#888" font-size="9">18&quot;×18&quot; मैनहोल</text>
+                    <text x="425" y="22" text-anchor="middle" fill="#888" font-size="9">18&quot;×18&quot; मैनहोल</text>
+
+                    <!-- Left wall (6") -->
+                    <rect x="60" y="60" width="25" height="280" fill="#666" class="clickable" data-info="दीवार: 6 inch RCC — 8mm@8 inch steel, अंदर waterproof coating"/>
+                    <!-- Right wall (6") -->
+                    <rect x="515" y="60" width="25" height="280" fill="#666" class="clickable" data-info="दीवार: 6 inch RCC — 8mm@8 inch steel, अंदर waterproof coating"/>
+
+                    <!-- Baffle wall -->
+                    <rect x="370" y="60" width="20" height="280" fill="#777" class="clickable" data-info="Baffle दीवार — 6 inch RCC, 2/3 गहराई पर 6 inch × 6 inch openings"/>
+                    <!-- Openings in baffle wall -->
+                    <rect x="370" y="200" width="20" height="18" fill="#222" stroke="#aaa" stroke-width="1"/>
+                    <rect x="370" y="225" width="20" height="18" fill="#222" stroke="#aaa" stroke-width="1"/>
+                    <rect x="370" y="250" width="20" height="18" fill="#222" stroke="#aaa" stroke-width="1"/>
+
+                    <!-- Sludge layer - Chamber 1 (thicker) -->
+                    <rect x="85" y="290" width="285" height="50" fill="#3D2200" opacity="0.8" class="clickable" data-info="कीचड़ (Sludge) — ठोस पदार्थ यहाँ जमा होता है, bacteria decompose करते हैं"/>
+                    <!-- Sludge layer - Chamber 2 (thinner) -->
+                    <rect x="390" y="310" width="125" height="30" fill="#3D2200" opacity="0.6" class="clickable" data-info="चैम्बर 2 में कम कीचड़ — ज़्यादातर साफ पानी"/>
+
+                    <!-- Clear liquid - Chamber 1 -->
+                    <rect x="85" y="130" width="285" height="160" fill="#7CB9E8" opacity="0.3" class="clickable" data-info="साफ होता हुआ पानी — bacteria यहाँ काम करते हैं"/>
+                    <!-- Clear liquid - Chamber 2 -->
+                    <rect x="390" y="130" width="125" height="180" fill="#7CB9E8" opacity="0.4" class="clickable" data-info="साफ पानी — यहाँ से outlet pipe द्वारा सोक पिट में जाता है"/>
+
+                    <!-- Scum layer (wavy line) - Chamber 1 -->
+                    <path d="M 85 130 Q 120 124, 155 130 Q 190 136, 225 130 Q 260 124, 295 130 Q 330 136, 370 130" fill="none" stroke="#8899AA" stroke-width="2.5" class="clickable" data-info="Scum layer — तैरने वाले पदार्थ (grease, soap) ऊपर जमा होते हैं"/>
+                    <!-- Scum layer - Chamber 2 -->
+                    <path d="M 390 130 Q 420 125, 450 130 Q 480 135, 515 130" fill="none" stroke="#8899AA" stroke-width="2"/>
+
+                    <!-- Inlet pipe with T-piece -->
+                    <line x1="30" y1="110" x2="85" y2="110" stroke="#E87B35" stroke-width="4" class="clickable" data-info="Inlet pipe: 4 inch PVC SWR — top से 1ft नीचे, T-piece लगा है ताकि scum बाहर न जाए"/>
+                    <line x1="85" y1="90" x2="85" y2="170" stroke="#E87B35" stroke-width="3"/>
+                    <text x="30" y="100" fill="#E87B35" font-size="10">Inlet 4&quot;</text>
+
+                    <!-- Outlet pipe with T-piece -->
+                    <line x1="515" y1="140" x2="570" y2="140" stroke="#E87B35" stroke-width="4" class="clickable" data-info="Outlet pipe: 4 inch PVC SWR — top से 1.5ft नीचे, T-piece लगा है"/>
+                    <line x1="515" y1="120" x2="515" y2="200" stroke="#E87B35" stroke-width="3"/>
+                    <text x="545" y="130" fill="#E87B35" font-size="10">Outlet 4&quot;</text>
+
+                    <!-- Dimension arrows and labels -->
+                    <!-- Width -->
+                    <line x1="85" y1="385" x2="515" y2="385" stroke="#ccc" stroke-width="1" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+                    <text x="300" y="398" text-anchor="middle" fill="#ccc" font-size="11">← 7.5ft (अंदर) →</text>
+
+                    <!-- Height -->
+                    <line x1="555" y1="60" x2="555" y2="340" stroke="#ccc" stroke-width="1"/>
+                    <text x="570" y="200" fill="#ccc" font-size="10" transform="rotate(90,570,200)">4.5ft (अंदर)</text>
+
+                    <!-- Wall label -->
+                    <text x="50" y="200" text-anchor="end" fill="#aaa" font-size="9">6&quot; दीवार</text>
+
+                    <!-- Chamber labels -->
+                    <text x="220" y="80" text-anchor="middle" fill="#D4A574" font-size="11">चैम्बर 1 — 5ft (ठोस जमा होता है)</text>
+                    <text x="450" y="80" text-anchor="middle" fill="#D4A574" font-size="11">चैम्बर 2 — 2.5ft (साफ पानी)</text>
+                </svg>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background:#6B4423"></div>RCC सेप्टिक टैंक</div>
+                <div class="legend-item"><div class="legend-color" style="background:#3D2814"></div>सोक पिट (honeycomb ईंट)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#E87B35"></div>4" PVC SWR पाइप</div>
+                <div class="legend-item"><div class="legend-color" style="background:#4A4A55"></div>RCC दीवार/स्लैब (6")</div>
+                <div class="legend-item"><div class="legend-color" style="background:#3D2200"></div>कीचड़ (Sludge)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#7CB9E8"></div>साफ पानी (Clear liquid)</div>
+                <div class="legend-item"><div class="legend-color" style="background:#888"></div>मैनहोल ढक्कन (CI)</div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>टैंक का आकार</h4>
+                    <p>बाहर: 8ft × 4ft × 5.5ft<br>अंदर: 7.5ft × 3ft × 4.5ft<br>क्षमता: ~2800 लीटर<br>2 चैम्बर (5ft + 2.5ft)</p>
+                </div>
+                <div class="spec-card">
+                    <h4>निर्माण विवरण</h4>
+                    <p>दीवार: 6" RCC (M20)<br>Base slab: 6" RCC + 3" PCC bed<br>Top slab: 6" RCC<br>Steel: 10mm@6" (base), 8mm@8" (walls)<br>अंदर: Waterproof coating (Dr. Fixit)</p>
+                </div>
+                <div class="spec-card">
+                    <h4>पाइप विवरण</h4>
+                    <p>Inlet: 4" PVC SWR (top से 1ft नीचे)<br>Outlet: 4" PVC SWR (top से 1.5ft नीचे)<br>Slope: 1:40 minimum<br>Joints: Solvent cement only<br>Bends: 45° only (90° नहीं!)</p>
+                </div>
+                <div class="spec-card">
+                    <h4>सोक पिट</h4>
+                    <p>आकार: 5ft गोल × 7ft गहरा<br>दीवार: Honeycomb ईंट (gap)<br>तल: 1ft गिट्टी (concrete नहीं!)<br>ढक्कन: RCC + CI inspection lid<br>दूरी: इमारत 10ft, बोरवेल 50ft</p>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h3>सेप्टिक टैंक सिस्टम — कैसे काम करता है</h3>
+                <p>शौचालय/रसोई/बाथरूम का सारा गंदा पानी → 4" PVC SWR पाइप (1:40 ढलान) → सेप्टिक टैंक (चैम्बर 1 में ठोस जमा होता है, bacteria खाते हैं, चैम्बर 2 से साफ पानी निकलता है) → सोक पिट (साफ पानी ज़मीन में seep करता है)।
+                Water table 20ft पर है — 13ft soil filtration gap safe है। Dragon fruit 25-30ft दूर रखना पर्याप्त है।
+                टैंक 4-5 साल में एक बार pump करना (₹3,000-4,000 tanker)। सोक पिट 15-20 साल चलेगा।</p>
             </div>
         </div>
 
