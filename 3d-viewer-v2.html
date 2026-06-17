@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>खेत का गोदाम — 3D Model (v2 with First Floor)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .header {
+            background: rgba(22, 33, 62, 0.9);
+            padding: 12px 20px;
+            border-bottom: 1px solid #0f3460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+        }
+        .header h1 {
+            font-size: 1.1rem;
+            color: #e94560;
+            font-weight: 600;
+        }
+        .header .subtitle {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        .controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .controls button {
+            padding: 6px 12px;
+            border: 1px solid #0f3460;
+            background: #16213e;
+            color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            transition: all 0.2s;
+            pointer-events: auto;
+        }
+        .controls button:hover { background: #0f3460; }
+        .controls button.active {
+            background: #e94560;
+            border-color: #e94560;
+            color: white;
+        }
+        .legend-panel {
+            position: absolute;
+            top: 60px;
+            right: 12px;
+            background: rgba(22, 33, 62, 0.92);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 12px 14px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+            max-width: 240px;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .legend-panel.collapsed .legend-body { display: none; }
+        .legend-panel .legend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e94560;
+        }
+        .legend-panel .legend-header span { font-size: 0.9rem; }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        .legend-swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.15);
+            flex-shrink: 0;
+        }
+        .dimensions-panel {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(22, 33, 62, 0.9);
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 10px 14px;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+            font-size: 0.75rem;
+        }
+        .dimensions-panel h3 {
+            color: #e94560;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+        .dim-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 3px;
+        }
+        .dim-label { color: #aaa; }
+        .dim-value { color: #fff; font-weight: 500; }
+        .label-2d {
+            position: absolute;
+            color: #fff;
+            font-size: 11px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 6px;
+            border-radius: 3px;
+            white-space: nowrap;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 0.95rem; }
+            .controls button { padding: 5px 8px; font-size: 0.7rem; }
+            .legend-panel { max-width: 180px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="overlay">
+        <div class="header">
+            <div>
+                <h1>खेत का गोदाम — 3D Model (v2)</h1>
+                <div class="subtitle">Farm Storage Building · Moradabad · 20ft × 25ft · Ground + First Floor</div>
+            </div>
+            <div class="controls">
+                <button id="btn-walls" class="active" onclick="toggleGroup('walls')">Walls</button>
+                <button id="btn-columns" class="active" onclick="toggleGroup('columns')">Columns</button>
+                <button id="btn-beams" class="active" onclick="toggleGroup('beams')">Beams</button>
+                <button id="btn-slab" class="active" onclick="toggleGroup('slab')">Slab</button>
+                <button id="btn-staircase" class="active" onclick="toggleGroup('staircase')">Staircase</button>
+                <button id="btn-paths" class="active" onclick="toggleGroup('paths')" style="background:#f59e0b;color:#000">Paths</button>
+                <button id="btn-septic" class="active" onclick="toggleGroup('septic')" style="background:#6B4423;color:white">Septic</button>
+                <button id="btn-firstFloor" class="active" onclick="toggleGroup('firstFloor')" style="background:#7C3AED;color:white">1st Floor</button>
+                <button id="btn-labels" class="active" onclick="toggleLabels()" style="background:#333;color:#fff">Labels</button>
+            </div>
+        </div>
+
+        <div class="legend-panel" id="legend-panel">
+            <div class="legend-header" onclick="toggleLegend()">
+                <span>Legend</span>
+                <span id="legend-arrow">▼</span>
+            </div>
+            <div class="legend-body">
+                <div class="legend-item" style="margin-bottom:8px; font-weight:bold; font-size:10px;">Ground Floor:</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#8B6914"></div>Plinth (चबूतरा)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#F5E6D3"></div>Walls (दीवारें)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A4A50"></div>Columns (स्तम्भ)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#5A5A60"></div>Beams (बीम)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#6B6B70"></div>GF Ceiling Slab (छत)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#7A6B5A"></div>Staircase (सीढ़ी)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#8A7B65"></div>Ramp (ढलान)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#2A2A30"></div>Shutter (शटर)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A3020"></div>Gate (गेट)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A8A7A"></div>Toilet (शौचालय)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#6B4423"></div>Septic Tank (सेप्टिक टैंक)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#3D2814"></div>Soak Pit (सोक पिट)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#E87B35"></div>Underground Pipe (पाइप)</div>
+                <div class="legend-item" style="margin-top:8px; font-weight:bold; font-size:10px;">First Floor (1F):</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#F5E6D3; opacity:0.6"></div>1F Room Walls (कमरा)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A7A3A; opacity:0.7"></div>1F Kitchen (रसोई)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#3A7A7A; opacity:0.7"></div>1F Bathroom (शौचालय)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#7A6B5A; opacity:0.8"></div>Sloped Stair-Slab (छत सीढ़ी)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4A4A50"></div>C5/C8 Extended (roof support)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#5A9A7A; opacity:0.5"></div>Open Terrace (खुली छत, no roof)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#6B6B70; opacity:0.5"></div>1F Roof Slab (छत)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#2A6090"></div>Water Tank (पानी की टंकी)</div>
+                <div class="legend-item" style="margin-top:8px; font-weight:bold; font-size:10px;">Circulation Paths (रास्ते):</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#4ade80"></div>① गेट → गोदाम (Gate→Storage)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#22d3ee"></div>② गेट → शौचालय (Gate→Toilet)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#f59e0b"></div>③ गेट → छत (Gate→Roof)</div>
+                <div class="legend-item"><div class="legend-swatch" style="background:#d946ef"></div>④ गोदाम → शौचालय (Storage→Toilet)</div>
+            </div>
+        </div>
+
+        <div class="dimensions-panel">
+            <h3>Key Dimensions</h3>
+            <div class="dim-row"><span class="dim-label">Width (x)</span><span class="dim-value">20 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Depth (z)</span><span class="dim-value">25 ft</span></div>
+            <div class="dim-row"><span class="dim-label">GF Room Height</span><span class="dim-value">12 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Plinth</span><span class="dim-value">3 ft</span></div>
+            <div class="dim-row"><span class="dim-label">GF Total</span><span class="dim-value">15 ft</span></div>
+            <div class="dim-row"><span class="dim-label">1F Height</span><span class="dim-value">12 ft</span></div>
+            <div class="dim-row"><span class="dim-label">1F Roof at</span><span class="dim-value">27.5 ft</span></div>
+            <div class="dim-row"><span class="dim-label">Shade Cantilever</span><span class="dim-value">5 ft</span></div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        try {
+
+        // Groups for toggling
+        const groups = {
+            walls: new THREE.Group(),
+            columns: new THREE.Group(),
+            beams: new THREE.Group(),
+            slab: new THREE.Group(),
+            staircase: new THREE.Group(),
+            septic: new THREE.Group(),
+            firstFloor: new THREE.Group()
+        };
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
+        scene.fog = new THREE.Fog(0x1a1a2e, 80, 200);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 500);
+        camera.position.set(10, 20, -40);
+        camera.lookAt(10, 12, 12);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // CSS2D Renderer for labels
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0';
+        labelRenderer.domElement.style.left = '0';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.getElementById('canvas-container').appendChild(labelRenderer.domElement);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.autoRotateSpeed = 0.5;
+        controls.target.set(10, 12, 5);
+        controls.maxPolarAngle = Math.PI / 2.05;
+        controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffeedd, 1.0);
+        dirLight.position.set(30, 50, 20);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 150;
+        dirLight.shadow.camera.left = -50;
+        dirLight.shadow.camera.right = 50;
+        dirLight.shadow.camera.top = 50;
+        dirLight.shadow.camera.bottom = -50;
+        scene.add(dirLight);
+
+        const hemiLight = new THREE.HemisphereLight(0x8888ff, 0x444422, 0.3);
+        scene.add(hemiLight);
+
+        // Ground plane
+        const groundGeo = new THREE.PlaneGeometry(200, 200);
+        const groundMat = new THREE.MeshLambertMaterial({ color: 0x2A4A2A });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // Grid helper
+        const gridHelper = new THREE.GridHelper(100, 50, 0x335533, 0x223322);
+        gridHelper.position.y = 0.01;
+        scene.add(gridHelper);
+
+        // Materials
+        const matPlinth = new THREE.MeshLambertMaterial({ color: 0x8B6914 });
+        const matWall = new THREE.MeshLambertMaterial({ color: 0xF5E6D3 });
+        const matColumn = new THREE.MeshLambertMaterial({ color: 0x4A4A50 });
+        const matBeam = new THREE.MeshLambertMaterial({ color: 0x5A5A60 });
+        const matSlab = new THREE.MeshLambertMaterial({ color: 0x6B6B70 });
+        const matStaircase = new THREE.MeshLambertMaterial({ color: 0x7A6B5A });
+        const matRamp = new THREE.MeshLambertMaterial({ color: 0x8A7B65, side: THREE.DoubleSide });
+        const matShutter = new THREE.MeshLambertMaterial({ color: 0x2A2A30, metalness: 0.6 });
+        const matGate = new THREE.MeshLambertMaterial({ color: 0x4A3020 });
+        const matToilet = new THREE.MeshLambertMaterial({ color: 0x4A8A7A });
+        const matWaterTank = new THREE.MeshLambertMaterial({ color: 0x2A6090 });
+        const matShade = new THREE.MeshLambertMaterial({ color: 0x5A7A9A, transparent: true, opacity: 0.6 });
+        const matSeptic = new THREE.MeshLambertMaterial({ color: 0x6B4423 });
+        const matSoakPit = new THREE.MeshLambertMaterial({ color: 0x3D2814 });
+        const matPipeUG = new THREE.MeshLambertMaterial({ color: 0xE87B35 });
+        const matLiquid = new THREE.MeshLambertMaterial({ color: 0x7CB9E8, transparent: true, opacity: 0.5 });
+
+        // Helper: create box at center position
+        function createBox(w, h, d, mat, x, y, z) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        // LABELS (CSS2D) - defined BEFORE any usage
+        function createLabel(text, x, y, z) {
+            const div = document.createElement('div');
+            div.className = 'label-2d';
+            div.textContent = text;
+            const label = new CSS2DObject(div);
+            label.position.set(x, y, z);
+            return label;
+        }
+
+        // Coordinate system:
+        // x: 0 to 20 (when viewed from front: x=20 is LEFT, x=0 is RIGHT)
+        // y: bottom(0) to top
+        // z: front(0) to back(25)
+
+        // PLINTH: 20ft x 25ft x 3ft (the building platform)
+        const plinth = createBox(20, 3, 25, matPlinth, 10, 1.5, 12.5);
+        scene.add(plinth);
+
+        // WALLS (on top of plinth: base y=3, top y=15)
+        const wallThickness = 0.75;
+        const wallHeight = 12;
+        const wallBaseY = 3 + wallHeight / 2;
+
+        // Back wall: full, at z=25
+        const backWall = createBox(20, wallHeight, wallThickness, matWall, 10, wallBaseY, 25 - wallThickness / 2);
+        groups.walls.add(backWall);
+
+        // Left wall: full, at x=0
+        const leftWall = createBox(wallThickness, wallHeight, 25, matWall, wallThickness / 2, wallBaseY, 12.5);
+        groups.walls.add(leftWall);
+
+        // Right wall: full, at x=20
+        const rightWall = createBox(wallThickness, wallHeight, 25, matWall, 20 - wallThickness / 2, wallBaseY, 12.5);
+        groups.walls.add(rightWall);
+
+        // Front wall at z=0, with openings:
+        const frontWallAboveGate = createBox(3, 5, wallThickness, matWall, 18.5, 3 + 7 + 2.5, wallThickness / 2);
+        groups.walls.add(frontWallAboveGate);
+
+        const frontWallMid1 = createBox(4.5, wallHeight, wallThickness, matWall, 14.75, wallBaseY, wallThickness / 2);
+        groups.walls.add(frontWallMid1);
+
+        const frontWallAboveShutter = createBox(10, 2, wallThickness, matWall, 7.5, 3 + 10 + 1, wallThickness / 2);
+        groups.walls.add(frontWallAboveShutter);
+
+        const frontWallRight = createBox(2.5, wallHeight, wallThickness, matWall, 1.25, wallBaseY, wallThickness / 2);
+        groups.walls.add(frontWallRight);
+
+        // COLUMNS (0.75ft x x 1ft z x 12ft tall)
+        const colW = 0.75, colD = 1.0, colH = 12;
+        function addColumn(x, z) {
+            const col = createBox(colW, colH, colD, matColumn, x, 3 + colH / 2, z);
+            groups.columns.add(col);
+        }
+
+        addColumn(colW / 2, 25 - colD / 2);   // C1: back-left
+        addColumn(20 - colW / 2, 25 - colD / 2); // C2: back-right
+        addColumn(colW / 2, 9);               // C3: left wall, 9ft from front (16ft from back) — aligns with 1F room partition
+        addColumn(20 - colW / 2, 9);          // C4: right wall, 9ft from front — aligns with 1F room partition
+        addColumn(20 - colW / 2, colD / 2);   // C5: front-left corner
+        addColumn(12.5, colD / 2);            // C6: front, stair/shutter boundary
+        addColumn(2.5, colD / 2);             // C7: front, shutter right edge
+        addColumn(colW / 2, colD / 2);
+
+        // BEAMS (at top of columns, y = 15)
+        const backBeam = createBox(20, 1.67, 0.75, matBeam, 10, 15 - 1.67 / 2, 25 - 0.75 / 2);
+        groups.beams.add(backBeam);
+
+        const midBeam = createBox(20, 1.67, 0.75, matBeam, 10, 15 - 1.67 / 2, 9);
+        groups.beams.add(midBeam);
+
+        const leftBeam = createBox(0.75, 1.25, 25, matBeam, 0.75 / 2, 15 - 1.25 / 2, 12.5);
+        groups.beams.add(leftBeam);
+
+        const rightBeam = createBox(0.75, 1.25, 25, matBeam, 20 - 0.75 / 2, 15 - 1.25 / 2, 12.5);
+        groups.beams.add(rightBeam);
+
+        const frontBeam = createBox(20, 1.25, 0.75, matBeam, 10, 15 - 1.25 / 2, 0.75 / 2);
+        groups.beams.add(frontBeam);
+
+        // GF CEILING / 1F FLOOR SLAB: 20ft x 30ft (z=-5 to z=25) x 0.5ft at y=15
+        const roofSlab = createBox(20, 0.5, 30, matSlab, 10, 15 + 0.25, 10);
+        groups.slab.add(roofSlab);
+
+        // Shade indication (transparent overlay on cantilever portion)
+        const shadeOverlay = createBox(20, 0.1, 5, matShade, 10, 15.6, -2.5);
+        groups.slab.add(shadeOverlay);
+
+        // STAIRCASE (front-LEFT corner = x=12.5-20)
+        const stepHeight = 0.6;
+        const stepDepthF1 = 0.75;
+
+        // Flight 1 (x=12.5 to x=16, going back from z=3 to z=10)
+        for (let i = 0; i < 10; i++) {
+            const step = createBox(3.5, stepHeight, stepDepthF1, matStaircase,
+                14.25, 3 + stepHeight * (i + 0.5), 3 + stepDepthF1 * i + stepDepthF1 / 2);
+            groups.staircase.add(step);
+        }
+        // Landing at z=10.5, y=9
+        const landing = createBox(7.5, 0.5, 1.5, matStaircase, 16.25, 9, 10.75);
+        groups.staircase.add(landing);
+
+        // Flight 2 (x=16.5 to x=20, coming front from z=10 to z=3)
+        for (let i = 0; i < 10; i++) {
+            const step = createBox(3.5, stepHeight, stepDepthF1, matStaircase,
+                18.25, 9 + stepHeight * (i + 0.5), 10.5 - stepDepthF1 * i - stepDepthF1 / 2);
+            groups.staircase.add(step);
+        }
+
+        // RAMP
+        const rampShape = new THREE.BufferGeometry();
+        const rampVerts = new Float32Array([
+            1.5, 3.0, 0,
+            13.5, 3.0, 0,
+            13.5, 0.0, -8,
+            1.5, 0.0, -8,
+            1.5, 2.7, 0,
+            13.5, 2.7, 0,
+            13.5, 0.0, -8,
+            1.5, 0.0, -8,
+        ]);
+        const rampIndices = new Uint16Array([
+            0,2,1, 0,3,2,
+            4,5,6, 4,6,7,
+            0,1,5, 0,5,4,
+            3,7,6, 3,6,2,
+            0,4,7, 0,7,3,
+            1,2,6, 1,6,5,
+        ]);
+        rampShape.setAttribute('position', new THREE.BufferAttribute(rampVerts, 3));
+        rampShape.setIndex(new THREE.BufferAttribute(rampIndices, 1));
+        rampShape.computeVertexNormals();
+        const rampMesh = new THREE.Mesh(rampShape, matRamp);
+        rampMesh.castShadow = true;
+        rampMesh.receiveShadow = true;
+        scene.add(rampMesh);
+
+        // GATE STEPS
+        const gateStepDepth = 0.85;
+        for (let i = 0; i < 5; i++) {
+            const stepY = 3 - (i + 1) * 0.6;
+            const stepZ = -(i * gateStepDepth);
+            const gs = createBox(3, 0.6, gateStepDepth, matStaircase,
+                18.5, stepY + 0.3, stepZ - gateStepDepth / 2);
+            scene.add(gs);
+        }
+
+        // TOILET (under Flight 2, x=16.5-20, z=3 to z=8)
+        const toiletWall1 = createBox(3.5, 8, 0.3, matToilet, 18.25, 3 + 4, 8);
+        const toiletWall2 = createBox(0.3, 8, 5, matToilet, 16.5, 3 + 4, 5.5);
+        const toiletWall3 = createBox(3.5, 8, 0.3, matToilet, 18.25, 3 + 4, 3);
+        scene.add(toiletWall1);
+        scene.add(toiletWall2);
+        scene.add(toiletWall3);
+
+        // LOBBY
+        const matLobby = new THREE.MeshLambertMaterial({ color: 0x5A7A5A });
+        const lobbyFloor = createBox(7.5, 0.15, 3, matLobby, 16.25, 3.08, 1.5);
+        scene.add(lobbyFloor);
+
+        // ============ SEPTIC SYSTEM (underground) ============
+        const tankOuter = createBox(4, 5.5, 8, matSeptic, 17, -2.75, -9);
+        groups.septic.add(tankOuter);
+
+        const matTankInner = new THREE.MeshLambertMaterial({ color: 0x8B6B4A });
+        const tankInner = createBox(3, 4.5, 7.5, matTankInner, 17, -2.5, -9);
+        groups.septic.add(tankInner);
+
+        const tankLiquid = createBox(2.8, 3, 7, matLiquid, 17, -2, -9);
+        groups.septic.add(tankLiquid);
+
+        const baffleWall = createBox(0.5, 4.5, 3, matSeptic, 17, -2.5, -7.5);
+        groups.septic.add(baffleWall);
+
+        const matManhole = new THREE.MeshLambertMaterial({ color: 0x555555 });
+        const manhole1 = createBox(1.5, 0.3, 1.5, matManhole, 16, 0.15, -11);
+        groups.septic.add(manhole1);
+        const manhole2 = createBox(1.5, 0.3, 1.5, matManhole, 18, 0.15, -7);
+        groups.septic.add(manhole2);
+
+        const pitGeo = new THREE.CylinderGeometry(2.5, 2.5, 7, 16);
+        const pitMesh = new THREE.Mesh(pitGeo, matSoakPit);
+        pitMesh.position.set(17, -3.5, -14);
+        pitMesh.castShadow = true;
+        groups.septic.add(pitMesh);
+
+        const pitCoverGeo = new THREE.CylinderGeometry(2.8, 2.8, 0.3, 16);
+        const pitCover = new THREE.Mesh(pitCoverGeo, matManhole);
+        pitCover.position.set(17, 0.15, -14);
+        groups.septic.add(pitCover);
+
+        const pipe1 = createBox(0.33, 0.33, 5, matPipeUG, 17.5, -0.5, -2.5);
+        groups.septic.add(pipe1);
+
+        const pipe2 = createBox(0.33, 0.33, 3, matPipeUG, 17, -1, -12.5);
+        groups.septic.add(pipe2);
+
+        const matGroundCut = new THREE.MeshLambertMaterial({ color: 0x4A6B3A, transparent: true, opacity: 0.3 });
+        const groundCut = createBox(10, 0.05, 20, matGroundCut, 17, -0.02, -10);
+        groups.septic.add(groundCut);
+
+        // Septic labels
+        scene.add(createLabel('सेप्टिक टैंक (8ft×4ft×5.5ft)', 17, 1, -9));
+        scene.add(createLabel('सोक पिट (5ft×7ft)', 17, 1, -14));
+        scene.add(createLabel('4" PVC SWR पाइप', 17.5, 0.5, -2.5));
+
+        // SHUTTER
+        const shutter = createBox(10, 10, 0.1, matShutter, 7.5, 3 + 5, 0);
+        scene.add(shutter);
+
+        // GATE
+        const gate = createBox(3, 7, 0.1, matGate, 18.5, 3 + 3.5, 0);
+        scene.add(gate);
+
+        // ============ FIRST FLOOR ============
+        // First floor starts at y=15.5 (top of GF ceiling slab)
+        // First floor height: 12ft (y=15.5 to y=27.5)
+        const ff_base = 15.5;
+        const ff_height = 12;
+        const ff_top = ff_base + ff_height; // y=27.5
+
+        // First floor materials (semi-transparent)
+        const matFF_RoomWall = new THREE.MeshLambertMaterial({ color: 0xF5E6D3, transparent: true, opacity: 0.5 });
+        const matFF_Kitchen = new THREE.MeshLambertMaterial({ color: 0x4A7A3A, transparent: true, opacity: 0.6 });
+        const matFF_KitchenFloor = new THREE.MeshLambertMaterial({ color: 0x4A7A3A, transparent: true, opacity: 0.3 });
+        const matFF_Bathroom = new THREE.MeshLambertMaterial({ color: 0x3A7A7A, transparent: true, opacity: 0.5 });
+        const matFF_SlopeStair = new THREE.MeshLambertMaterial({ color: 0x7A6B5A, transparent: true, opacity: 0.7, side: THREE.DoubleSide });
+        const matFF_ShadeWall = new THREE.MeshLambertMaterial({ color: 0xF5E6D3, transparent: true, opacity: 0.6 });
+        const matFF_Pillar = new THREE.MeshLambertMaterial({ color: 0x4A4A50 });
+        const matFF_Roof = new THREE.MeshLambertMaterial({ color: 0x6B6B70, transparent: true, opacity: 0.4 });
+        const matFF_StairWellVoid = new THREE.MeshLambertMaterial({ color: 0x1a1a2e, transparent: true, opacity: 0.8 });
+        const matFF_Railing = new THREE.MeshLambertMaterial({ color: 0x888888 });
+
+        // --- A. ROOM WALLS (20ft x 16ft, z=9 to z=25) ---
+        // Back wall: x=0-20, z=24.7-25, height 12ft
+        const ff_backWall = createBox(20, ff_height, 0.3, matFF_RoomWall, 10, ff_base + ff_height/2, 24.85);
+        groups.firstFloor.add(ff_backWall);
+
+        // Left wall (stair side, HIGH x): x=19.7-20, z=9-25
+        const ff_leftWall = createBox(0.3, ff_height, 16, matFF_RoomWall, 19.85, ff_base + ff_height/2, 17);
+        groups.firstFloor.add(ff_leftWall);
+
+        // Right wall (LOW x): x=0-0.3, z=9-25
+        const ff_rightWall = createBox(0.3, ff_height, 16, matFF_RoomWall, 0.15, ff_base + ff_height/2, 17);
+        groups.firstFloor.add(ff_rightWall);
+
+        // Partition wall (front of room): x=0-20, z=9-9.3, with 4ft gap at x=8-12
+        // Left section of partition: x=0 to x=8
+        const ff_partitionLeft = createBox(8, ff_height, 0.3, matFF_RoomWall, 4, ff_base + ff_height/2, 9.15);
+        groups.firstFloor.add(ff_partitionLeft);
+        // Right section of partition: x=12 to x=20
+        const ff_partitionRight = createBox(8, ff_height, 0.3, matFF_RoomWall, 16, ff_base + ff_height/2, 9.15);
+        groups.firstFloor.add(ff_partitionRight);
+
+        // --- B. KITCHEN (L-shaped, RIGHT side = LOW x, back corner) ---
+        // Half-wall (counter height 3.5ft) at x=6, from z=9 to z=19
+        const ff_kitchenWall1 = createBox(0.3, 3.5, 10, matFF_Kitchen, 6, ff_base + 3.5/2, 14);
+        groups.firstFloor.add(ff_kitchenWall1);
+        // Back arm half-wall at z=21, from x=0 to x=8
+        const ff_kitchenWall2 = createBox(8, 3.5, 0.3, matFF_Kitchen, 4, ff_base + 3.5/2, 21);
+        groups.firstFloor.add(ff_kitchenWall2);
+        // Floor fill showing kitchen area
+        const ff_kitchenFloor = createBox(6, 0.1, 12, matFF_KitchenFloor, 3, ff_base + 0.05, 18.5);
+        groups.firstFloor.add(ff_kitchenFloor);
+
+        // --- C. BATHROOM (6ft x 8ft, RIGHT side = LOW x, straddling partition at z=9) ---
+        // 4ft inside room: x=0-6, z=9-13
+        // 4ft in balcony zone: x=0-6, z=5-9
+        // Total bathroom box: x=0-6, z=5-13, 8ft deep, 6ft wide
+
+        // Bathroom back wall (inside room side): z=13, x=0-6
+        const ff_bathBack = createBox(6, ff_height, 0.3, matFF_Bathroom, 3, ff_base + ff_height/2, 13);
+        groups.firstFloor.add(ff_bathBack);
+        // Bathroom front wall (balcony side): z=5, x=0-6
+        const ff_bathFront = createBox(6, ff_height, 0.3, matFF_Bathroom, 3, ff_base + ff_height/2, 5);
+        groups.firstFloor.add(ff_bathFront);
+        // Bathroom partition wall (room-side at x=6): z=5-13, with 2.5ft door gap at z=13 end
+        // The door gap is at z=10.5 to z=13 (on the room-facing side)
+        // Wall from z=5 to z=10.5 (5.5ft)
+        const ff_bathPartition = createBox(0.3, ff_height, 5.5, matFF_Bathroom, 6, ff_base + ff_height/2, 7.75);
+        groups.firstFloor.add(ff_bathPartition);
+        // Wall from z=10.5 to z=11.25 to complete (but we leave 2.5ft gap at z=10.5-13)
+        // Actually: door gap at z=10.5 to z=13 is 2.5ft. So wall: z=5 to z=10.5 = 5.5ft (done above)
+        // The outer wall at x=0 is already the right wall (ff_rightWall covers z=9-25)
+        // We need the bathroom wall segment at x=0, z=5-9 (below partition in balcony zone)
+        const ff_bathOuterWall = createBox(0.3, ff_height, 4, matFF_Bathroom, 0.15, ff_base + ff_height/2, 7);
+        groups.firstFloor.add(ff_bathOuterWall);
+
+        // --- D. STAIR WELL (opening in 1F floor, HIGH x) ---
+        // Stair well: x=16.5-20, z=1-9 (3.5ft x 8ft)
+        // Dark rectangle indicating the hole
+        const ff_stairWellVoid = createBox(3.5, 0.1, 8, matFF_StairWellVoid, 18.25, ff_base + 0.05, 5);
+        groups.firstFloor.add(ff_stairWellVoid);
+
+        // Railing around 3 sides (not the wall side at x=20):
+        const railH = 3.5;
+        const railThick = 0.05;
+        // Railing at x=16.5 edge (from z=1 to z=9)
+        const ff_railing1 = createBox(railThick, railH, 8, matFF_Railing, 16.5, ff_base + railH/2, 5);
+        groups.firstFloor.add(ff_railing1);
+        // Railing at z=1 edge (from x=16.5 to x=20)
+        const ff_railing2 = createBox(3.5, railH, railThick, matFF_Railing, 18.25, ff_base + railH/2, 1);
+        groups.firstFloor.add(ff_railing2);
+        // Railing at z=9 edge (from x=16.5 to x=20)
+        const ff_railing3 = createBox(3.5, railH, railThick, matFF_Railing, 18.25, ff_base + railH/2, 9);
+        groups.firstFloor.add(ff_railing3);
+
+        // --- E. SLOPED STAIR-SLAB (covers stair well, provides roof access) ---
+        // Starts at partition (z=9) at floor level (y=15.5)
+        // Rises to front wall (z=0) at roof level (y=27.5)
+        // Width: 3.5ft (x=16.5 to x=20)
+        const slopeGeo = new THREE.BufferGeometry();
+        const slopeVerts = new Float32Array([
+            // Top surface (sloped):
+            16.5, 15.5, 9,    // 0: back-left at partition, floor level
+            20, 15.5, 9,      // 1: back-right at partition, floor level
+            20, 27.5, 0,      // 2: front-right at front wall, roof level
+            16.5, 27.5, 0,    // 3: front-left at front wall, roof level
+            // Bottom surface (0.3ft below):
+            16.5, 15.2, 9,    // 4
+            20, 15.2, 9,      // 5
+            20, 27.2, 0,      // 6
+            16.5, 27.2, 0,    // 7
+        ]);
+        const slopeIndices = new Uint16Array([
+            0,2,1, 0,3,2,    // top face
+            4,5,6, 4,6,7,    // bottom face
+            0,1,5, 0,5,4,    // back edge (at partition)
+            2,3,7, 2,7,6,    // front edge (at front wall)
+            0,4,7, 0,7,3,    // left side
+            1,2,6, 1,6,5,    // right side
+        ]);
+        slopeGeo.setAttribute('position', new THREE.BufferAttribute(slopeVerts, 3));
+        slopeGeo.setIndex(new THREE.BufferAttribute(slopeIndices, 1));
+        slopeGeo.computeVertexNormals();
+        const slopeMesh = new THREE.Mesh(slopeGeo, matFF_SlopeStair);
+        slopeMesh.castShadow = true;
+        slopeMesh.receiveShadow = true;
+        groups.firstFloor.add(slopeMesh);
+
+        // Step ridges on the sloped stair (12 steps visual)
+        const stepRidgeMat = new THREE.MeshLambertMaterial({ color: 0x5A4B3A, transparent: true, opacity: 0.8 });
+        for (let i = 0; i < 12; i++) {
+            const t = (i + 0.5) / 12;
+            const sy = 15.5 + t * 12;
+            const sz = 9 - t * 9;
+            const ridge = createBox(3.5, 0.15, 0.3, stepRidgeMat, 18.25, sy + 0.2, sz);
+            groups.firstFloor.add(ridge);
+        }
+
+        // --- F. FIRST FLOOR BALCONY AREA (z=0 to z=9) ---
+        // This zone contains: stair well (x=16.5-20), bathroom protrusion (x=0-6, z=5-9),
+        // middle open passage, and open balcony. Already defined above through stair well + bathroom.
+
+        // --- G & J. FIRST FLOOR ROOF SLAB (covers everything: z=-5 to z=25, x=0-20) ---
+        // Full roof: 20ft x 30ft at y=27.5 (same extent as GF ceiling slab)
+        // --- G. FIRST FLOOR ROOF SLAB (covers building footprint z=0 to z=25 ONLY) ---
+        // NO extension beyond z=0. Supported by building walls + C5/C8 columns extended.
+        // 20ft × 25ft at y=ff_top (27.5)
+        const ff_roofSlab = createBox(20, 0.5, 25, matFF_Roof, 10, ff_top + 0.25, 12.5);
+        groups.firstFloor.add(ff_roofSlab);
+
+        // --- H. EXTEND C5 and C8 columns to roof height (no extra walls/pillars needed) ---
+        // C5 is front-left corner (HIGH x = 20-colW/2), C8 is front-right (LOW x = colW/2)
+        // They already exist from y=3 to y=15 on GF. Now add from y=15.5 to y=27.5 for 1F.
+        const ff_colC5 = createBox(0.75, ff_height, 1.0, matFF_Pillar, 20 - 0.375, ff_base + ff_height/2, 0.5);
+        groups.firstFloor.add(ff_colC5);
+        const ff_colC8 = createBox(0.75, ff_height, 1.0, matFF_Pillar, 0.375, ff_base + ff_height/2, 0.5);
+        groups.firstFloor.add(ff_colC8);
+
+        // The 9ft shade/balcony zone (z=0 to z=9) is INSIDE the building —
+        // supported by these extended columns + building side walls. No extra structure needed.
+
+        // The area beyond z=0 (z=-5 to z=0, the GF shade extension) is OPEN TERRACE
+        // on the first floor — has floor (GF ceiling slab) but NO ROOF above = open to sky.
+        // Mark it as open terrace:
+        const matOpenTerrace = new THREE.MeshLambertMaterial({ color: 0x5A9A7A, transparent: true, opacity: 0.25 });
+        const openTerrace = createBox(20, 0.05, 5, matOpenTerrace, 10, ff_base + 0.05, -2.5);
+        groups.firstFloor.add(openTerrace);
+        // Railing at outer edge of open terrace (z=-5)
+        const terraceRailing = createBox(20, 3.5, 0.1, matFF_Pillar, 10, ff_base + 1.75, -5);
+        groups.firstFloor.add(terraceRailing);
+
+        // --- L. WATER TANK on roof ---
+        // Position: x=18, y=28+, z=2 (near stair access point)
+        // Tank: 3ft x 2.5ft x 2.5ft on 2ft MS stand legs
+        const tankBaseY = ff_top + 0.5; // top of roof slab = 28
+        // Stand legs (4 legs)
+        const matTankStand = new THREE.MeshLambertMaterial({ color: 0x555555 });
+        const legPositions = [
+            [16.8, tankBaseY + 1, 1.0],
+            [19.2, tankBaseY + 1, 1.0],
+            [16.8, tankBaseY + 1, 3.0],
+            [19.2, tankBaseY + 1, 3.0]
+        ];
+        legPositions.forEach(([lx, ly, lz]) => {
+            const leg = createBox(0.2, 2, 0.2, matTankStand, lx, ly, lz);
+            scene.add(leg);
+        });
+        // Tank body
+        const waterTank = createBox(3, 2.5, 2.5, matWaterTank, 18, tankBaseY + 2 + 1.25, 2);
+        scene.add(waterTank);
+
+        // --- O. HINDI LABELS for first floor ---
+        groups.firstFloor.add(createLabel('कमरा (20×16ft)', 10, ff_base + 6, 17));
+        groups.firstFloor.add(createLabel('रसोई (Kitchen)', 3, ff_base + 2, 18));
+        groups.firstFloor.add(createLabel('शौचालय (6×8ft)', 3, ff_base + 6, 9));
+        groups.firstFloor.add(createLabel('सीढ़ी खुलाव (Stair Well)', 18.25, ff_base + 2, 5));
+        groups.firstFloor.add(createLabel('छत तक सीढ़ी (sloped cover)', 18.25, 22, 4.5));
+        scene.add(createLabel('पानी की टंकी', 18, tankBaseY + 4.5, 2));
+        groups.firstFloor.add(createLabel('C5/C8 extended (roof support)', 10, ff_base + 8, 0.5));
+        groups.firstFloor.add(createLabel('खुली छत (Open Terrace)', 10, ff_base + 2, -2.5));
+
+        // Add groups to scene
+        Object.values(groups).forEach(g => scene.add(g));
+
+        // GF Labels
+        scene.add(createLabel('शटर 10ft', 7.5, 8, -0.5));
+        scene.add(createLabel('गेट', 18.5, 6.5, -0.5));
+        scene.add(createLabel('सीढ़ी', 16, 9, 7));
+        scene.add(createLabel('लॉबी', 16, 4, 1.5));
+        scene.add(createLabel('शौचालय', 18.25, 5, 5.5));
+        scene.add(createLabel('छत (6" slab)', 10, 16, 10));
+        scene.add(createLabel('चबूतरा 3ft', 10, 1.5, -1));
+        scene.add(createLabel('गहरा बीम 9"×20"', 10, 14, 9));
+        scene.add(createLabel('20 ft', 10, 0.5, -7));
+        scene.add(createLabel('25 ft', -2, 0.5, 12.5));
+
+        // Dimension lines
+        const dimMat = new THREE.LineBasicMaterial({ color: 0xffaa00 });
+        const widthPts = [new THREE.Vector3(0, 0.3, -6.5), new THREE.Vector3(20, 0.3, -6.5)];
+        const widthGeo = new THREE.BufferGeometry().setFromPoints(widthPts);
+        scene.add(new THREE.Line(widthGeo, dimMat));
+
+        const depthPts = [new THREE.Vector3(-1.5, 0.3, 0), new THREE.Vector3(-1.5, 0.3, 25)];
+        const depthGeo = new THREE.BufferGeometry().setFromPoints(depthPts);
+        scene.add(new THREE.Line(depthGeo, dimMat));
+
+        // ============ CIRCULATION PATHS ============
+        const pathGroup = new THREE.Group();
+        pathGroup.visible = true;
+
+        const pH = 3.3;
+
+        function createPath(points, color, label) {
+            const mat = new THREE.LineBasicMaterial({ color: color });
+            const geo = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geo, mat);
+            line.computeLineDistances();
+            pathGroup.add(line);
+
+            const sphereGeo = new THREE.SphereGeometry(0.25, 8, 8);
+            const sphereMat = new THREE.MeshBasicMaterial({ color: color });
+            points.forEach((p, i) => {
+                if (i === 0 || i === points.length - 1) {
+                    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+                    sphere.position.copy(p);
+                    pathGroup.add(sphere);
+                }
+            });
+
+            const lastPt = points[points.length - 1];
+            const prevPt = points[points.length - 2];
+            const dir = new THREE.Vector3().subVectors(lastPt, prevPt).normalize();
+            const coneGeo = new THREE.ConeGeometry(0.3, 0.8, 8);
+            const coneMat = new THREE.MeshBasicMaterial({ color: color });
+            const cone = new THREE.Mesh(coneGeo, coneMat);
+            cone.position.copy(lastPt);
+            cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            pathGroup.add(cone);
+        }
+
+        // Route 1: Gate -> Lobby -> Storage
+        const route1 = [
+            new THREE.Vector3(18.5, 0.3, -4),
+            new THREE.Vector3(18.5, 2, -1),
+            new THREE.Vector3(18.5, pH, 0.5),
+            new THREE.Vector3(16, pH, 1.5),
+            new THREE.Vector3(12.5, pH, 1.5),
+            new THREE.Vector3(10, pH, 3),
+            new THREE.Vector3(8, pH, 8),
+        ];
+        createPath(route1, 0x4ade80, 'गेट → गोदाम');
+
+        // Route 2: Gate -> Lobby -> Toilet
+        const route2 = [
+            new THREE.Vector3(18.5, 0.3, -4),
+            new THREE.Vector3(18.5, 2, -1),
+            new THREE.Vector3(18.5, pH, 0.5),
+            new THREE.Vector3(16, pH, 1.5),
+            new THREE.Vector3(18, pH, 2.5),
+            new THREE.Vector3(18.25, pH, 3.5),
+        ];
+        createPath(route2, 0x22d3ee, 'गेट → शौचालय');
+
+        // Route 3: Gate -> Lobby -> Stairs -> Roof
+        const route3 = [
+            new THREE.Vector3(18.5, 0.3, -4),
+            new THREE.Vector3(18.5, 2, -1),
+            new THREE.Vector3(18.5, pH, 0.5),
+            new THREE.Vector3(15, pH, 1.5),
+            new THREE.Vector3(14.25, pH, 3.5),
+            new THREE.Vector3(14.25, 6, 6),
+            new THREE.Vector3(14.25, 9, 10),
+            new THREE.Vector3(18.25, 9, 10),
+            new THREE.Vector3(18.25, 12, 7),
+            new THREE.Vector3(18.25, 15, 3.5),
+            new THREE.Vector3(18.25, 15.5, 2),
+        ];
+        createPath(route3, 0xf59e0b, 'गेट → छत/पहली मंजिल');
+
+        // Route 4: Storage -> Lobby -> Toilet
+        const route4 = [
+            new THREE.Vector3(8, pH, 10),
+            new THREE.Vector3(10, pH, 4),
+            new THREE.Vector3(12.5, pH, 1.5),
+            new THREE.Vector3(15, pH, 1.5),
+            new THREE.Vector3(18, pH, 2.5),
+            new THREE.Vector3(18.25, pH, 3.5),
+        ];
+        createPath(route4, 0xd946ef, 'गोदाम → शौचालय');
+
+        scene.add(pathGroup);
+
+        // Path labels
+        const pathLabel1 = createLabel('① गेट → गोदाम', 12, 5, 5);
+        const pathLabel2 = createLabel('② गेट → शौचालय', 18, 4.5, 4);
+        const pathLabel3 = createLabel('③ गेट → छत', 17, 12, 6);
+        const pathLabel4 = createLabel('④ गोदाम → शौचालय', 12, 4.5, 6);
+        pathGroup.add(pathLabel1);
+        pathGroup.add(pathLabel2);
+        pathGroup.add(pathLabel3);
+        pathGroup.add(pathLabel4);
+
+        groups.paths = pathGroup;
+
+        // Toggle functions
+        window.toggleGroup = function(name) {
+            const group = groups[name];
+            group.visible = !group.visible;
+            const btn = document.getElementById('btn-' + name);
+            btn.classList.toggle('active');
+        };
+
+        window.toggleLegend = function() {
+            const panel = document.getElementById('legend-panel');
+            panel.classList.toggle('collapsed');
+            document.getElementById('legend-arrow').textContent =
+                panel.classList.contains('collapsed') ? '▶' : '▼';
+        };
+
+        window.toggleLabels = function() {
+            const labels = document.querySelectorAll('.label-2d');
+            const btn = document.getElementById('btn-labels');
+            const isVisible = btn.classList.contains('active');
+            labels.forEach(l => l.style.display = isVisible ? 'none' : '');
+            btn.classList.toggle('active');
+        };
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        } catch(e) {
+            document.getElementById('canvas-container').innerHTML = '<div style="color:red;padding:50px;font-size:16px;"><b>ERROR:</b> ' + e.message + '<br><br><pre>' + e.stack + '</pre></div>';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>पहली मंजिल — Final Layout (Option F)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, system-ui, sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 20px; max-width: 900px; margin: 0 auto; }
+h1 { color: #e94560; text-align: center; margin-bottom: 5px; }
+.subtitle { text-align: center; color: #888; font-size: 0.85rem; margin-bottom: 25px; }
+.section { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #0f3460; }
+.section h2 { color: #e94560; font-size: 1.1rem; margin-bottom: 6px; }
+.section h3 { color: #4ade80; font-size: 0.95rem; margin-top: 12px; margin-bottom: 4px; }
+.section p { font-size: 0.85rem; color: #ccc; line-height: 1.5; margin-bottom: 8px; }
+.section svg { display: block; margin: 12px auto; background: #0f0f1a; border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.8rem; }
+th, td { border: 1px solid #333; padding: 6px 10px; text-align: left; }
+th { background: #0f3460; color: #93c5fd; }
+td { color: #ccc; }
+.highlight { background: #065f46; border-color: #4ade80; }
+.dims { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 10px 0; }
+.dim-card { background: #1a1a2e; border: 1px solid #333; border-radius: 8px; padding: 10px; text-align: center; }
+.dim-card .value { font-size: 1.2rem; font-weight: bold; color: #4ade80; }
+.dim-card .label { font-size: 0.75rem; color: #888; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<h1>पहली मंजिल — Final Layout</h1>
+<div class="subtitle">Option F: Bathroom 4ft room में + 4ft बालकनी में | Kitchen L-shape (back-right) | 7ft × 20ft खुली बालकनी</div>
+
+<!-- MASTER PLAN -->
+<div class="section">
+<h2>Complete Floor Plan</h2>
+<p>Room 16ft depth breakdown: <strong>6ft Kitchen (back) → 6ft Living (middle) → 4ft Bathroom (front-right)</strong></p>
+
+<svg viewBox="0 0 700 750" width="100%">
+<rect x="0" y="0" width="700" height="750" fill="#0f0f1a"/>
+<text x="350" y="15" text-anchor="middle" fill="#999" font-size="9">← 20 ft →</text>
+
+<!-- ROOM outline -->
+<rect x="20" y="25" width="660" height="370" fill="#1e293b" stroke="#94a3b8" stroke-width="2.5"/>
+
+<!-- Kitchen zone (back 6ft) -->
+<rect x="450" y="25" width="225" height="138" fill="#2d4a1e" stroke="#4ade80" stroke-width="1.5"/>
+<rect x="450" y="25" width="225" height="70" fill="#2d4a1e" stroke="#4ade80" stroke-width="1"/>
+<text x="562" y="75" text-anchor="middle" fill="#86efac" font-size="10">KITCHEN</text>
+<text x="562" y="93" text-anchor="middle" fill="#4ade80" font-size="7">(L-shape: 6ft right + back arm)</text>
+<line x1="450" y1="95" x2="450" y2="163" stroke="#4ade80" stroke-width="2" stroke-dasharray="5,3"/>
+<text x="442" y="130" fill="#4ade80" font-size="7" text-anchor="end">½ wall</text>
+
+<!-- Living zone (middle 6ft) -->
+<text x="240" y="225" text-anchor="middle" fill="#e0e0e0" font-size="15" font-weight="bold">LIVING / BEDROOM</text>
+<text x="240" y="248" text-anchor="middle" fill="#94a3b8" font-size="9">6ft × 14ft = 84 sqft OPEN (no obstructions)</text>
+
+<!-- Bathroom inside room (front-right 4ft) -->
+<rect x="450" y="306" width="225" height="89" fill="#1a3a3a" stroke="#14b8a6" stroke-width="2"/>
+<text x="562" y="345" text-anchor="middle" fill="#5eead4" font-size="8">BATH (4ft inside)</text>
+<rect x="455" y="330" width="6" height="40" fill="#22c55e"/>
+
+<!-- Depth labels -->
+<line x1="690" y1="25" x2="690" y2="163" stroke="#4ade80" stroke-width="0.8"/>
+<text x="698" y="94" fill="#4ade80" font-size="7">6ft</text>
+<line x1="690" y1="163" x2="690" y2="306" stroke="#94a3b8" stroke-width="0.8"/>
+<text x="698" y="235" fill="#ccc" font-size="7">6ft</text>
+<line x1="690" y1="306" x2="690" y2="395" stroke="#14b8a6" stroke-width="0.8"/>
+<text x="698" y="350" fill="#14b8a6" font-size="7">4ft</text>
+
+<!-- Partition -->
+<rect x="20" y="395" width="445" height="5" fill="#f59e0b"/>
+<rect x="450" y="395" width="230" height="5" fill="#f59e0b" opacity="0.4"/>
+<text x="10" y="404" fill="#f59e0b" font-size="7">← beam/partition</text>
+<rect x="180" y="393" width="80" height="9" fill="#22c55e"/>
+<text x="220" y="389" text-anchor="middle" fill="#86efac" font-size="7">room door</text>
+
+<!-- Bathroom outside (4ft in balcony) -->
+<rect x="450" y="400" width="225" height="92" fill="#1a3a3a" stroke="#14b8a6" stroke-width="2"/>
+<text x="562" y="440" text-anchor="middle" fill="#5eead4" font-size="8">BATH (4ft in balcony)</text>
+<ellipse cx="490" cy="440" rx="11" ry="14" fill="none" stroke="#14b8a6" stroke-width="1"/>
+<rect x="520" y="420" width="50" height="50" fill="none" stroke="#14b8a6" stroke-width="1" stroke-dasharray="2,2"/>
+<rect x="590" y="425" width="40" height="22" fill="none" stroke="#14b8a6" stroke-width="1"/>
+
+<!-- Stair well -->
+<rect x="25" y="405" width="115" height="185" fill="#1a1a2e" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,2"/>
+<text x="82" y="485" text-anchor="middle" fill="#fca5a5" font-size="10">STAIR WELL</text>
+<text x="82" y="505" text-anchor="middle" fill="#ef4444" font-size="8">3.5ft × 8ft</text>
+
+<!-- Open passage -->
+<rect x="140" y="400" width="305" height="92" fill="#1a2744" stroke="#3b82f6" stroke-width="1"/>
+<text x="292" y="440" text-anchor="middle" fill="#93c5fd" font-size="10">OPEN PASSAGE</text>
+<text x="292" y="458" text-anchor="middle" fill="#60a5fa" font-size="7">~9ft × 4ft</text>
+
+<!-- Right side opens after 4ft -->
+<rect x="140" y="492" width="535" height="98" fill="#1a2744" stroke="#3b82f6" stroke-width="0.8" opacity="0.5"/>
+<text x="407" y="535" text-anchor="middle" fill="#93c5fd" font-size="8">RIGHT SIDE OPEN (bathroom done at 4ft)</text>
+
+<!-- 7ft open balcony -->
+<rect x="20" y="590" width="660" height="120" fill="#0d3b2e" stroke="#4ade80" stroke-width="2.5"/>
+<text x="350" y="635" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="bold">खुली बालकनी — 7ft × 20ft</text>
+<text x="350" y="655" text-anchor="middle" fill="#86efac" font-size="9">(1ft inside + 6ft cantilever = 7ft total)</text>
+
+<!-- Building wall -->
+<line x1="20" y1="608" x2="680" y2="608" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+
+<!-- Railing -->
+<rect x="20" y="708" width="660" height="4" fill="#f59e0b"/>
+<text x="350" y="725" text-anchor="middle" fill="#f59e0b" font-size="8">MS RAILING</text>
+
+<!-- Left side label -->
+<line x1="5" y1="25" x2="5" y2="395" stroke="#94a3b8" stroke-width="1"/>
+<text x="3" y="210" fill="#94a3b8" font-size="7" text-anchor="end" transform="rotate(-90,3,210)">16ft (room)</text>
+<line x1="5" y1="400" x2="5" y2="590" stroke="#ef4444" stroke-width="0.8"/>
+<text x="3" y="495" fill="#ef4444" font-size="6" text-anchor="end">8ft (stair)</text>
+<line x1="690" y1="590" x2="690" y2="710" stroke="#4ade80" stroke-width="0.8"/>
+<text x="698" y="650" fill="#4ade80" font-size="7">7ft</text>
+</svg>
+</div>
+
+<!-- SECTION 1: KITCHEN -->
+<div class="section">
+<h2>1. Kitchen (रसोई)</h2>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Position</td><td>Back-right corner of room (पीछे-दाएँ)</td></tr>
+<tr><td>Shape</td><td>L-shaped: 6ft along right wall + arm along back wall</td></tr>
+<tr><td>Depth</td><td>6ft (from back wall into room)</td></tr>
+<tr><td>Width (right arm)</td><td>6ft (from right wall inward)</td></tr>
+<tr><td>Separation</td><td>½ wall (counter height, 3-3.5ft) — semi-open to living area</td></tr>
+<tr><td>Area</td><td>~70-75 sqft</td></tr>
+<tr><td>Ventilation</td><td>Window on back wall + exhaust chimney</td></tr>
+<tr><td>Smoke/smell</td><td>At BACK of room — away from balcony and bedroom</td></tr>
+</table>
+<h3>Kitchen includes:</h3>
+<p>• Cooking platform (gas stove) along right wall<br>
+• Prep counter along back wall (L-corner)<br>
+• Sink (near window for ventilation)<br>
+• Fridge space<br>
+• Storage shelves/cabinets above counter</p>
+</div>
+
+<!-- SECTION 2: LIVING/BEDROOM -->
+<div class="section">
+<h2>2. Living / Bedroom (कमरा)</h2>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Position</td><td>Middle zone of room (between kitchen and bathroom)</td></tr>
+<tr><td>Depth</td><td>6ft (clear, no obstructions)</td></tr>
+<tr><td>Width</td><td>14ft (full room width minus kitchen half-wall zone)</td></tr>
+<tr><td>Area</td><td>~84 sqft (clear open zone) + additional 14×6ft on kitchen side = total ~168 sqft usable</td></tr>
+<tr><td>Faces</td><td>Directly faces balcony through room door / sliding door</td></tr>
+<tr><td>Natural light</td><td>From balcony side (front) + windows on left wall</td></tr>
+</table>
+<h3>Living zone includes:</h3>
+<p>• Bed (double) — left side, facing balcony view<br>
+• Almirah/wardrobe — left wall<br>
+• Sitting area — near room door<br>
+• TV unit (optional) — on partition wall above room door<br>
+• 6ft of clear depth = no cramped feeling between kitchen counter and bathroom wall</p>
+</div>
+
+<!-- SECTION 3: BATHROOM -->
+<div class="section">
+<h2>3. Bathroom (शौचालय + स्नानघर)</h2>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Position</td><td>Front-right, straddling partition: 4ft inside room + 4ft in balcony</td></tr>
+<tr><td>Total size</td><td>6ft wide × 8ft deep = 48 sqft</td></tr>
+<tr><td>Inside room</td><td>6ft × 4ft (basin + entry zone)</td></tr>
+<tr><td>In balcony zone</td><td>6ft × 4ft (WC + shower)</td></tr>
+<tr><td>Access</td><td>Door from INSIDE room only (en-suite, private)</td></tr>
+<tr><td>Ventilation</td><td>Window on right external wall + exhaust fan</td></tr>
+<tr><td>8ft along</td><td>Right wall of building (external wall = waterproof needed)</td></tr>
+</table>
+<h3>Bathroom layout (6ft × 8ft):</h3>
+<p>• Entry from room (door on left wall of bathroom)<br>
+• Basin/vanity: immediately inside (room-side 4ft section)<br>
+• Western commode (WC): balcony-side section<br>
+• Shower area: balcony-side section (separated by glass/half-wall from WC)<br>
+• Floor slope toward drain (connected to first floor plumbing → drops to GF septic system)</p>
+</div>
+
+<!-- SECTION 4: STAIR WELL -->
+<div class="section">
+<h2>4. Stair Well (सीढ़ी का खुलाव)</h2>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Position</td><td>Front-left, along left wall (in balcony zone)</td></tr>
+<tr><td>Size</td><td>3.5ft wide × 8ft long</td></tr>
+<tr><td>Width along</td><td>Left wall of building</td></tr>
+<tr><td>Depth</td><td>8ft (from partition wall toward front)</td></tr>
+<tr><td>For person height</td><td>6.5ft person — 8ft opening gives full head clearance on all steps</td></tr>
+<tr><td>Railing</td><td>MS pipe railing (3.5ft high) around the opening for safety</td></tr>
+</table>
+<h3>How you arrive on first floor:</h3>
+<p>• Climb stairs from ground floor<br>
+• Emerge through the 3.5×8ft opening on the LEFT side of the balcony<br>
+• Step onto the covered passage area (10ft open space in front of room door)<br>
+• Turn right → room door (enter living area)<br>
+• Walk straight → open balcony (7ft × 20ft sitting area ahead)</p>
+</div>
+
+<!-- SECTION 5: OPEN PASSAGE -->
+<div class="section">
+<h2>5. Open Passage / Covered Area (खुला गलियारा)</h2>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Position</td><td>Between stair well (left) and bathroom (right), in front of room door</td></tr>
+<tr><td>Size</td><td>~10ft wide × 4ft deep (first 4ft from partition)</td></tr>
+<tr><td>Then</td><td>Right side opens fully after 4ft (bathroom done). Left still has stair well until 8ft.</td></tr>
+<tr><td>Covered by</td><td>Roof slab above (weather protected)</td></tr>
+<tr><td>Purpose</td><td>Transition zone: stairs → room door → balcony. Also shoe rack, coat hooks.</td></tr>
+</table>
+</div>
+
+<!-- SECTION 6: OPEN BALCONY -->
+<div class="section" style="border-color: #4ade80;">
+<h2>6. Open Balcony (खुली बालकनी)</h2>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Position</td><td>Front-most zone (after 8ft stairwell/bathroom zone ends)</td></tr>
+<tr><td>Size</td><td>7ft deep × 20ft wide = <strong>140 sqft</strong></td></tr>
+<tr><td>Depth breakdown</td><td>1ft inside building + 6ft cantilever = 7ft total</td></tr>
+<tr><td>Width</td><td>Full 20ft (no obstructions!)</td></tr>
+<tr><td>Railing</td><td>MS pipe, 3.5ft high, at outer edge</td></tr>
+<tr><td>Covered by</td><td>Roof slab above (rain protected)</td></tr>
+<tr><td>View</td><td>Full farm view — dragon fruit, fields, village in distance</td></tr>
+</table>
+<h3>Balcony use:</h3>
+<p>• Evening sitting (chairs, swing/jhula)<br>
+• Morning chai with farm view<br>
+• Drying clothes (one side)<br>
+• Farm supervision (watch workers, check crops)<br>
+• 140 sqft = bigger than many Indian apartment balconies!</p>
+</div>
+
+<!-- SUMMARY DIMENSIONS -->
+<div class="section">
+<h2>Area Summary</h2>
+<div class="dims">
+<div class="dim-card"><div class="value">296 sqft</div><div class="label">Room (20×16 minus 6×4 bathroom)</div></div>
+<div class="dim-card"><div class="value">~75 sqft</div><div class="label">Kitchen (L-shape)</div></div>
+<div class="dim-card"><div class="value">~168 sqft</div><div class="label">Living/Bedroom (usable)</div></div>
+<div class="dim-card"><div class="value">48 sqft</div><div class="label">Bathroom (6×8ft)</div></div>
+<div class="dim-card"><div class="value">140 sqft</div><div class="label">Open Balcony (7×20ft)</div></div>
+<div class="dim-card"><div class="value">~56 sqft</div><div class="label">Bonus open area (right side, 4-8ft depth)</div></div>
+</div>
+
+<table>
+<tr><th>From Back to Front</th><th>Depth</th><th>What's there</th></tr>
+<tr><td>Back wall → Kitchen end</td><td>6 ft</td><td>Kitchen (L-shape, right+back corner)</td></tr>
+<tr><td>Kitchen end → Bathroom start</td><td>6 ft</td><td>Living/Bedroom (CLEAR open zone)</td></tr>
+<tr><td>Bathroom start → Partition</td><td>4 ft</td><td>Bathroom (inside room portion)</td></tr>
+<tr><td>Partition → Bathroom end</td><td>4 ft</td><td>Bathroom (balcony portion) + Open passage + Stair well</td></tr>
+<tr><td>After 8ft → Railing</td><td>7 ft</td><td>FULLY OPEN BALCONY (20ft wide)</td></tr>
+<tr class="highlight"><td><strong>TOTAL (back wall to railing)</strong></td><td><strong>27 ft</strong></td><td>16ft room + 4ft balcony-bath + 7ft open balcony</td></tr>
+</table>
+</div>
+
+</body>
+</html>
