@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="hi-en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पहली मंजिल — Plumbing Design</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 12mm;
+            page-break-after: always;
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        h1 {
+            font-size: 18pt;
+            text-align: center;
+            border-bottom: 3px solid #1565c0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            color: #0d47a1;
+        }
+
+        h2 {
+            font-size: 13pt;
+            color: #1565c0;
+            border-bottom: 1.5px solid #90caf9;
+            padding-bottom: 3px;
+            margin: 12px 0 8px 0;
+        }
+
+        h3 {
+            font-size: 11pt;
+            color: #1976d2;
+            margin: 8px 0 4px 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 10pt;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 6px 0 10px 0;
+            font-size: 9pt;
+        }
+
+        th, td {
+            border: 1px solid #bbb;
+            padding: 4px 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #e3f2fd;
+            font-weight: 600;
+            color: #0d47a1;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f9ff;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 6px 0;
+            font-size: 9pt;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            display: inline-block;
+        }
+
+        .note-box {
+            background: #fff3e0;
+            border: 1px solid #ffb74d;
+            border-left: 4px solid #f57c00;
+            padding: 6px 10px;
+            margin: 8px 0;
+            font-size: 9pt;
+        }
+
+        .note-box strong {
+            color: #e65100;
+        }
+
+        .critical-box {
+            background: #fce4ec;
+            border: 1px solid #e57373;
+            border-left: 4px solid #c62828;
+            padding: 6px 10px;
+            margin: 8px 0;
+            font-size: 9pt;
+        }
+
+        .critical-box strong {
+            color: #b71c1c;
+        }
+
+        ul {
+            padding-left: 18px;
+            margin: 4px 0;
+        }
+
+        li {
+            margin: 2px 0;
+        }
+
+        .svg-container {
+            text-align: center;
+            margin: 8px 0;
+        }
+
+        svg text {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+            .page {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: Title + Plumbing Layout Plan -->
+<div class="page">
+    <h1>पहली मंजिल — Plumbing Design</h1>
+    <p class="subtitle">First Floor Plumbing Layout | प्लंबिंग डिज़ाइन | Print-Ready Document</p>
+
+    <h2>1. Plumbing Layout Plan / प्लंबिंग लेआउट</h2>
+
+    <div class="legend">
+        <div class="legend-item"><span class="legend-line" style="background:#1565c0;"></span> Cold Water Supply (CPVC)</div>
+        <div class="legend-item"><span class="legend-line" style="background:#c62828;"></span> Hot Water Supply (CPVC)</div>
+        <div class="legend-item"><span class="legend-line" style="background:#2e7d32; height:4px;"></span> Soil Pipe 4" (PVC SWR)</div>
+        <div class="legend-item"><span class="legend-line" style="background:#f57c00; height:3px; border-top:1px dashed #f57c00;"></span> Waste Pipe 2" (PVC SWR)</div>
+        <div class="legend-item"><span class="legend-line" style="background:#6a1b9a; border-top:2px dotted #6a1b9a; height:0;"></span> Vent Pipe</div>
+    </div>
+
+    <div class="svg-container">
+        <svg viewBox="0 0 700 500" width="100%" height="auto" style="max-height: 380px; border: 1px solid #ddd;">
+            <!-- Room outline -->
+            <rect x="50" y="50" width="600" height="400" fill="none" stroke="#333" stroke-width="2"/>
+
+            <!-- Partition wall (bathroom) -->
+            <rect x="450" y="50" width="8" height="240" fill="#666"/>
+            <text x="420" y="40" font-size="9" fill="#333">Partition Wall</text>
+
+            <!-- Bathroom 6×8 ft (right side, straddling partition) -->
+            <rect x="458" y="80" width="172" height="200" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="510" y="100" font-size="11" fill="#0d47a1" font-weight="bold">BATHROOM</text>
+            <text x="515" y="115" font-size="8" fill="#555">6ft × 8ft</text>
+
+            <!-- WC (Western Commode) -->
+            <rect x="575" y="130" width="40" height="50" fill="#fff" stroke="#333" stroke-width="1.5" rx="3"/>
+            <text x="580" y="160" font-size="7" fill="#333">WC</text>
+            <circle cx="595" cy="145" r="6" fill="none" stroke="#1565c0" stroke-width="1"/>
+
+            <!-- Wash Basin -->
+            <rect x="470" y="130" width="45" height="30" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+            <text x="474" y="150" font-size="7" fill="#333">Basin</text>
+
+            <!-- Shower Area -->
+            <rect x="470" y="200" width="70" height="65" fill="#e1f5fe" stroke="#0288d1" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="480" y="235" font-size="8" fill="#0288d1">Shower</text>
+            <circle cx="505" cy="225" r="4" fill="#0288d1"/>
+
+            <!-- Geyser -->
+            <rect x="555" y="200" width="35" height="45" fill="#ffebee" stroke="#c62828" stroke-width="1.5" rx="2"/>
+            <text x="558" y="220" font-size="6" fill="#c62828">Geyser</text>
+            <text x="558" y="230" font-size="6" fill="#c62828">15-25L</text>
+
+            <!-- Floor Drain -->
+            <circle cx="520" cy="260" r="6" fill="none" stroke="#2e7d32" stroke-width="1.5"/>
+            <text x="530" y="264" font-size="6" fill="#2e7d32">FD</text>
+
+            <!-- Washing Machine -->
+            <rect x="470" y="170" width="40" height="25" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1" rx="2"/>
+            <text x="474" y="186" font-size="6" fill="#6a1b9a">W/M</text>
+
+            <!-- Kitchen area (right+back corner) -->
+            <rect x="420" y="320" width="210" height="110" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1" stroke-dasharray="4,2"/>
+            <text x="480" y="340" font-size="11" fill="#2e7d32" font-weight="bold">KITCHEN</text>
+            <text x="470" y="355" font-size="8" fill="#555">L-shaped, right+back corner</text>
+
+            <!-- Kitchen Sink -->
+            <rect x="550" y="365" width="55" height="30" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+            <text x="555" y="383" font-size="7" fill="#333">SS Sink</text>
+
+            <!-- Grease Trap -->
+            <rect x="555" y="400" width="30" height="20" fill="#fff8e1" stroke="#f57c00" stroke-width="1" rx="2"/>
+            <text x="557" y="413" font-size="5" fill="#f57c00">Grease</text>
+            <text x="560" y="418" font-size="5" fill="#f57c00">Trap</text>
+
+            <!-- Instant Heater (Kitchen) -->
+            <rect x="490" y="370" width="35" height="25" fill="#ffebee" stroke="#c62828" stroke-width="1" rx="2"/>
+            <text x="493" y="385" font-size="5" fill="#c62828">Instant</text>
+            <text x="493" y="392" font-size="5" fill="#c62828">Heater</text>
+
+            <!-- Balcony area (left/front) -->
+            <rect x="60" y="60" width="180" height="100" fill="#f1f8e9" stroke="#558b2f" stroke-width="1" stroke-dasharray="4,2"/>
+            <text x="110" y="85" font-size="11" fill="#558b2f" font-weight="bold">BALCONY</text>
+
+            <!-- Balcony Tap -->
+            <circle cx="80" cy="120" r="8" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="72" y="124" font-size="6" fill="#1565c0">TAP</text>
+            <text x="60" y="140" font-size="7" fill="#555">Bib Cock</text>
+
+            <!-- Small drain below balcony tap -->
+            <circle cx="80" cy="148" r="4" fill="none" stroke="#f57c00" stroke-width="1"/>
+            <text x="88" y="152" font-size="5" fill="#f57c00">drain</text>
+
+            <!-- COLD WATER SUPPLY LINES (Blue) -->
+            <!-- Main from overhead tank (enters from top-right) -->
+            <line x1="630" y1="50" x2="630" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <text x="635" y="65" font-size="7" fill="#1565c0">3/4" CPVC</text>
+            <text x="635" y="73" font-size="6" fill="#1565c0">from OH Tank</text>
+
+            <!-- Main distribution run -->
+            <line x1="630" y1="80" x2="630" y2="130" stroke="#1565c0" stroke-width="2.5"/>
+            <line x1="630" y1="130" x2="575" y2="130" stroke="#1565c0" stroke-width="2"/>
+
+            <!-- Branch to WC -->
+            <line x1="595" y1="130" x2="595" y2="135" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Branch to basin (cold) -->
+            <line x1="510" y1="130" x2="510" y2="133" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="575" y1="130" x2="470" y2="130" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Branch to shower (cold) -->
+            <line x1="490" y1="130" x2="490" y2="200" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Branch to geyser (cold input) -->
+            <line x1="570" y1="130" x2="570" y2="200" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Branch to washing machine -->
+            <line x1="490" y1="165" x2="490" y2="170" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Branch to kitchen (cold) -->
+            <line x1="630" y1="130" x2="630" y2="370" stroke="#1565c0" stroke-width="2"/>
+            <line x1="630" y1="370" x2="605" y2="370" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Branch to balcony -->
+            <line x1="630" y1="80" x2="250" y2="80" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="80" y1="80" x2="80" y2="112" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="250" y1="80" x2="80" y2="80" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="300" y="75" font-size="7" fill="#1565c0">1/2" CPVC to Balcony</text>
+
+            <!-- HOT WATER SUPPLY LINES (Red) -->
+            <!-- Geyser to basin -->
+            <line x1="555" y1="215" x2="515" y2="215" stroke="#c62828" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <line x1="515" y1="215" x2="515" y2="160" stroke="#c62828" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+            <!-- Geyser to shower -->
+            <line x1="555" y1="225" x2="540" y2="225" stroke="#c62828" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <line x1="540" y1="225" x2="510" y2="225" stroke="#c62828" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+            <!-- Kitchen hot water (from instant heater) -->
+            <line x1="525" y1="383" x2="550" y2="383" stroke="#c62828" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+            <!-- DRAINAGE LINES (Green = 4" soil, Orange = 2" waste) -->
+            <!-- 4" Soil pipe from WC -->
+            <line x1="595" y1="180" x2="595" y2="290" stroke="#2e7d32" stroke-width="4"/>
+            <text x="600" y="240" font-size="7" fill="#2e7d32">4" Soil</text>
+            <text x="600" y="250" font-size="6" fill="#2e7d32">↓ to GF</text>
+
+            <!-- 2" waste from basin to soil pipe -->
+            <line x1="492" y1="160" x2="492" y2="290" stroke="#f57c00" stroke-width="2" stroke-dasharray="5,3"/>
+            <line x1="492" y1="290" x2="595" y2="290" stroke="#f57c00" stroke-width="2" stroke-dasharray="5,3"/>
+
+            <!-- 2" waste from shower floor drain -->
+            <line x1="520" y1="266" x2="520" y2="290" stroke="#f57c00" stroke-width="2" stroke-dasharray="5,3"/>
+            <line x1="520" y1="290" x2="595" y2="290" stroke="#f57c00" stroke-width="2" stroke-dasharray="5,3"/>
+
+            <!-- 2" waste from kitchen -->
+            <line x1="570" y1="420" x2="570" y2="435" stroke="#f57c00" stroke-width="2" stroke-dasharray="5,3"/>
+            <line x1="570" y1="435" x2="595" y2="435" stroke="#f57c00" stroke-width="2" stroke-dasharray="5,3"/>
+            <line x1="595" y1="290" x2="595" y2="435" stroke="#2e7d32" stroke-width="4"/>
+
+            <!-- Soil pipe drops through slab indicator -->
+            <rect x="585" y="435" width="20" height="12" fill="#2e7d32" stroke="#1b5e20" stroke-width="1"/>
+            <text x="560" y="456" font-size="7" fill="#1b5e20">↓ Through Slab to GF Septic</text>
+
+            <!-- Pipe size annotations -->
+            <text x="460" y="125" font-size="6" fill="#1565c0">1/2" branches</text>
+            <text x="495" y="295" font-size="6" fill="#f57c00">2" waste</text>
+
+            <!-- North arrow -->
+            <g transform="translate(100,420)">
+                <polygon points="0,-20 5,-10 -5,-10" fill="#333"/>
+                <line x1="0" y1="-10" x2="0" y2="10" stroke="#333" stroke-width="1.5"/>
+                <text x="-3" y="20" font-size="8" fill="#333">N</text>
+            </g>
+
+            <!-- Title block -->
+            <rect x="50" y="460" width="250" height="30" fill="#f5f5f5" stroke="#999" stroke-width="0.5"/>
+            <text x="55" y="475" font-size="8" fill="#333">FIRST FLOOR PLUMBING LAYOUT</text>
+            <text x="55" y="485" font-size="7" fill="#666">Scale: NTS | All dims in feet</text>
+        </svg>
+    </div>
+
+    <div class="note-box">
+        <strong>Note / नोट:</strong> All supply pipes run concealed in walls (chase cutting). Drainage pipes run below slab soffit (exposed or in false ceiling). Main 4" soil stack is on RIGHT wall — verify sleeve position in slab.
+    </div>
+</div>
+
+<!-- PAGE 2: Bathroom Detail -->
+<div class="page">
+    <h1>पहली मंजिल — Plumbing Design</h1>
+
+    <h2>2. Bathroom Detail / बाथरूम विवरण (6ft × 8ft)</h2>
+
+    <div class="svg-container">
+        <svg viewBox="0 0 500 420" width="100%" height="auto" style="max-height: 320px; border: 1px solid #ddd;">
+            <!-- Bathroom walls -->
+            <rect x="50" y="30" width="400" height="360" fill="#f5f9ff" stroke="#333" stroke-width="2"/>
+
+            <!-- Door -->
+            <rect x="50" y="180" width="8" height="70" fill="#fff" stroke="#333" stroke-width="1"/>
+            <text x="20" y="220" font-size="8" fill="#333">Door</text>
+            <path d="M 58 180 A 70 70 0 0 1 58 250" fill="none" stroke="#999" stroke-width="0.5" stroke-dasharray="3,2"/>
+
+            <!-- WC with concealed tank -->
+            <rect x="360" y="50" width="60" height="75" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+            <rect x="370" y="40" width="40" height="15" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+            <text x="372" y="50" font-size="6" fill="#1565c0">Concealed</text>
+            <text x="378" y="80" font-size="8" fill="#333">WC</text>
+            <text x="365" y="100" font-size="6" fill="#555">Western</text>
+            <text x="365" y="110" font-size="6" fill="#555">Commode</text>
+
+            <!-- Wash Basin -->
+            <ellipse cx="130" cy="65" rx="40" ry="22" fill="#fff" stroke="#333" stroke-width="1.5"/>
+            <text x="110" y="70" font-size="8" fill="#333">Basin</text>
+            <rect x="115" y="42" width="30" height="8" fill="#ccc" stroke="#333" stroke-width="0.5" rx="2"/>
+            <text x="118" y="49" font-size="5" fill="#333">Mixer</text>
+
+            <!-- Geyser (wall mounted above basin area) -->
+            <rect x="200" y="38" width="50" height="60" fill="#ffebee" stroke="#c62828" stroke-width="1.5" rx="3"/>
+            <text x="205" y="62" font-size="7" fill="#c62828">GEYSER</text>
+            <text x="207" y="74" font-size="6" fill="#c62828">15-25L</text>
+            <text x="205" y="86" font-size="5" fill="#c62828">Wall-mount</text>
+
+            <!-- Shower area -->
+            <rect x="60" y="230" width="180" height="145" fill="#e1f5fe" stroke="#0288d1" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="110" y="260" font-size="10" fill="#0288d1" font-weight="bold">SHOWER AREA</text>
+            <circle cx="150" cy="300" r="8" fill="#0288d1" opacity="0.3"/>
+            <text x="135" y="304" font-size="6" fill="#0288d1">Rose</text>
+
+            <!-- Shower mixer -->
+            <rect x="60" y="280" width="20" height="30" fill="#fff" stroke="#333" stroke-width="1"/>
+            <text x="63" y="298" font-size="5" fill="#333">Mix</text>
+
+            <!-- Floor drain (nahani) -->
+            <circle cx="200" cy="350" r="10" fill="none" stroke="#2e7d32" stroke-width="2"/>
+            <line x1="193" y1="350" x2="207" y2="350" stroke="#2e7d32" stroke-width="1"/>
+            <line x1="200" y1="343" x2="200" y2="357" stroke="#2e7d32" stroke-width="1"/>
+            <text x="215" y="354" font-size="7" fill="#2e7d32">Nahani Trap</text>
+            <text x="215" y="363" font-size="6" fill="#2e7d32">(Floor Drain)</text>
+
+            <!-- Washing Machine point -->
+            <rect x="280" y="250" width="80" height="70" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1" rx="3"/>
+            <text x="290" y="275" font-size="7" fill="#6a1b9a">Washing</text>
+            <text x="290" y="287" font-size="7" fill="#6a1b9a">Machine</text>
+            <text x="290" y="302" font-size="6" fill="#555">Cold supply</text>
+            <text x="290" y="312" font-size="6" fill="#555">+ 2" drain</text>
+
+            <!-- Pipe markings - Cold supply (blue) -->
+            <line x1="440" y1="30" x2="440" y2="60" stroke="#1565c0" stroke-width="2.5"/>
+            <text x="445" y="45" font-size="6" fill="#1565c0">3/4" Main</text>
+
+            <!-- Cold branches -->
+            <line x1="440" y1="60" x2="390" y2="60" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="410" y="55" font-size="5" fill="#1565c0">1/2"</text>
+
+            <line x1="440" y1="60" x2="440" y2="100" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="440" y1="100" x2="320" y2="100" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="320" y1="100" x2="320" y2="265" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="325" y="200" font-size="5" fill="#1565c0">1/2" to W/M</text>
+
+            <!-- Cold to geyser -->
+            <line x1="440" y1="60" x2="250" y2="60" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="270" y="55" font-size="5" fill="#1565c0">1/2" to Geyser</text>
+
+            <!-- Cold to shower -->
+            <line x1="250" y1="60" x2="130" y2="60" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="80" y1="60" x2="80" y2="280" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="80" y1="60" x2="130" y2="60" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Hot supply (red dashed) -->
+            <line x1="220" y1="98" x2="130" y2="98" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="130" y1="87" x2="130" y2="98" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="145" y="95" font-size="5" fill="#c62828">Hot to Basin</text>
+
+            <line x1="220" y1="98" x2="220" y2="280" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="80" y1="295" x2="220" y2="295" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="120" y="290" font-size="5" fill="#c62828">Hot to Shower</text>
+
+            <!-- Drain lines (green) -->
+            <line x1="390" y1="125" x2="390" y2="390" stroke="#2e7d32" stroke-width="4"/>
+            <text x="395" y="200" font-size="7" fill="#2e7d32">4" Soil Stack</text>
+
+            <line x1="200" y1="360" x2="390" y2="360" stroke="#f57c00" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="260" y="375" font-size="5" fill="#f57c00">2" waste to soil stack</text>
+
+            <!-- Dimensions -->
+            <line x1="50" y1="400" x2="450" y2="400" stroke="#666" stroke-width="0.5"/>
+            <text x="230" y="415" font-size="8" fill="#666">8 ft (2440 mm)</text>
+            <line x1="460" y1="30" x2="460" y2="390" stroke="#666" stroke-width="0.5"/>
+            <text x="465" y="210" font-size="8" fill="#666" transform="rotate(90,465,210)">6 ft (1830 mm)</text>
+        </svg>
+    </div>
+
+    <h3>Bathroom Fixture Heights (from FFL / फ्लोर से ऊंचाई):</h3>
+    <table>
+        <tr>
+            <th>Fixture / फिक्स्चर</th>
+            <th>Supply Point Height</th>
+            <th>Drain Point Height</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>WC (Concealed Flush)</td>
+            <td>1000mm (cold inlet at back)</td>
+            <td>Floor level (150mm center)</td>
+            <td>Flush tank concealed in wall at 800-1100mm</td>
+        </tr>
+        <tr>
+            <td>Wash Basin</td>
+            <td>600mm (H+C mixer)</td>
+            <td>500mm (32mm waste)</td>
+            <td>Wall-hung basin at 800mm from floor</td>
+        </tr>
+        <tr>
+            <td>Shower Mixer</td>
+            <td>1100mm (H+C)</td>
+            <td>Floor level (nahani)</td>
+            <td>Overhead rose at 2000mm, hand shower at 1000mm</td>
+        </tr>
+        <tr>
+            <td>Geyser (15-25L)</td>
+            <td>1800mm (cold in, hot out)</td>
+            <td>—</td>
+            <td>Wall-mounted, needs 6mm² power point at 2000mm</td>
+        </tr>
+        <tr>
+            <td>Washing Machine</td>
+            <td>800mm (cold only, 15mm)</td>
+            <td>Floor level (floor trap)</td>
+            <td>Angle valve with hose connection</td>
+        </tr>
+        <tr>
+            <td>Nahani Trap (Floor Drain)</td>
+            <td>—</td>
+            <td>Floor level</td>
+            <td>Jali type SS, 110mm, connects to 2" waste</td>
+        </tr>
+    </table>
+
+    <div class="note-box">
+        <strong>Hot Water Routing / गर्म पानी:</strong> Geyser → Basin (short run ~1m) + Shower (~2m). Insulate hot pipes with foam sleeve to reduce heat loss. Geyser placement on wall between basin and shower minimizes pipe length.
+    </div>
+</div>
+
+<!-- PAGE 3: Kitchen Detail + Riser Diagram -->
+<div class="page">
+    <h1>पहली मंजिल — Plumbing Design</h1>
+
+    <h2>3. Kitchen Plumbing Detail / किचन प्लंबिंग</h2>
+
+    <div class="svg-container">
+        <svg viewBox="0 0 500 250" width="100%" height="auto" style="max-height: 200px; border: 1px solid #ddd;">
+            <!-- Kitchen L-shape outline -->
+            <rect x="50" y="30" width="400" height="200" fill="#f5fff5" stroke="#333" stroke-width="1.5"/>
+
+            <!-- Counter (L-shaped) -->
+            <rect x="250" y="40" width="190" height="45" fill="#ffe0b2" stroke="#795548" stroke-width="1"/>
+            <rect x="380" y="40" width="60" height="180" fill="#ffe0b2" stroke="#795548" stroke-width="1"/>
+            <text x="260" y="62" font-size="8" fill="#795548">Kitchen Counter (back wall)</text>
+            <text x="385" y="140" font-size="7" fill="#795548" transform="rotate(90,395,140)">Counter (right wall)</text>
+
+            <!-- Sink -->
+            <rect x="300" y="48" width="70" height="30" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5" rx="3"/>
+            <text x="310" y="67" font-size="8" fill="#1565c0">SS Sink</text>
+            <rect x="372" y="55" width="25" height="15" fill="#f5f5f5" stroke="#999" stroke-width="0.5"/>
+            <text x="374" y="65" font-size="5" fill="#666">Drain</text>
+            <text x="374" y="72" font-size="5" fill="#666">Board</text>
+
+            <!-- Mixer tap above sink -->
+            <circle cx="335" cy="43" r="5" fill="#fff" stroke="#333" stroke-width="1"/>
+            <text x="343" y="40" font-size="6" fill="#333">Mixer Tap</text>
+
+            <!-- Instant water heater -->
+            <rect x="260" y="100" width="50" height="40" fill="#ffebee" stroke="#c62828" stroke-width="1" rx="2"/>
+            <text x="264" y="118" font-size="6" fill="#c62828">Instant</text>
+            <text x="264" y="127" font-size="6" fill="#c62828">Heater</text>
+            <text x="264" y="136" font-size="5" fill="#c62828">(3kW)</text>
+
+            <!-- Grease trap -->
+            <rect x="320" y="90" width="50" height="35" fill="#fff8e1" stroke="#f57c00" stroke-width="1.5" rx="2"/>
+            <text x="325" y="108" font-size="7" fill="#f57c00">Grease</text>
+            <text x="330" y="118" font-size="7" fill="#f57c00">Trap</text>
+
+            <!-- Cold supply line -->
+            <line x1="450" y1="30" x2="450" y2="55" stroke="#1565c0" stroke-width="2"/>
+            <line x1="450" y1="55" x2="370" y2="55" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="370" y1="55" x2="335" y2="43" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="395" y="50" font-size="6" fill="#1565c0">1/2" Cold</text>
+
+            <!-- Cold to instant heater -->
+            <line x1="370" y1="55" x2="310" y2="55" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="285" y1="55" x2="285" y2="100" stroke="#1565c0" stroke-width="1.5"/>
+            <line x1="285" y1="55" x2="310" y2="55" stroke="#1565c0" stroke-width="1.5"/>
+
+            <!-- Hot from instant heater -->
+            <line x1="285" y1="140" x2="285" y2="155" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="285" y1="155" x2="335" y2="155" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="335" y1="155" x2="335" y2="43" stroke="#c62828" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="290" y="150" font-size="5" fill="#c62828">1/2" Hot</text>
+
+            <!-- Drain from sink to grease trap -->
+            <line x1="335" y1="78" x2="335" y2="90" stroke="#f57c00" stroke-width="2"/>
+            <text x="340" y="87" font-size="5" fill="#f57c00">1.5"</text>
+
+            <!-- Drain from grease trap to main -->
+            <line x1="345" y1="125" x2="345" y2="180" stroke="#f57c00" stroke-width="2" stroke-dasharray="4,2"/>
+            <line x1="345" y1="180" x2="450" y2="180" stroke="#f57c00" stroke-width="2" stroke-dasharray="4,2"/>
+            <line x1="450" y1="180" x2="450" y2="230" stroke="#2e7d32" stroke-width="3"/>
+            <text x="360" y="195" font-size="6" fill="#f57c00">2" waste → to soil pipe</text>
+            <text x="453" y="220" font-size="6" fill="#2e7d32">→ 4" Stack</text>
+
+            <!-- Labels -->
+            <text x="60" y="50" font-size="9" fill="#333" font-weight="bold">Kitchen (Right+Back Corner)</text>
+        </svg>
+    </div>
+
+    <div class="note-box">
+        <strong>Grease Trap / ग्रीस ट्रैप:</strong> Install under-counter grease trap (capacity 10-15L) between sink waste and main drain pipe. Clean every 2 weeks. This prevents kitchen oil/grease from entering main drainage and clogging pipes.
+    </div>
+
+    <h2>4. Riser Diagram / राइज़र डायग्राम (Vertical Section)</h2>
+
+    <div class="svg-container">
+        <svg viewBox="0 0 600 420" width="100%" height="auto" style="max-height: 340px; border: 1px solid #ddd;">
+            <!-- Level labels -->
+            <text x="20" y="45" font-size="9" fill="#333" font-weight="bold">Roof Level</text>
+            <text x="20" y="55" font-size="7" fill="#555">(OH Tank)</text>
+            <line x1="15" y1="60" x2="580" y2="60" stroke="#999" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+            <text x="20" y="190" font-size="9" fill="#333" font-weight="bold">1F Level</text>
+            <text x="20" y="200" font-size="7" fill="#555">(FFL +3000)</text>
+            <line x1="15" y1="205" x2="580" y2="205" stroke="#333" stroke-width="1.5"/>
+
+            <text x="20" y="300" font-size="9" fill="#333" font-weight="bold">GF Level</text>
+            <text x="20" y="310" font-size="7" fill="#555">(FFL ±0)</text>
+            <line x1="15" y1="315" x2="580" y2="315" stroke="#333" stroke-width="1.5"/>
+
+            <text x="20" y="390" font-size="9" fill="#333" font-weight="bold">Below Ground</text>
+            <line x1="15" y1="395" x2="580" y2="395" stroke="#666" stroke-width="1" stroke-dasharray="8,4"/>
+
+            <!-- SUPPLY SIDE (Left) -->
+            <text x="120" y="20" font-size="10" fill="#1565c0" font-weight="bold">SUPPLY / सप्लाई</text>
+
+            <!-- Overhead Tank -->
+            <rect x="100" y="30" width="80" height="25" fill="#e3f2fd" stroke="#1565c0" stroke-width="2" rx="3"/>
+            <text x="108" y="47" font-size="7" fill="#1565c0">OH TANK</text>
+            <text x="185" y="47" font-size="6" fill="#555">1000-2000L</text>
+
+            <!-- Main supply down -->
+            <line x1="140" y1="55" x2="140" y2="205" stroke="#1565c0" stroke-width="3"/>
+            <text x="145" y="130" font-size="7" fill="#1565c0">3/4" CPVC</text>
+            <text x="145" y="142" font-size="6" fill="#1565c0">(gravity fed)</text>
+
+            <!-- 1F Distribution -->
+            <line x1="140" y1="170" x2="280" y2="170" stroke="#1565c0" stroke-width="2"/>
+
+            <!-- Branch to bathroom -->
+            <line x1="180" y1="170" x2="180" y2="185" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="165" y="198" font-size="6" fill="#1565c0">Bathroom</text>
+            <circle cx="180" cy="185" r="3" fill="#1565c0"/>
+
+            <!-- Branch to kitchen -->
+            <line x1="220" y1="170" x2="220" y2="185" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="208" y="198" font-size="6" fill="#1565c0">Kitchen</text>
+            <circle cx="220" cy="185" r="3" fill="#1565c0"/>
+
+            <!-- Branch to balcony -->
+            <line x1="260" y1="170" x2="260" y2="185" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="247" y="198" font-size="6" fill="#1565c0">Balcony</text>
+            <circle cx="260" cy="185" r="3" fill="#1565c0"/>
+
+            <!-- Gate valve -->
+            <rect x="135" y="155" width="10" height="10" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="148" y="164" font-size="5" fill="#1565c0">Gate Valve</text>
+
+            <!-- Hot water sub-system -->
+            <rect x="165" y="215" width="45" height="20" fill="#ffebee" stroke="#c62828" stroke-width="1" rx="2"/>
+            <text x="168" y="228" font-size="5" fill="#c62828">Geyser</text>
+            <line x1="180" y1="185" x2="180" y2="215" stroke="#1565c0" stroke-width="1"/>
+            <line x1="188" y1="235" x2="188" y2="245" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="193" y="243" font-size="5" fill="#c62828">→ Basin, Shower</text>
+
+            <!-- DRAINAGE SIDE (Right) -->
+            <text x="380" y="20" font-size="10" fill="#2e7d32" font-weight="bold">DRAINAGE / ड्रेनेज</text>
+
+            <!-- Vent pipe (goes up through roof) -->
+            <line x1="530" y1="25" x2="530" y2="205" stroke="#6a1b9a" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <text x="535" y="40" font-size="6" fill="#6a1b9a">2" Vent</text>
+            <text x="535" y="50" font-size="6" fill="#6a1b9a">(above roof)</text>
+
+            <!-- 4" Soil Stack -->
+            <line x1="460" y1="170" x2="460" y2="395" stroke="#2e7d32" stroke-width="5"/>
+            <text x="468" y="260" font-size="7" fill="#2e7d32">4" PVC SWR</text>
+            <text x="468" y="272" font-size="7" fill="#2e7d32">Soil Stack</text>
+
+            <!-- WC connection at 1F -->
+            <line x1="380" y1="180" x2="460" y2="180" stroke="#2e7d32" stroke-width="3"/>
+            <text x="385" y="176" font-size="6" fill="#2e7d32">WC (4")</text>
+            <circle cx="380" cy="180" r="4" fill="#2e7d32"/>
+
+            <!-- Basin/Shower waste at 1F -->
+            <line x1="380" y1="195" x2="460" y2="195" stroke="#f57c00" stroke-width="2"/>
+            <text x="385" y="192" font-size="5" fill="#f57c00">Basin+Shower+W/M (2")</text>
+            <circle cx="380" cy="195" r="3" fill="#f57c00"/>
+
+            <!-- Kitchen waste at 1F -->
+            <line x1="380" y1="200" x2="460" y2="200" stroke="#f57c00" stroke-width="2"/>
+            <text x="385" y="204" font-size="5" fill="#f57c00">Kitchen (2" via grease trap)</text>
+            <circle cx="380" cy="200" r="3" fill="#f57c00"/>
+
+            <!-- Through slab -->
+            <rect x="450" y="203" width="20" height="8" fill="#795548"/>
+            <text x="475" y="210" font-size="5" fill="#795548">Slab (sleeve/core-cut)</text>
+
+            <!-- GF drain connection -->
+            <line x1="460" y1="315" x2="460" y2="340" stroke="#2e7d32" stroke-width="4"/>
+            <line x1="460" y1="340" x2="530" y2="340" stroke="#2e7d32" stroke-width="3"/>
+            <text x="470" y="336" font-size="6" fill="#2e7d32">→ GF Main Drain</text>
+
+            <!-- Septic Tank -->
+            <rect x="460" y="365" width="100" height="35" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" rx="5"/>
+            <text x="475" y="383" font-size="8" fill="#2e7d32">SEPTIC</text>
+            <text x="480" y="394" font-size="8" fill="#2e7d32">TANK</text>
+            <line x1="510" y1="340" x2="510" y2="365" stroke="#2e7d32" stroke-width="3"/>
+
+            <!-- Vent connection -->
+            <line x1="460" y1="180" x2="530" y2="180" stroke="#6a1b9a" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="530" y1="180" x2="530" y2="205" stroke="#6a1b9a" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- Slope annotations -->
+            <text x="400" y="360" font-size="6" fill="#555">Slope: 1:40 (soil), 1:60 (waste)</text>
+        </svg>
+    </div>
+
+    <div class="critical-box">
+        <strong>CRITICAL / ज़रूरी:</strong> Check if pipe sleeve (4" dia) was left in slab during GF ceiling pour on the RIGHT side. If not present, core-cutting (4" hole) will be needed before 1F wall construction begins. Plan this FIRST.
+    </div>
+</div>
+
+<!-- PAGE 4: Pipe Sizing + Fixture Schedule -->
+<div class="page">
+    <h1>पहली मंजिल — Plumbing Design</h1>
+
+    <h2>5. Pipe Sizing Table / पाइप साइज़ टेबल</h2>
+
+    <table>
+        <tr>
+            <th>S.No.</th>
+            <th>Pipe / पाइप</th>
+            <th>Size</th>
+            <th>Material</th>
+            <th>Slope</th>
+            <th>Purpose / उपयोग</th>
+            <th>Location</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Main Supply (OH Tank → 1F)</td>
+            <td>3/4" (20mm)</td>
+            <td>CPVC (SDR 11)</td>
+            <td>—</td>
+            <td>Main cold water supply from overhead tank</td>
+            <td>Vertical riser, right wall</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Branch Supply — Bathroom</td>
+            <td>1/2" (15mm)</td>
+            <td>CPVC (SDR 11)</td>
+            <td>—</td>
+            <td>Cold water to WC, basin, shower, geyser, W/M</td>
+            <td>Concealed in bathroom walls</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Branch Supply — Kitchen</td>
+            <td>1/2" (15mm)</td>
+            <td>CPVC (SDR 11)</td>
+            <td>—</td>
+            <td>Cold water to kitchen sink + instant heater</td>
+            <td>Concealed in kitchen wall</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Branch Supply — Balcony</td>
+            <td>1/2" (15mm)</td>
+            <td>CPVC (SDR 11)</td>
+            <td>—</td>
+            <td>Cold water to balcony bib cock</td>
+            <td>Concealed, front/left wall</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Hot Water (Geyser → Fixtures)</td>
+            <td>1/2" (15mm)</td>
+            <td>CPVC (SDR 11)</td>
+            <td>—</td>
+            <td>Hot water to basin + shower mixer</td>
+            <td>Concealed, bathroom walls, insulated</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Hot Water (Instant Heater → Kitchen)</td>
+            <td>1/2" (15mm)</td>
+            <td>CPVC (SDR 11)</td>
+            <td>—</td>
+            <td>Hot water to kitchen sink mixer</td>
+            <td>Concealed, kitchen wall</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Soil Pipe (WC)</td>
+            <td>4" (110mm)</td>
+            <td>PVC SWR (Type B)</td>
+            <td>1:40</td>
+            <td>WC waste + combined drain to GF</td>
+            <td>Vertical stack, right side, through slab</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Waste Pipe — Basin</td>
+            <td>1.25" (32mm)</td>
+            <td>PVC SWR</td>
+            <td>1:50</td>
+            <td>Basin waste to floor trap / soil stack</td>
+            <td>Concealed / below slab soffit</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>Waste Pipe — Shower/Nahani</td>
+            <td>2" (50mm)</td>
+            <td>PVC SWR</td>
+            <td>1:60</td>
+            <td>Floor drain waste to soil stack</td>
+            <td>Below slab / in screed</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>Waste Pipe — Kitchen Sink</td>
+            <td>2" (50mm)</td>
+            <td>PVC SWR</td>
+            <td>1:60</td>
+            <td>Kitchen waste (post grease trap) to soil stack</td>
+            <td>Below slab / along wall</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>Waste Pipe — Washing Machine</td>
+            <td>2" (50mm)</td>
+            <td>PVC SWR</td>
+            <td>1:60</td>
+            <td>W/M drain to floor trap</td>
+            <td>Floor level in bathroom</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>Vent Pipe</td>
+            <td>2" (50mm)</td>
+            <td>PVC SWR</td>
+            <td>—</td>
+            <td>Anti-siphon vent, extends above roof</td>
+            <td>Connected to soil stack, rises through roof</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>Balcony Drain</td>
+            <td>2" (50mm)</td>
+            <td>PVC SWR</td>
+            <td>1:60</td>
+            <td>Balcony tap drain / rainwater</td>
+            <td>Through parapet, external downpipe</td>
+        </tr>
+    </table>
+
+    <h2>6. Fixture Schedule / फिक्स्चर शेड्यूल</h2>
+
+    <table>
+        <tr>
+            <th>S.No.</th>
+            <th>Fixture / फिक्स्चर</th>
+            <th>Type / Brand Category</th>
+            <th>Supply Connection</th>
+            <th>Drain Connection</th>
+            <th>Location</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Western Commode (WC)</td>
+            <td>Floor-mounted, S-trap, concealed cistern<br>(Hindware/Parryware/Jaquar)</td>
+            <td>15mm cold (concealed valve)</td>
+            <td>4" (110mm) soil</td>
+            <td>Bathroom — right wall</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Concealed Flush Tank</td>
+            <td>Slim cistern, dual-flush (3/6L)<br>(Grohe Rapid / Geberit type)</td>
+            <td>15mm cold (from above)</td>
+            <td>Connected to WC</td>
+            <td>Inside partition wall behind WC</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Wash Basin</td>
+            <td>Wall-hung ceramic, table-top or wall-mount<br>(Hindware/Cera/Parryware)</td>
+            <td>15mm H + 15mm C (mixer)</td>
+            <td>32mm waste with bottle trap</td>
+            <td>Bathroom — left wall</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Basin Mixer Tap</td>
+            <td>Single-lever basin mixer<br>(Jaquar/Grohe)</td>
+            <td>15mm H + C (from wall)</td>
+            <td>—</td>
+            <td>Above basin</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Shower Mixer</td>
+            <td>Concealed diverter mixer (hot+cold)<br>with overhead rose + hand shower</td>
+            <td>15mm H + C (concealed)</td>
+            <td>—</td>
+            <td>Shower area wall</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Nahani Trap (Floor Drain)</td>
+            <td>SS jali, cockroach trap<br>110mm square/round</td>
+            <td>—</td>
+            <td>50mm (2") waste</td>
+            <td>Shower area floor (lowest point)</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Storage Geyser</td>
+            <td>15-25L, wall-mounted, vertical<br>(Racold/AO Smith/Havells)</td>
+            <td>15mm cold in, 15mm hot out</td>
+            <td>Safety valve drain to floor</td>
+            <td>Bathroom wall (high, 1800mm)</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Kitchen Sink</td>
+            <td>SS single bowl + drainboard<br>24"×18" (600×450mm)</td>
+            <td>15mm H + C (mixer)</td>
+            <td>40mm waste → grease trap</td>
+            <td>Kitchen counter — back wall</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>Kitchen Mixer Tap</td>
+            <td>Single-lever sink mixer, swivel spout<br>(Jaquar/Grohe/Hindware)</td>
+            <td>15mm H + C</td>
+            <td>—</td>
+            <td>Kitchen wall above sink</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>Instant Water Heater (Kitchen)</td>
+            <td>3kW, wall-mounted<br>(Racold/Bajaj)</td>
+            <td>15mm cold in, 15mm hot out</td>
+            <td>—</td>
+            <td>Kitchen wall near sink</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>Grease Trap</td>
+            <td>Under-counter, 10-15L capacity<br>SS or PVC type</td>
+            <td>—</td>
+            <td>40mm in, 50mm out</td>
+            <td>Below kitchen sink</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>Washing Machine Point</td>
+            <td>Angle valve + multi-turn cock<br>with hose connector</td>
+            <td>15mm cold (angle valve)</td>
+            <td>50mm floor trap</td>
+            <td>Bathroom / adjacent area</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>Balcony Bib Cock</td>
+            <td>Brass bib cock (15mm)<br>(Jaquar/Parryware)</td>
+            <td>15mm cold</td>
+            <td>Small floor drain below</td>
+            <td>Left/front wall of balcony</td>
+        </tr>
+    </table>
+</div>
+
+<!-- PAGE 5: Material List + Contractor Notes -->
+<div class="page">
+    <h1>पहली मंजिल — Plumbing Design</h1>
+
+    <h2>7. Material List / सामान की सूची (Estimated Quantities)</h2>
+
+    <h3>A. Supply Pipes (CPVC) / सप्लाई पाइप</h3>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Size</th>
+            <th>Qty (approx)</th>
+            <th>Remarks</th>
+        </tr>
+        <tr>
+            <td>CPVC Pipe (Astral/Supreme)</td>
+            <td>3/4" (20mm)</td>
+            <td>6m (2 lengths)</td>
+            <td>Main supply from OH tank to distribution</td>
+        </tr>
+        <tr>
+            <td>CPVC Pipe (Astral/Supreme)</td>
+            <td>1/2" (15mm)</td>
+            <td>30m (10 lengths)</td>
+            <td>All branch supply lines (cold + hot)</td>
+        </tr>
+        <tr>
+            <td>CPVC Elbows 90°</td>
+            <td>1/2"</td>
+            <td>25 nos</td>
+            <td>Direction changes</td>
+        </tr>
+        <tr>
+            <td>CPVC Elbows 90°</td>
+            <td>3/4"</td>
+            <td>6 nos</td>
+            <td>Main line turns</td>
+        </tr>
+        <tr>
+            <td>CPVC Tees</td>
+            <td>1/2"</td>
+            <td>12 nos</td>
+            <td>Branch take-offs</td>
+        </tr>
+        <tr>
+            <td>CPVC Tees (Reducing)</td>
+            <td>3/4" × 1/2"</td>
+            <td>4 nos</td>
+            <td>Main to branch reduction</td>
+        </tr>
+        <tr>
+            <td>CPVC Couplers</td>
+            <td>1/2"</td>
+            <td>10 nos</td>
+            <td>Pipe joints</td>
+        </tr>
+        <tr>
+            <td>CPVC MTA (Male Threaded Adapter)</td>
+            <td>1/2"</td>
+            <td>14 nos</td>
+            <td>Fixture connections</td>
+        </tr>
+        <tr>
+            <td>CPVC FTA (Female Threaded Adapter)</td>
+            <td>1/2"</td>
+            <td>8 nos</td>
+            <td>Valve connections</td>
+        </tr>
+        <tr>
+            <td>Gate Valve (brass)</td>
+            <td>3/4"</td>
+            <td>1 no</td>
+            <td>Main supply shut-off</td>
+        </tr>
+        <tr>
+            <td>Concealed Stop Valves</td>
+            <td>1/2"</td>
+            <td>8 nos</td>
+            <td>At each fixture point (for isolation)</td>
+        </tr>
+        <tr>
+            <td>Angle Valves</td>
+            <td>1/2"</td>
+            <td>4 nos</td>
+            <td>WC, W/M, geyser connections</td>
+        </tr>
+        <tr>
+            <td>CPVC Solvent Cement</td>
+            <td>—</td>
+            <td>2 tins (100ml)</td>
+            <td>One-step cement for CPVC joints</td>
+        </tr>
+        <tr>
+            <td>Pipe Insulation Foam</td>
+            <td>1/2" ID</td>
+            <td>6m</td>
+            <td>Hot water pipe insulation</td>
+        </tr>
+        <tr>
+            <td>Pipe Clamps / Clips</td>
+            <td>1/2" + 3/4"</td>
+            <td>30 nos</td>
+            <td>Wall fixing before plastering</td>
+        </tr>
+    </table>
+
+    <h3>B. Drainage Pipes (PVC SWR) / ड्रेनेज पाइप</h3>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Size</th>
+            <th>Qty (approx)</th>
+            <th>Remarks</th>
+        </tr>
+        <tr>
+            <td>PVC SWR Pipe (Prince/Supreme)</td>
+            <td>4" (110mm)</td>
+            <td>6m (2 lengths)</td>
+            <td>Soil stack (vertical drop through slab)</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Pipe</td>
+            <td>2" (50mm)</td>
+            <td>12m (4 lengths)</td>
+            <td>Waste pipes — shower, kitchen, W/M, balcony</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Pipe</td>
+            <td>1.25" (32mm)</td>
+            <td>2m</td>
+            <td>Basin waste (short run to trap/stack)</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Elbows 90°</td>
+            <td>4"</td>
+            <td>3 nos</td>
+            <td>Soil pipe bends</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Elbows 45°</td>
+            <td>4"</td>
+            <td>2 nos</td>
+            <td>Gradual direction changes (preferred)</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Elbows 90°</td>
+            <td>2"</td>
+            <td>8 nos</td>
+            <td>Waste pipe turns</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Tees / Y-branches</td>
+            <td>4" × 2"</td>
+            <td>3 nos</td>
+            <td>Waste pipe connection to soil stack</td>
+        </tr>
+        <tr>
+            <td>PVC SWR Tees</td>
+            <td>2"</td>
+            <td>3 nos</td>
+            <td>Waste pipe junctions</td>
+        </tr>
+        <tr>
+            <td>Nahani Trap (Floor Trap) with jali</td>
+            <td>110mm</td>
+            <td>2 nos</td>
+            <td>Bathroom floor + W/M drain</td>
+        </tr>
+        <tr>
+            <td>P-Trap / Bottle Trap (Basin)</td>
+            <td>32mm</td>
+            <td>1 no</td>
+            <td>Wash basin waste trap</td>
+        </tr>
+        <tr>
+            <td>WC Connector (offset if needed)</td>
+            <td>4" (110mm)</td>
+            <td>1 no</td>
+            <td>WC to soil pipe connection</td>
+        </tr>
+        <tr>
+            <td>Cleaning Eye / Access Plug</td>
+            <td>4"</td>
+            <td>2 nos</td>
+            <td>For maintenance access on soil stack</td>
+        </tr>
+        <tr>
+            <td>PVC Solvent Cement</td>
+            <td>—</td>
+            <td>2 tins (200ml)</td>
+            <td>SWR pipe joints</td>
+        </tr>
+        <tr>
+            <td>Vent Cowl</td>
+            <td>2"</td>
+            <td>1 no</td>
+            <td>Top of vent pipe (prevents debris entry)</td>
+        </tr>
+        <tr>
+            <td>Pipe Sleeve (MS)</td>
+            <td>4" + 2"</td>
+            <td>2+2 nos</td>
+            <td>Through-slab sleeves (if not already cast)</td>
+        </tr>
+    </table>
+
+    <h3>C. Fixtures & Accessories / फिक्स्चर</h3>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Remarks</th>
+        </tr>
+        <tr><td>Western Commode (S-trap, floor-mount)</td><td>1</td><td>With seat cover, fixing kit</td></tr>
+        <tr><td>Concealed Flush Tank (dual-flush)</td><td>1</td><td>With flush plate (SS or chrome)</td></tr>
+        <tr><td>Wash Basin (wall-hung/table-top)</td><td>1</td><td>With fixing brackets</td></tr>
+        <tr><td>Basin Mixer Tap (single-lever)</td><td>1</td><td>Hot + cold</td></tr>
+        <tr><td>Shower Mixer (concealed diverter)</td><td>1</td><td>With overhead rose + hand shower + pipe</td></tr>
+        <tr><td>Storage Geyser (15-25L)</td><td>1</td><td>With safety valve, mounting bracket</td></tr>
+        <tr><td>SS Kitchen Sink (single bowl + drainboard)</td><td>1</td><td>With waste coupling + basket strainer</td></tr>
+        <tr><td>Kitchen Sink Mixer (swivel)</td><td>1</td><td>Hot + cold, wall-mount or deck-mount</td></tr>
+        <tr><td>Instant Water Heater (3kW)</td><td>1</td><td>Kitchen — wall mounted</td></tr>
+        <tr><td>Grease Trap (10-15L)</td><td>1</td><td>Under-counter, SS or PVC</td></tr>
+        <tr><td>Bib Cock (brass, 15mm)</td><td>1</td><td>Balcony tap</td></tr>
+        <tr><td>Washing Machine Valve (angle)</td><td>1</td><td>With hose connector</td></tr>
+        <tr><td>Teflon Tape (thread seal)</td><td>5 rolls</td><td>All threaded connections</td></tr>
+    </table>
+</div>
+
+<!-- PAGE 6: Contractor Notes -->
+<div class="page">
+    <h1>पहली मंजिल — Plumbing Design</h1>
+
+    <h2>8. Contractor Notes / ठेकेदार के लिए निर्देश</h2>
+
+    <h3>Phase 1: Before Wall Construction / दीवार बनाने से पहले</h3>
+    <ul>
+        <li><strong>Slab Sleeve Check (स्लैब स्लीव जांच):</strong> Verify if 4" pipe sleeve exists on RIGHT side of slab. If not, mark and core-cut a 4" (110mm) hole BEFORE starting walls. Also need 2" sleeve for kitchen waste if separate.</li>
+        <li><strong>Soil Stack Position (सॉइल पाइप स्थान):</strong> Mark exact position of 4" vertical soil pipe on the slab — should be against right wall, close to where WC will be.</li>
+        <li><strong>Floor Trap Positions (फ्लोर ट्रैप):</strong> Set nahani traps in concrete/screed BEFORE floor tiling. Bathroom floor must slope toward drain (1:100 minimum).</li>
+        <li><strong>Drainage Pipe Below Slab:</strong> Run horizontal waste pipes (2") from kitchen and bathroom to the soil stack position BEFORE screeding the floor (if pipes run in floor). Otherwise, run them below the slab soffit (exposed/in false ceiling at GF).</li>
+    </ul>
+
+    <h3>Phase 2: During Wall Construction / दीवार बनाते समय</h3>
+    <ul>
+        <li><strong>Pipe Chases (पाइप की नाली):</strong> Leave vertical chases in walls for concealed supply pipes — 50mm wide × 40mm deep for 1/2" pipe; 60mm wide × 50mm deep for 3/4" pipe. Do NOT chase after building — weakens wall.</li>
+        <li><strong>Concealed Cistern Space:</strong> Build partition wall behind WC at minimum 120mm thickness (or use double-wall technique) to house concealed flush tank. Frame the mounting plate at correct height (800-1000mm from FFL).</li>
+        <li><strong>Geyser Wall:</strong> Use solid block/brick behind geyser location. Need 4 nos heavy-duty wall plugs at 1800mm height. Also run concealed 6mm² power cable to a 15A switch at 2000mm.</li>
+        <li><strong>Kitchen Wall:</strong> Leave chase for hot + cold supply pipes behind sink location.</li>
+    </ul>
+
+    <h3>Phase 3: After Walls, Before Plastering / प्लास्टर से पहले</h3>
+    <ul>
+        <li><strong>Pipe Installation (पाइप डालना):</strong> Fix all CPVC supply pipes in wall chases. Test entire system at 2× working pressure (6 kg/cm² for min 2 hours) before covering.</li>
+        <li><strong>Pressure Test (प्रेशर टेस्ट):</strong> MANDATORY — fill system with water, pressurize to 6 bar, hold for 2 hours. No drop = pass. Mark any leaks, fix, and re-test.</li>
+        <li><strong>Photo Documentation:</strong> Take photos of ALL concealed pipe routes before plastering — will be needed later for any maintenance.</li>
+        <li><strong>Clip Pipes:</strong> Secure all pipes with wall clamps every 600mm (horizontal) and 1000mm (vertical) before plastering over.</li>
+        <li><strong>Cover Chases:</strong> Fill chases with chicken mesh + cement mortar after pipe testing passes.</li>
+    </ul>
+
+    <h3>Phase 4: After Plastering, Before Tiling / टाइल्स से पहले</h3>
+    <ul>
+        <li><strong>Floor Slopes:</strong> Bathroom floor must slope toward nahani trap — minimum 12mm fall per meter (1:80). Verify with water test before tiling.</li>
+        <li><strong>Waterproofing:</strong> Complete bathroom waterproofing (floor + walls 1ft above floor) AFTER drainage pipe installation and BEFORE tiling.</li>
+        <li><strong>Fixture Points:</strong> Mark and verify all fixture outlet points match the chosen fixtures (height, spacing between H+C points = 150mm standard for mixers).</li>
+    </ul>
+
+    <h3>Phase 5: After Tiling / टाइल्स के बाद</h3>
+    <ul>
+        <li><strong>Fixture Installation:</strong> Install WC, basin, shower fittings, kitchen sink, balcony tap.</li>
+        <li><strong>Seal All Joints:</strong> Silicone sealant around WC base, basin wall junction, and kitchen sink edges.</li>
+        <li><strong>Final Testing:</strong> Run all fixtures simultaneously — check flow, drainage speed, any leaks. Run for 30 minutes minimum.</li>
+        <li><strong>Grease Trap:</strong> Install under kitchen counter after sink is fixed. Ensure easy access for cleaning.</li>
+    </ul>
+
+    <div class="critical-box">
+        <strong>IMPORTANT CHECKS / महत्वपूर्ण जांच:</strong>
+        <ul>
+            <li>All CPVC joints must use ONE-STEP solvent cement (not two-step primer). Allow 24hr cure before pressure test.</li>
+            <li>PVC SWR joints: use SWR solvent cement (different from CPVC). Check ring-seal rubber is in place for push-fit joints.</li>
+            <li>Drainage slope: soil pipe 1:40 minimum, waste pipe 1:60 minimum. USE SPIRIT LEVEL.</li>
+            <li>Vent pipe MUST extend minimum 150mm above roof level with cowl. Do not terminate inside building.</li>
+            <li>Keep cleaning eyes (access plugs) accessible — do not plaster/tile over them.</li>
+        </ul>
+    </div>
+
+    <div class="note-box">
+        <strong>Coordination / तालमेल:</strong>
+        <ul>
+            <li>Plumber + Mason: Chase cutting must be done during wall construction, NOT after.</li>
+            <li>Plumber + Electrician: Geyser power point (15A) and instant heater point (20A) at correct locations BEFORE plastering.</li>
+            <li>Plumber + Waterproofing: Complete drain installations BEFORE waterproofing. Do NOT puncture waterproofing membrane after application.</li>
+            <li>Plumber + Tiler: Coordinate fixture outlet heights with tile layout (cuts, patterns).</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 15px; padding: 8px; border: 1px solid #ccc; background: #fafafa; font-size: 8pt;">
+        <strong>Document Info:</strong> First Floor Plumbing Design | Project: Farmhouse | Prepared for construction reference<br>
+        <strong>Standards Reference:</strong> IS 2065 (CPVC pipes), IS 13592 (PVC SWR), IS 2556 (Sanitary fixtures), NBC 2016 Part 9<br>
+        <strong>Note:</strong> All quantities are estimates — final measurement to be done on-site. Allow 10-15% extra for wastage/cuts.
+    </div>
+</div>
+
+</body>
+</html>

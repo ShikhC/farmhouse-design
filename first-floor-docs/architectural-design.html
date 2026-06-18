@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>पहली मंजिल — Architectural Design / First Floor</title>
+<style>
+@page {
+  size: A4;
+  margin: 20mm;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', 'Noto Sans Devanagari', sans-serif;
+  color: #1a1a1a;
+  background: #fff;
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+/* Page breaks */
+.page { page-break-after: always; padding: 0; }
+.page:last-child { page-break-after: avoid; }
+
+/* Cover page */
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  text-align: center;
+}
+.cover h1 {
+  font-size: 28pt;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+.cover h2 {
+  font-size: 16pt;
+  font-weight: 400;
+  color: #444;
+  margin-bottom: 40px;
+}
+.cover .meta {
+  font-size: 11pt;
+  color: #555;
+  line-height: 2;
+}
+.cover .meta strong { color: #1a1a1a; }
+.cover .border-line {
+  width: 60%;
+  height: 3px;
+  background: #333;
+  margin: 30px auto;
+}
+
+/* Section headers */
+h2.section-title {
+  font-size: 16pt;
+  font-weight: 700;
+  color: #1a1a1a;
+  border-bottom: 2px solid #333;
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+}
+h3 {
+  font-size: 12pt;
+  font-weight: 600;
+  margin: 14px 0 8px 0;
+  color: #222;
+}
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  margin: 10px 0 5px 0;
+  color: #333;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 10pt;
+}
+th, td {
+  border: 1px solid #444;
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #e8e8e8;
+  font-weight: 600;
+}
+tr:nth-child(even) td { background: #f8f8f8; }
+
+/* SVG container */
+.drawing {
+  text-align: center;
+  margin: 16px 0;
+}
+.drawing svg {
+  max-width: 100%;
+  border: 1px solid #ccc;
+}
+
+/* Notes */
+.note {
+  background: #f5f5f5;
+  border-left: 4px solid #333;
+  padding: 10px 14px;
+  margin: 12px 0;
+  font-size: 10pt;
+}
+.note strong { display: block; margin-bottom: 4px; }
+
+p { margin: 6px 0; }
+ul, ol { margin: 6px 0 6px 20px; }
+li { margin: 3px 0; }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1: COVER ==================== -->
+<div class="page cover">
+  <h1>पहली मंजिल — Architectural Design</h1>
+  <h2>First Floor Layout (Option F)</h2>
+  <div class="border-line"></div>
+  <div class="meta">
+    <p><strong>Building:</strong> Farm Storage / Farmhouse</p>
+    <p><strong>Location:</strong> Mithanpur Urf Naimtulla Nagar, Moradabad, U.P.</p>
+    <p><strong>Plot:</strong> Agricultural Farmland</p>
+    <p><strong>Building Footprint:</strong> 20 ft (W) &times; 25 ft (D)</p>
+    <p><strong>First Floor Height:</strong> 12 ft (floor to roof slab)</p>
+    <p><strong>Date:</strong> June 2026</p>
+  </div>
+  <div class="border-line"></div>
+  <div class="meta">
+    <p>यह दस्तावेज़ पहली मंजिल का पूर्ण architectural design है।</p>
+    <p>This document covers the complete first floor architectural design.</p>
+    <p style="margin-top: 20px; font-size: 9pt; color: #888;">Print-ready &bull; A4 format &bull; For contractor reference</p>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2: FLOOR PLAN ==================== -->
+<div class="page">
+  <h2 class="section-title">1. Floor Plan — पहली मंजिल का नक्शा</h2>
+  <p>Total depth from back wall to terrace edge: 16ft (room) + 9ft (balcony/shade) + 5ft (open terrace) = <strong>30ft</strong></p>
+  <p>Width: <strong>20ft</strong> throughout</p>
+
+  <div class="drawing">
+    <svg viewBox="0 0 680 900" width="520" height="690">
+      <!-- Background -->
+      <rect x="0" y="0" width="680" height="900" fill="#fff"/>
+
+      <!-- Title -->
+      <text x="340" y="25" text-anchor="middle" font-size="13" font-weight="bold" fill="#111">FIRST FLOOR PLAN (Top View) — Not to Scale</text>
+
+      <!-- Dimension: width -->
+      <line x1="60" y1="55" x2="620" y2="55" stroke="#333" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+      <text x="340" y="50" text-anchor="middle" font-size="11" fill="#333">20 ft</text>
+
+      <!-- Markers -->
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="4" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+        </marker>
+      </defs>
+
+      <!-- BACK WALL (z=25) -->
+      <rect x="60" y="65" width="560" height="4" fill="#333"/>
+      <text x="340" y="80" text-anchor="middle" font-size="9" fill="#666">BACK WALL (z=25)</text>
+
+      <!-- ============ ROOM 20×16ft (z=9 to z=25) ============ -->
+      <rect x="60" y="65" width="560" height="430" fill="none" stroke="#333" stroke-width="3"/>
+
+      <!-- Kitchen L-shape: right wall 6ft wide + back arm 4ft -->
+      <!-- Right arm: 6ft wide along right wall, 6ft deep from back -->
+      <rect x="420" y="69" width="196" height="160" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+      <!-- Back arm: 4ft arm along back wall from right side -->
+      <rect x="420" y="69" width="196" height="80" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1"/>
+      <text x="518" y="110" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">KITCHEN</text>
+      <text x="518" y="126" text-anchor="middle" font-size="9" fill="#2e7d32">L-shaped</text>
+      <text x="518" y="140" text-anchor="middle" font-size="8" fill="#2e7d32">6ft &times; 6ft (right)</text>
+      <text x="518" y="154" text-anchor="middle" font-size="8" fill="#2e7d32">+ 4ft arm (back)</text>
+
+      <!-- Half wall (kitchen partition) -->
+      <line x1="420" y1="145" x2="420" y2="229" stroke="#2e7d32" stroke-width="3" stroke-dasharray="8,4"/>
+      <text x="410" y="190" text-anchor="end" font-size="8" fill="#2e7d32">3.5ft half-wall</text>
+
+      <!-- Living/Bedroom zone -->
+      <rect x="64" y="160" width="352" height="165" fill="#e3f2fd" stroke="none"/>
+      <text x="240" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">LIVING / BEDROOM</text>
+      <text x="240" y="260" text-anchor="middle" font-size="10" fill="#1565c0">14ft &times; 6ft = ~84 sqft (clear open)</text>
+      <text x="240" y="278" text-anchor="middle" font-size="9" fill="#1565c0">बिस्तर + बैठक / Bed + Seating</text>
+
+      <!-- Utility/Dining space (6ft × 6ft between kitchen end and bathroom) -->
+      <rect x="420" y="229" width="196" height="100" fill="#fff3e0" stroke="#e65100" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="518" y="275" text-anchor="middle" font-size="9" font-weight="bold" fill="#e65100">UTILITY / DINING</text>
+      <text x="518" y="291" text-anchor="middle" font-size="8" fill="#bf360c">6ft &times; 6ft</text>
+
+      <!-- Bathroom inside room (front-right, 6ft×4ft inside room) -->
+      <rect x="420" y="329" width="196" height="108" fill="#e0f7fa" stroke="#006064" stroke-width="2"/>
+      <text x="518" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="#004d40">BATHROOM</text>
+      <text x="518" y="388" text-anchor="middle" font-size="8" fill="#00695c">6ft &times; 4ft (inside room)</text>
+      <text x="518" y="403" text-anchor="middle" font-size="8" fill="#00695c">+ 4ft extends into balcony</text>
+      <text x="518" y="418" text-anchor="middle" font-size="8" fill="#00695c">Total: 6ft &times; 8ft</text>
+      <!-- Bathroom door indicator -->
+      <rect x="420" y="360" width="4" height="30" fill="#00bcd4"/>
+      <text x="412" y="378" text-anchor="end" font-size="7" fill="#00695c">Door</text>
+
+      <!-- Room entry door (center of partition wall) -->
+      <rect x="240" y="491" width="50" height="6" fill="#795548"/>
+      <text x="265" y="510" text-anchor="middle" font-size="8" fill="#4e342e">Main Door (3ft)</text>
+
+      <!-- PARTITION WALL at z=9 -->
+      <rect x="60" y="495" width="560" height="5" fill="#555"/>
+      <text x="30" y="500" text-anchor="middle" font-size="8" fill="#333" transform="rotate(-90, 30, 500)">z=9</text>
+
+      <!-- ============ BALCONY/SHADE ZONE 20×9ft (z=0 to z=9) ============ -->
+      <rect x="60" y="500" width="560" height="240" fill="#f5f5f5" stroke="#333" stroke-width="2"/>
+      <text x="340" y="525" text-anchor="middle" font-size="10" fill="#555">BALCONY / SHADE ZONE (20ft &times; 9ft, roofed)</text>
+
+      <!-- Stair well (left side, 3ft × 8ft) -->
+      <rect x="64" y="540" width="100" height="180" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+      <text x="114" y="620" text-anchor="middle" font-size="9" font-weight="bold" fill="#b71c1c">STAIR</text>
+      <text x="114" y="636" text-anchor="middle" font-size="9" fill="#b71c1c">WELL</text>
+      <text x="114" y="652" text-anchor="middle" font-size="8" fill="#c62828">3ft &times; 8ft</text>
+      <text x="114" y="668" text-anchor="middle" font-size="7" fill="#c62828">(opening + railing)</text>
+
+      <!-- Sloped stair-slab (3.5ft × 9ft, left of stair well) -->
+      <rect x="64" y="504" width="117" height="32" fill="#ffcdd2" stroke="#c62828" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="122" y="524" text-anchor="middle" font-size="7" fill="#b71c1c">Sloped Slab (3.5ft&times;9ft) to roof</text>
+
+      <!-- Bathroom protrusion into balcony (right side, 6ft × 4ft) -->
+      <rect x="420" y="500" width="196" height="108" fill="#e0f7fa" stroke="#006064" stroke-width="2"/>
+      <text x="518" y="545" text-anchor="middle" font-size="9" font-weight="bold" fill="#004d40">BATHROOM</text>
+      <text x="518" y="561" text-anchor="middle" font-size="8" fill="#00695c">(4ft protrusion</text>
+      <text x="518" y="575" text-anchor="middle" font-size="8" fill="#00695c">into balcony)</text>
+
+      <!-- Open passage (middle area) -->
+      <text x="300" y="580" text-anchor="middle" font-size="9" fill="#555">Open Passage</text>
+      <text x="300" y="596" text-anchor="middle" font-size="8" fill="#777">~10ft &times; 4ft (in front of door)</text>
+      <text x="300" y="680" text-anchor="middle" font-size="8" fill="#777">Opens wider below bathroom</text>
+
+      <!-- FRONT WALL at z=0 -->
+      <rect x="60" y="740" width="560" height="5" fill="#333"/>
+      <text x="30" y="745" text-anchor="middle" font-size="8" fill="#333" transform="rotate(-90, 30, 745)">z=0</text>
+      <text x="340" y="758" text-anchor="middle" font-size="9" fill="#333">FRONT WALL (building edge)</text>
+
+      <!-- ============ OPEN TERRACE 20×5ft (z=-5 to z=0) ============ -->
+      <rect x="60" y="750" width="560" height="130" fill="#fffde7" stroke="#f57f17" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="340" y="800" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">OPEN TERRACE</text>
+      <text x="340" y="818" text-anchor="middle" font-size="9" fill="#ef6c00">20ft &times; 5ft (no roof — open to sky)</text>
+      <text x="340" y="836" text-anchor="middle" font-size="8" fill="#bf360c">MS Railing at edge (3.5ft high)</text>
+      <text x="340" y="855" text-anchor="middle" font-size="8" fill="#666">Floor = GF ceiling slab (y=15.5ft from ground)</text>
+
+      <!-- Terrace outer edge -->
+      <rect x="60" y="878" width="560" height="3" fill="#f57f17"/>
+      <text x="340" y="895" text-anchor="middle" font-size="8" fill="#e65100">OUTER EDGE (z=-5) — MS Railing</text>
+
+      <!-- Columns -->
+      <rect x="56" y="491" width="10" height="10" fill="#000"/>
+      <text x="40" y="488" font-size="7" fill="#333">C3</text>
+      <rect x="614" y="491" width="10" height="10" fill="#000"/>
+      <text x="630" y="488" font-size="7" fill="#333">C4</text>
+      <rect x="56" y="737" width="10" height="10" fill="#000"/>
+      <text x="40" y="735" font-size="7" fill="#333">C5</text>
+      <rect x="614" y="737" width="10" height="10" fill="#000"/>
+      <text x="630" y="735" font-size="7" fill="#333">C8</text>
+
+      <!-- Depth dimensions (right side) -->
+      <line x1="640" y1="69" x2="640" y2="495" stroke="#666" stroke-width="0.5"/>
+      <line x1="635" y1="69" x2="650" y2="69" stroke="#666" stroke-width="0.5"/>
+      <line x1="635" y1="495" x2="650" y2="495" stroke="#666" stroke-width="0.5"/>
+      <text x="655" y="285" font-size="9" fill="#333">16ft</text>
+      <text x="655" y="300" font-size="8" fill="#666">(Room)</text>
+
+      <line x1="640" y1="500" x2="640" y2="740" stroke="#666" stroke-width="0.5"/>
+      <line x1="635" y1="740" x2="650" y2="740" stroke="#666" stroke-width="0.5"/>
+      <text x="655" y="620" font-size="9" fill="#333">9ft</text>
+      <text x="655" y="635" font-size="8" fill="#666">(Balcony)</text>
+
+      <line x1="640" y1="750" x2="640" y2="878" stroke="#666" stroke-width="0.5"/>
+      <line x1="635" y1="878" x2="650" y2="878" stroke="#666" stroke-width="0.5"/>
+      <text x="655" y="818" font-size="9" fill="#333">5ft</text>
+      <text x="655" y="833" font-size="8" fill="#666">(Terrace)</text>
+
+      <!-- North arrow -->
+      <text x="60" y="890" font-size="9" fill="#333">&#8593; BACK (North)</text>
+    </svg>
+  </div>
+
+  <div class="note">
+    <strong>Note / नोट:</strong>
+    Room door opens from living area into balcony zone. Bathroom is en-suite (door from room only).
+    Stair well provides access from ground floor. Sloped slab gives roof access at 53&deg; angle.
+  </div>
+</div>
+
+<!-- ==================== PAGE 3: SECTION VIEW ==================== -->
+<div class="page">
+  <h2 class="section-title">2. Section View — Cross Section (Side Cut)</h2>
+  <p>Looking from LEFT side (East-West cut through building center)</p>
+
+  <div class="drawing">
+    <svg viewBox="0 0 700 600" width="560" height="480">
+      <rect x="0" y="0" width="700" height="600" fill="#fff"/>
+
+      <!-- Ground level -->
+      <line x1="30" y1="480" x2="670" y2="480" stroke="#795548" stroke-width="2"/>
+      <text x="680" y="484" font-size="9" fill="#795548">Natural Ground (0 ft)</text>
+
+      <!-- Plinth -->
+      <rect x="100" y="455" width="450" height="25" fill="#d7ccc8" stroke="#5d4037" stroke-width="1.5"/>
+      <text x="325" y="471" text-anchor="middle" font-size="8" fill="#3e2723">Plinth (3ft)</text>
+      <text x="680" y="459" font-size="9" fill="#333">+3 ft</text>
+
+      <!-- GF Walls -->
+      <rect x="100" y="340" width="15" height="115" fill="#bcaaa4" stroke="#5d4037" stroke-width="1"/>
+      <rect x="535" y="340" width="15" height="115" fill="#bcaaa4" stroke="#5d4037" stroke-width="1"/>
+      <!-- GF interior label -->
+      <text x="325" y="410" text-anchor="middle" font-size="11" fill="#555">GROUND FLOOR</text>
+      <text x="325" y="426" text-anchor="middle" font-size="9" fill="#777">Storage / Tractor (12ft height)</text>
+
+      <!-- GF Ceiling / 1F Floor slab -->
+      <rect x="60" y="330" width="530" height="10" fill="#616161" stroke="#333" stroke-width="1"/>
+      <text x="680" y="338" font-size="9" fill="#333">+15.5 ft (1F floor)</text>
+
+      <!-- Terrace portion (cantilevered, no wall below on front) -->
+      <rect x="60" y="330" width="40" height="10" fill="#9e9e9e"/>
+      <text x="80" y="320" text-anchor="middle" font-size="7" fill="#e65100">Terrace</text>
+      <text x="80" y="310" text-anchor="middle" font-size="7" fill="#e65100">(5ft)</text>
+
+      <!-- 1F Walls -->
+      <rect x="100" y="200" width="15" height="130" fill="#bcaaa4" stroke="#5d4037" stroke-width="1"/>
+      <rect x="535" y="200" width="15" height="130" fill="#bcaaa4" stroke="#5d4037" stroke-width="1"/>
+
+      <!-- Partition wall at z=9 -->
+      <rect x="250" y="275" width="10" height="55" fill="#888" stroke="#333" stroke-width="1"/>
+      <text x="255" y="270" text-anchor="middle" font-size="7" fill="#333">Partition (z=9)</text>
+
+      <!-- 1F zones -->
+      <text x="175" y="305" text-anchor="middle" font-size="8" fill="#e65100">Balcony (9ft)</text>
+      <text x="400" y="305" text-anchor="middle" font-size="9" fill="#0d47a1">Room (16ft)</text>
+
+      <!-- 1F height dimension -->
+      <line x1="570" y1="200" x2="570" y2="330" stroke="#c62828" stroke-width="0.8"/>
+      <line x1="565" y1="200" x2="575" y2="200" stroke="#c62828" stroke-width="0.8"/>
+      <line x1="565" y1="330" x2="575" y2="330" stroke="#c62828" stroke-width="0.8"/>
+      <text x="585" y="270" font-size="9" fill="#c62828">12ft</text>
+
+      <!-- Roof slab -->
+      <rect x="100" y="192" width="450" height="8" fill="#424242" stroke="#111" stroke-width="1.5"/>
+      <text x="680" y="199" font-size="9" fill="#333">+27.5 ft (Roof slab)</text>
+      <text x="325" y="188" text-anchor="middle" font-size="8" fill="#333">RCC Roof Slab (6" thick) — 20ft &times; 25ft</text>
+
+      <!-- Water tank on roof -->
+      <rect x="130" y="160" width="80" height="30" fill="#bbdefb" stroke="#1565c0" stroke-width="1.5"/>
+      <text x="170" y="180" text-anchor="middle" font-size="8" fill="#0d47a1">Water Tank</text>
+
+      <!-- Sloped stair slab indicator -->
+      <line x1="115" y1="330" x2="250" y2="195" stroke="#c62828" stroke-width="2.5"/>
+      <text x="160" y="245" font-size="8" fill="#c62828" transform="rotate(-50, 160, 245)">Stair Slab (53&deg;)</text>
+
+      <!-- MS Railing on terrace -->
+      <line x1="60" y1="330" x2="60" y2="298" stroke="#ff6f00" stroke-width="2"/>
+      <line x1="55" y1="298" x2="65" y2="298" stroke="#ff6f00" stroke-width="2"/>
+      <text x="45" y="295" text-anchor="end" font-size="7" fill="#e65100">Railing 3.5ft</text>
+
+      <!-- Height markers (left side) -->
+      <line x1="40" y1="480" x2="40" y2="192" stroke="#333" stroke-width="0.5" stroke-dasharray="3,2"/>
+      <text x="35" y="490" text-anchor="end" font-size="8" fill="#333">0 ft</text>
+      <text x="35" y="460" text-anchor="end" font-size="8" fill="#333">3 ft</text>
+      <text x="35" y="338" text-anchor="end" font-size="8" fill="#333">15.5 ft</text>
+      <text x="35" y="199" text-anchor="end" font-size="8" fill="#333">27.5 ft</text>
+
+      <!-- Columns (shown as dark squares) -->
+      <rect x="98" y="192" width="12" height="290" fill="#4e342e" stroke="#000" stroke-width="0.5"/>
+      <text x="104" y="510" text-anchor="middle" font-size="7" fill="#333">C5</text>
+      <rect x="248" y="275" width="12" height="55" fill="#4e342e" stroke="#000" stroke-width="0.5"/>
+      <text x="254" y="345" text-anchor="middle" font-size="7" fill="#333">C3</text>
+
+      <!-- Legend -->
+      <rect x="400" y="520" width="270" height="70" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/>
+      <text x="410" y="537" font-size="9" font-weight="bold" fill="#333">Legend:</text>
+      <rect x="410" y="545" width="20" height="8" fill="#424242"/>
+      <text x="435" y="553" font-size="8" fill="#333">RCC Slab</text>
+      <rect x="410" y="560" width="20" height="8" fill="#bcaaa4" stroke="#5d4037" stroke-width="0.5"/>
+      <text x="435" y="568" font-size="8" fill="#333">Brick Wall (9")</text>
+      <rect x="530" y="545" width="20" height="8" fill="#4e342e"/>
+      <text x="555" y="553" font-size="8" fill="#333">RCC Column</text>
+      <line x1="530" y1="564" x2="550" y2="556" stroke="#c62828" stroke-width="2"/>
+      <text x="555" y="568" font-size="8" fill="#333">Stair Slab</text>
+    </svg>
+  </div>
+
+  <h3>Height Summary / ऊँचाई सारांश</h3>
+  <table>
+    <tr><th>Level</th><th>Height from Ground</th><th>Description</th></tr>
+    <tr><td>Natural Ground</td><td>0 ft</td><td>जमीन का स्तर</td></tr>
+    <tr><td>Plinth / Platform</td><td>+3 ft</td><td>GF finished floor level</td></tr>
+    <tr><td>GF Ceiling / 1F Floor</td><td>+15.5 ft</td><td>RCC slab (6" thick) — GF 12ft clear + slab</td></tr>
+    <tr><td>1F Ceiling / Roof</td><td>+27.5 ft</td><td>RCC roof slab (6" thick) — 1F 12ft clear</td></tr>
+    <tr><td>Parapet Top</td><td>+30.5 ft</td><td>3ft parapet above roof slab</td></tr>
+    <tr><td>Water Tank Top</td><td>~+32 ft</td><td>Above stair zone on roof</td></tr>
+  </table>
+</div>
+
+<!-- ==================== PAGE 4: ROOM-BY-ROOM DESCRIPTION ==================== -->
+<div class="page">
+  <h2 class="section-title">3. Room-by-Room Description / कमरा विवरण</h2>
+
+  <table>
+    <tr>
+      <th>Space / स्थान</th>
+      <th>Dimensions</th>
+      <th>Area</th>
+      <th>Purpose / उपयोग</th>
+      <th>Floor Finish</th>
+      <th>Wall Finish</th>
+    </tr>
+    <tr>
+      <td><strong>Living / Bedroom</strong><br>बैठक / शयनकक्ष</td>
+      <td>14ft &times; 6ft<br>(clear open space)</td>
+      <td>~84 sqft</td>
+      <td>Main living area, bed placement, seating. No obstructions in this zone.</td>
+      <td>Vitrified tiles (2&times;2 ft, light color)</td>
+      <td>POP punning + emulsion paint</td>
+    </tr>
+    <tr>
+      <td><strong>Kitchen</strong><br>रसोई (L-shaped)</td>
+      <td>6ft along right wall &times; 6ft deep<br>+ 4ft arm along back wall</td>
+      <td>~52 sqft</td>
+      <td>Cooking, storage, water supply. L-shape counter with gas, sink. Semi-open with 3.5ft half-wall.</td>
+      <td>Anti-skid ceramic tiles</td>
+      <td>Glazed tiles up to 4ft (dado), POP above</td>
+    </tr>
+    <tr>
+      <td><strong>Bathroom</strong><br>शौचालय + स्नानगृह</td>
+      <td>6ft &times; 8ft total<br>(4ft in room + 4ft in balcony)</td>
+      <td>48 sqft</td>
+      <td>WC (Indian style), shower, wash basin. En-suite access from room only.</td>
+      <td>Anti-skid ceramic tiles (dark)</td>
+      <td>Full height glazed tiles (7ft). Waterproofing on all walls.</td>
+    </tr>
+    <tr>
+      <td><strong>Utility / Dining</strong><br>उपयोगिता / भोजन</td>
+      <td>6ft &times; 6ft</td>
+      <td>36 sqft</td>
+      <td>Small dining, fridge placement, washing machine, storage shelf.</td>
+      <td>Vitrified tiles</td>
+      <td>POP + emulsion paint</td>
+    </tr>
+    <tr>
+      <td><strong>Balcony / Shade Zone</strong><br>बालकनी (छत वाली)</td>
+      <td>20ft &times; 9ft<br>(minus stair &amp; bath protrusion)</td>
+      <td>~130 sqft<br>(net usable)</td>
+      <td>Covered passage, sitting area, clothes drying. Arrival point from GF stairs.</td>
+      <td>Rough textured tiles (non-slip)</td>
+      <td>External grade weather coat paint</td>
+    </tr>
+    <tr>
+      <td><strong>Open Terrace</strong><br>खुली छत</td>
+      <td>20ft &times; 5ft</td>
+      <td>100 sqft</td>
+      <td>Open-to-sky sitting, evening relaxation, plants. MS railing at edge.</td>
+      <td>Rough kota stone / textured tiles</td>
+      <td>N/A (open sides, railing only)</td>
+    </tr>
+    <tr>
+      <td><strong>Stair Well</strong><br>सीढ़ी</td>
+      <td>3ft &times; 8ft<br>(opening in slab)</td>
+      <td>24 sqft</td>
+      <td>Access from GF. MS railing around opening. Head clearance: 7ft minimum.</td>
+      <td>N/A (opening)</td>
+      <td>Railing: MS pipe (1.5" dia)</td>
+    </tr>
+    <tr>
+      <td><strong>Stair to Roof</strong><br>छत पर जाने की सीढ़ी</td>
+      <td>3.5ft &times; 9ft<br>(sloped slab, 53&deg;)</td>
+      <td>~31.5 sqft<br>(slab area)</td>
+      <td>Access to roof for water tank maintenance and open terrace use.</td>
+      <td>MS ladder rungs / concrete steps on slab</td>
+      <td>N/A (open)</td>
+    </tr>
+  </table>
+
+  <div class="note">
+    <strong>Total First Floor Area:</strong><br>
+    Room: 20ft &times; 16ft = 320 sqft (carpet area)<br>
+    Balcony (covered): 20ft &times; 9ft = 180 sqft<br>
+    Terrace (open): 20ft &times; 5ft = 100 sqft<br>
+    <strong>Total: 600 sqft (covered: 500 sqft)</strong>
+  </div>
+</div>
+
+<!-- ==================== PAGE 5: STRUCTURAL NOTES ==================== -->
+<div class="page">
+  <h2 class="section-title">4. Structural Notes / संरचना विवरण</h2>
+
+  <h3>4.1 Column Schedule / स्तंभ (Columns)</h3>
+  <table>
+    <tr>
+      <th>Column ID</th>
+      <th>Position</th>
+      <th>Size</th>
+      <th>Height (from plinth)</th>
+      <th>Remarks</th>
+    </tr>
+    <tr>
+      <td>C3</td>
+      <td>Left wall at z=9 (partition line)</td>
+      <td>9" &times; 12"</td>
+      <td>GF + 1F (plinth to roof = 24.5ft)</td>
+      <td>Supports partition beam + roof</td>
+    </tr>
+    <tr>
+      <td>C4</td>
+      <td>Right wall at z=9 (partition line)</td>
+      <td>9" &times; 12"</td>
+      <td>GF + 1F (plinth to roof = 24.5ft)</td>
+      <td>Supports partition beam + roof</td>
+    </tr>
+    <tr>
+      <td>C5</td>
+      <td>Front-left corner (z=0)</td>
+      <td>9" &times; 12"</td>
+      <td>GF + 1F (plinth to roof = 24.5ft)</td>
+      <td>Extended to roof for slab support. Visible on balcony.</td>
+    </tr>
+    <tr>
+      <td>C8</td>
+      <td>Front-right corner (z=0)</td>
+      <td>9" &times; 12"</td>
+      <td>GF + 1F (plinth to roof = 24.5ft)</td>
+      <td>Extended to roof for slab support. Visible on balcony.</td>
+    </tr>
+    <tr>
+      <td>C1, C2</td>
+      <td>Back wall corners (z=25)</td>
+      <td>9" &times; 12"</td>
+      <td>GF + 1F (plinth to roof = 24.5ft)</td>
+      <td>Back corners, support back beam</td>
+    </tr>
+  </table>
+
+  <h3>4.2 Beam Schedule / बीम (Beams)</h3>
+  <table>
+    <tr>
+      <th>Beam</th>
+      <th>Position</th>
+      <th>Size</th>
+      <th>Span</th>
+      <th>Purpose</th>
+    </tr>
+    <tr>
+      <td>Middle Deep Beam</td>
+      <td>z=9 (partition wall line)</td>
+      <td>9" &times; 20" (deep)</td>
+      <td>20 ft</td>
+      <td>Supports roof slab. Partition wall sits on this. Major structural element.</td>
+    </tr>
+    <tr>
+      <td>Back Deep Beam</td>
+      <td>z=25 (back wall)</td>
+      <td>9" &times; 20" (deep)</td>
+      <td>20 ft</td>
+      <td>Supports roof slab at back. Integrated with back wall.</td>
+    </tr>
+    <tr>
+      <td>Front Beam</td>
+      <td>z=0 (front wall)</td>
+      <td>9" &times; 15"</td>
+      <td>20 ft</td>
+      <td>Supports roof slab front edge. C5-C8 connection.</td>
+    </tr>
+    <tr>
+      <td>Side Beams (2)</td>
+      <td>Left &amp; right walls</td>
+      <td>9" &times; 15"</td>
+      <td>25 ft</td>
+      <td>Along side walls, connect all columns</td>
+    </tr>
+  </table>
+
+  <h3>4.3 Slab Details</h3>
+  <table>
+    <tr>
+      <th>Slab</th>
+      <th>Thickness</th>
+      <th>Span</th>
+      <th>Reinforcement</th>
+      <th>Notes</th>
+    </tr>
+    <tr>
+      <td>Roof Slab (1F ceiling)</td>
+      <td>6" (150mm)</td>
+      <td>20ft &times; 25ft (building footprint)</td>
+      <td>Two-way slab, 10mm &amp; 12mm bars</td>
+      <td>Covers entire building. Does NOT extend over terrace. Waterproofing on top.</td>
+    </tr>
+    <tr>
+      <td>GF Ceiling / 1F Floor</td>
+      <td>6" (150mm)</td>
+      <td>20ft &times; 30ft (incl. terrace cantilever)</td>
+      <td>Two-way + cantilever reinforcement</td>
+      <td>Terrace 5ft cantilevered beyond front wall. Extra reinforcement at cantilever.</td>
+    </tr>
+    <tr>
+      <td>Stair Slab (sloped)</td>
+      <td>5" (125mm)</td>
+      <td>3.5ft &times; 9ft at 53&deg;</td>
+      <td>One-way slab, 10mm bars</td>
+      <td>Rises from partition (floor level) to front wall (roof level). Roof access.</td>
+    </tr>
+  </table>
+
+  <h3>4.4 Load Path / भार मार्ग</h3>
+  <p>Roof Slab &rarr; Beams (Deep beams at z=9 and z=25) &rarr; Columns (C1-C8) &rarr; Foundation</p>
+  <p>Water Tank load &rarr; Roof Slab &rarr; Beams &rarr; Columns</p>
+  <p>Partition wall (4.5" brick) sits on middle deep beam &mdash; not a load-bearing wall itself.</p>
+
+  <div class="note">
+    <strong>Important / ध्यान दें:</strong>
+    <ul>
+      <li>All columns must be continuous from foundation to roof (no breaks at floor level)</li>
+      <li>Roof slab must have 1.5% slope toward front for water drainage</li>
+      <li>Stair well opening (3ft &times; 8ft) requires trimmer beams around the opening</li>
+      <li>Cantilever (terrace) must have top reinforcement extended 2&times; cantilever length into slab</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== PAGE 6: DOOR & WINDOW SCHEDULE ==================== -->
+<div class="page">
+  <h2 class="section-title">5. Door &amp; Window Schedule / दरवाजे और खिड़कियाँ</h2>
+
+  <h3>5.1 Doors / दरवाजे</h3>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Location</th>
+      <th>Size (W &times; H)</th>
+      <th>Type</th>
+      <th>Material</th>
+      <th>Remarks</th>
+    </tr>
+    <tr>
+      <td>D1</td>
+      <td>Room entry (partition wall, center)</td>
+      <td>3ft &times; 7ft</td>
+      <td>Single leaf, opening inward</td>
+      <td>Sal wood frame + flush door</td>
+      <td>Main room door. Opens from balcony into living area.</td>
+    </tr>
+    <tr>
+      <td>D2</td>
+      <td>Bathroom (from room, right side)</td>
+      <td>2.5ft &times; 7ft</td>
+      <td>Single leaf, opening outward</td>
+      <td>WPC (Water-Proof Composite) frame + WPC door</td>
+      <td>En-suite. Opens outward into room. Waterproof material.</td>
+    </tr>
+  </table>
+
+  <h3>5.2 Windows / खिड़कियाँ</h3>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Location</th>
+      <th>Size (W &times; H)</th>
+      <th>Sill Height</th>
+      <th>Type</th>
+      <th>Remarks</th>
+    </tr>
+    <tr>
+      <td>W1</td>
+      <td>Back wall (room) &mdash; Left</td>
+      <td>4ft &times; 4ft</td>
+      <td>3ft from floor</td>
+      <td>Sliding (2 panel, aluminium)</td>
+      <td>Cross ventilation. Mosquito mesh. Overlooking farm.</td>
+    </tr>
+    <tr>
+      <td>W2</td>
+      <td>Back wall (room) &mdash; Right</td>
+      <td>4ft &times; 4ft</td>
+      <td>3ft from floor</td>
+      <td>Sliding (2 panel, aluminium)</td>
+      <td>Same as W1. Symmetrical placement.</td>
+    </tr>
+    <tr>
+      <td>W3</td>
+      <td>Left wall (room) &mdash; Center</td>
+      <td>4ft &times; 4ft</td>
+      <td>3ft from floor</td>
+      <td>Sliding (2 panel, aluminium)</td>
+      <td>Natural light + ventilation from left side.</td>
+    </tr>
+    <tr>
+      <td>W4</td>
+      <td>Right wall (room) &mdash; in Living zone</td>
+      <td>3ft &times; 4ft</td>
+      <td>3ft from floor</td>
+      <td>Sliding (2 panel, aluminium)</td>
+      <td>Between kitchen and bathroom. Smaller due to kitchen/bath walls.</td>
+    </tr>
+    <tr>
+      <td>W5</td>
+      <td>Bathroom &mdash; Right wall (high)</td>
+      <td>2ft &times; 2ft</td>
+      <td>6ft from floor</td>
+      <td>Top-hung (outward opening)</td>
+      <td>Ventilation + light. Frosted glass. High placement for privacy.</td>
+    </tr>
+    <tr>
+      <td>V1</td>
+      <td>Kitchen &mdash; Back wall (above counter)</td>
+      <td>3ft &times; 2ft</td>
+      <td>4ft from floor</td>
+      <td>Top-hung / fixed louver</td>
+      <td>Smoke &amp; heat ventilation. Above kitchen counter.</td>
+    </tr>
+  </table>
+
+  <h3>5.3 Openings / खुले हिस्से</h3>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Location</th>
+      <th>Size</th>
+      <th>Treatment</th>
+    </tr>
+    <tr>
+      <td>O1</td>
+      <td>Balcony &mdash; Front (between C5 &amp; C8)</td>
+      <td>~18ft &times; 9ft (full front open)</td>
+      <td>MS railing (3.5ft high) with vertical bars at 4" spacing. No wall.</td>
+    </tr>
+    <tr>
+      <td>O2</td>
+      <td>Stair well opening</td>
+      <td>3ft &times; 8ft</td>
+      <td>MS railing (3.5ft high) on 3 sides. Open side toward stairs.</td>
+    </tr>
+    <tr>
+      <td>O3</td>
+      <td>Terrace &mdash; Outer edge</td>
+      <td>20ft &times; 3.5ft (railing height)</td>
+      <td>MS railing at outer edge. No wall.</td>
+    </tr>
+  </table>
+
+  <div class="note">
+    <strong>Window Notes / खिड़की नोट:</strong>
+    <ul>
+      <li>All aluminium windows: powder-coated dark grey / brown finish</li>
+      <li>Glass: 5mm clear float glass (windows), 4mm frosted (bathroom)</li>
+      <li>All windows to have mosquito mesh (SS wire, 20 gauge)</li>
+      <li>Lintel above every door/window: 9" &times; 6" RCC, extending 6" beyond each side</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== PAGE 7: MATERIAL SPECIFICATIONS ==================== -->
+<div class="page">
+  <h2 class="section-title">6. Material Specifications / सामग्री विवरण</h2>
+
+  <h3>6.1 Structural Materials</h3>
+  <table>
+    <tr><th>Item</th><th>Specification</th><th>Quantity Basis</th></tr>
+    <tr><td>Cement</td><td>OPC 43 grade (Ultratech / ACC / Ambuja)</td><td>Columns, beams, slab</td></tr>
+    <tr><td>Sand</td><td>River sand (zone II), clean &amp; washed</td><td>Concrete + mortar</td></tr>
+    <tr><td>Aggregate (Gitti)</td><td>20mm crushed stone (angular)</td><td>RCC work</td></tr>
+    <tr><td>Steel (TMT bars)</td><td>Fe-500D grade (Tata Tiscon / SAIL)</td><td>All RCC members</td></tr>
+    <tr><td>Concrete Grade</td><td>M25 (columns, beams, slab)</td><td>All structural elements</td></tr>
+    <tr><td>Bricks</td><td>First class burnt clay bricks (crushing strength &ge; 75 kg/cm&sup2;)</td><td>All walls</td></tr>
+  </table>
+
+  <h3>6.2 Wall Construction</h3>
+  <table>
+    <tr><th>Wall Type</th><th>Thickness</th><th>Mortar</th><th>Location</th></tr>
+    <tr><td>External walls</td><td>9" (230mm) brick</td><td>1:6 (cement:sand)</td><td>All outer walls of room</td></tr>
+    <tr><td>Partition wall (room/balcony)</td><td>9" brick on deep beam</td><td>1:6</td><td>z=9 line</td></tr>
+    <tr><td>Internal walls</td><td>4.5" (115mm) brick</td><td>1:6</td><td>Kitchen half-wall, bathroom walls</td></tr>
+    <tr><td>Kitchen half-wall</td><td>4.5" brick, 3.5ft height</td><td>1:4</td><td>Kitchen partition (semi-open)</td></tr>
+    <tr><td>Parapet (roof)</td><td>4.5" brick, 3ft height</td><td>1:6</td><td>All edges of roof slab</td></tr>
+  </table>
+
+  <h3>6.3 Finishes / फिनिशिंग</h3>
+  <table>
+    <tr><th>Element</th><th>Material</th><th>Brand / Type</th></tr>
+    <tr><td>Room floor</td><td>Vitrified tiles (2ft &times; 2ft, glossy)</td><td>Kajaria / Somany, light shade</td></tr>
+    <tr><td>Kitchen floor</td><td>Anti-skid ceramic tiles (1ft &times; 1ft)</td><td>Kajaria / Johnson, matte</td></tr>
+    <tr><td>Bathroom floor</td><td>Anti-skid ceramic tiles (1ft &times; 1ft, dark)</td><td>Johnson / Nitco, heavy anti-skid</td></tr>
+    <tr><td>Bathroom walls</td><td>Glazed ceramic tiles (full height 7ft)</td><td>Kajaria / Somany</td></tr>
+    <tr><td>Kitchen dado</td><td>Glazed tiles (up to 4ft from floor)</td><td>Match kitchen floor</td></tr>
+    <tr><td>Balcony floor</td><td>Rough textured tiles (non-slip)</td><td>Parking tiles / Kota stone</td></tr>
+    <tr><td>Terrace floor</td><td>Rough Kota stone / textured tiles</td><td>Natural Kota, rough finish</td></tr>
+    <tr><td>Internal walls</td><td>12mm plaster + POP punning + emulsion paint</td><td>Asian Paints Tractor Emulsion / equivalent</td></tr>
+    <tr><td>External walls</td><td>12mm + 8mm (double coat) plaster + weather coat</td><td>Asian Paints Apex / equivalent</td></tr>
+    <tr><td>Ceiling</td><td>POP punning (smooth) + white emulsion</td><td>&mdash;</td></tr>
+  </table>
+
+  <h3>6.4 Plumbing &amp; Sanitary / प्लंबिंग</h3>
+  <table>
+    <tr><th>Item</th><th>Specification</th></tr>
+    <tr><td>Water supply pipes</td><td>CPVC (Astral / Supreme), 1" main + 3/4" branch</td></tr>
+    <tr><td>Drainage pipes</td><td>PVC (SWR type), 4" for WC + 2" for basin/floor</td></tr>
+    <tr><td>WC</td><td>Indian style (Orissa pan), ceramic, white</td></tr>
+    <tr><td>Wash basin</td><td>Wall-mounted ceramic, 18" &times; 12"</td></tr>
+    <tr><td>Shower</td><td>Wall-mounted, overhead type (no mixer initially)</td></tr>
+    <tr><td>Kitchen sink</td><td>SS single bowl (24" &times; 18"), with drain board</td></tr>
+    <tr><td>Water tank</td><td>Sintex / equivalent, 1000L, on roof above stair zone</td></tr>
+    <tr><td>Waterproofing (bathroom)</td><td>Dr. Fixit / Fosroc on floor + walls (up to 1ft) before tiling</td></tr>
+    <tr><td>Waterproofing (roof)</td><td>Bituminous coat + China mosaic / cool roof coating</td></tr>
+  </table>
+
+  <h3>6.5 Electrical / बिजली</h3>
+  <table>
+    <tr><th>Item</th><th>Specification</th></tr>
+    <tr><td>Wiring</td><td>Concealed in PVC conduit (25mm), Copper 1.5 sq mm (lights) + 2.5 sq mm (power) + 4 sq mm (AC/geyser)</td></tr>
+    <tr><td>MCB Box</td><td>8-way DB (Havells / Schneider), near main door</td></tr>
+    <tr><td>Switches</td><td>Modular type (Havells Coral / Anchor Roma)</td></tr>
+    <tr><td>Ceiling fans</td><td>2 nos (room: 1, balcony: 1) &mdash; 48" blade</td></tr>
+    <tr><td>Lights</td><td>LED panel lights (room, kitchen), bulkhead (bathroom, balcony)</td></tr>
+    <tr><td>AC provision</td><td>1 no. in room (right wall or back wall). 6 sq mm cable + drain pipe sleeve.</td></tr>
+  </table>
+</div>
+
+<!-- ==================== PAGE 8: CONSTRUCTION NOTES ==================== -->
+<div class="page">
+  <h2 class="section-title">7. Construction Notes / ठेकेदार के लिए निर्देश</h2>
+
+  <h3>7.1 Sequence of Work / काम का क्रम</h3>
+  <ol>
+    <li><strong>Column extension (GF to Roof):</strong> C3, C4, C5, C8 columns must be cast continuously from 1F floor level to roof slab level (12ft). Use column box formwork. Ensure vertical alignment with GF columns using plumb bob.</li>
+    <li><strong>Wall construction:</strong> Build external walls (9") first, then partition wall on middle beam, then internal walls (bathroom, kitchen). Leave door/window openings with proper lintel provision.</li>
+    <li><strong>Bathroom walls:</strong> Build bathroom walls (4.5") straddling the partition line &mdash; 4ft inside room + 4ft into balcony zone. Waterproof the floor BEFORE tiling.</li>
+    <li><strong>Kitchen half-wall:</strong> Build 4.5" wall to 3.5ft height only. Cap with 4" slab/granite top.</li>
+    <li><strong>Beam &amp; slab formwork:</strong> Erect formwork for roof beams and slab. Middle deep beam (9"&times;20") is critical &mdash; ensure adequate propping below.</li>
+    <li><strong>Steel fixing:</strong> Fix reinforcement as per structural drawing. Ensure minimum cover (1.5" for slab, 2" for beams, 2" for columns).</li>
+    <li><strong>Slab casting:</strong> Cast entire roof slab in one pour (20ft &times; 25ft). Vibrate properly. Cure for minimum 14 days.</li>
+    <li><strong>Stair slab:</strong> Cast sloped slab (3.5ft &times; 9ft, 53&deg;) after roof slab has cured. Anchor properly into partition beam and roof slab.</li>
+    <li><strong>Waterproofing (roof):</strong> After curing, apply waterproofing treatment. Ensure 1.5% slope toward front with PCC.</li>
+    <li><strong>Plastering:</strong> External double coat (12mm + 8mm), internal single coat (12mm). Cure each coat.</li>
+    <li><strong>Electrical &amp; plumbing:</strong> Concealed conduit and pipes before plastering. Test plumbing pressure before closing walls.</li>
+    <li><strong>Tiling &amp; finishing:</strong> Floor tiles after all wet work complete. Wall tiles in bathroom/kitchen first, then POP punning, then painting.</li>
+  </ol>
+
+  <h3>7.2 Critical Points / महत्वपूर्ण बातें</h3>
+  <table>
+    <tr><th>#</th><th>Point</th><th>Reason / कारण</th></tr>
+    <tr><td>1</td><td>Columns C5, C8 must extend full height to roof</td><td>Without these, roof slab at front has no support. 20ft span cannot be free.</td></tr>
+    <tr><td>2</td><td>Middle deep beam (9"&times;20") at z=9 is the most important beam</td><td>Carries partition wall + room slab + balcony slab loads. Under-sizing will cause deflection.</td></tr>
+    <tr><td>3</td><td>Stair well opening needs trimmer beams</td><td>3ft&times;8ft hole in slab weakens it. Trimmer beams redistribute load around opening.</td></tr>
+    <tr><td>4</td><td>Bathroom waterproofing before any tiling</td><td>Leakage into GF is very expensive to fix later. Use membrane + liquid waterproofing.</td></tr>
+    <tr><td>5</td><td>Roof slope must go toward FRONT (south)</td><td>Rainwater drains toward road side. No water pooling on roof.</td></tr>
+    <tr><td>6</td><td>Terrace has NO roof above &mdash; railing only</td><td>Do not build any wall or slab over the 5ft terrace portion. It is the cantilever from GF slab.</td></tr>
+    <tr><td>7</td><td>Sloped stair slab: ensure adequate anchorage</td><td>53&deg; is steep. The slab must be properly anchored at both ends (beam at bottom, roof slab at top).</td></tr>
+    <tr><td>8</td><td>All concealed pipes/wires BEFORE plastering</td><td>Chasing walls after plaster wastes time and weakens walls.</td></tr>
+  </table>
+
+  <h3>7.3 Contractor Checklist / चेकलिस्ट</h3>
+  <ul>
+    <li>&#9744; Column reinforcement checked and photographed before pouring</li>
+    <li>&#9744; Beam dimensions verified (especially middle deep beam 9"&times;20")</li>
+    <li>&#9744; Slab reinforcement: spacing, cover, overlap length checked</li>
+    <li>&#9744; Stair well opening size confirmed (3ft &times; 8ft) with trimmer beams</li>
+    <li>&#9744; Plumbing pressure test passed (bathroom, kitchen supply lines)</li>
+    <li>&#9744; Electrical conduit continuity tested before plastering</li>
+    <li>&#9744; Bathroom floor waterproofing tested (48-hour ponding test)</li>
+    <li>&#9744; Roof slope verified (water should flow toward front edge)</li>
+    <li>&#9744; Roof waterproofing applied and tested</li>
+    <li>&#9744; All windows/doors: lintels cast before wall construction above</li>
+    <li>&#9744; MS railing welded, painted with red oxide + enamel (2 coats)</li>
+    <li>&#9744; Water tank platform and pipe connections completed</li>
+  </ul>
+
+  <h3>7.4 Measurements for Material Ordering</h3>
+  <table>
+    <tr><th>Item</th><th>Approximate Quantity</th><th>Basis</th></tr>
+    <tr><td>9" Brick walls (1F)</td><td>~850 sqft face area</td><td>External walls (20+25+20+25)&times;12 minus openings</td></tr>
+    <tr><td>4.5" Brick walls</td><td>~200 sqft face area</td><td>Bathroom walls + kitchen half-wall + parapet</td></tr>
+    <tr><td>Roof Slab concrete (M25)</td><td>~9.5 cu.m (250 cft)</td><td>20ft&times;25ft&times;0.5ft slab + beams</td></tr>
+    <tr><td>Steel (roof slab + beams)</td><td>~800-1000 kg</td><td>Slab + 4 beams + column extensions</td></tr>
+    <tr><td>Floor tiles</td><td>~500 sqft</td><td>Room + balcony + terrace</td></tr>
+    <tr><td>Wall tiles (bathroom + kitchen dado)</td><td>~250 sqft</td><td>Bathroom full height + kitchen 4ft dado</td></tr>
+    <tr><td>Plaster (internal + external)</td><td>~2000 sqft</td><td>All walls both sides + ceiling</td></tr>
+  </table>
+
+  <div class="note">
+    <strong>Final Note / अंतिम नोट:</strong><br>
+    यह दस्तावेज़ architectural design reference के लिए है। Structural design (bar bending schedule, exact reinforcement details) अलग से structural engineer द्वारा provide किया जाएगा। किसी भी doubt में engineer से confirm करें।
+    <br><br>
+    This document is for architectural design reference. Structural details (BBS, reinforcement) will be provided separately by the structural engineer. Confirm with engineer in case of any doubt.
+  </div>
+</div>
+
+</body>
+</html>
