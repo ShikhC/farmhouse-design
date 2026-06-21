@@ -418,7 +418,7 @@
     <geometry id="col_C1-geom" name="col_C1">
       <mesh>
         <source id="col_C1-positions">
-          <float_array id="col_C1-positions-array" count="24">0.0000 7.3152 0.9144 0.2286 7.3152 0.9144 0.2286 7.6200 0.9144 0.0000 7.6200 0.9144 0.0000 7.3152 4.5720 0.2286 7.3152 4.5720 0.2286 7.6200 4.5720 0.0000 7.6200 4.5720</float_array>
+          <float_array id="col_C1-positions-array" count="24">-0.2286 7.3152 0.9144 0.0000 7.3152 0.9144 0.0000 7.6200 0.9144 -0.2286 7.6200 0.9144 -0.2286 7.3152 4.5720 0.0000 7.3152 4.5720 0.0000 7.6200 4.5720 -0.2286 7.6200 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C1-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -436,31 +436,10 @@
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="col_C2-geom" name="col_C2">
-      <mesh>
-        <source id="col_C2-positions">
-          <float_array id="col_C2-positions-array" count="24">5.8674 7.3152 0.9144 6.0960 7.3152 0.9144 6.0960 7.6200 0.9144 5.8674 7.6200 0.9144 5.8674 7.3152 4.5720 6.0960 7.3152 4.5720 6.0960 7.6200 4.5720 5.8674 7.6200 4.5720</float_array>
-          <technique_common>
-            <accessor source="#col_C2-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="col_C2-vertices">
-          <input semantic="POSITION" source="#col_C2-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#col_C2-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
     <geometry id="col_C3-geom" name="col_C3">
       <mesh>
         <source id="col_C3-positions">
-          <float_array id="col_C3-positions-array" count="24">0.0000 2.7432 0.9144 0.2286 2.7432 0.9144 0.2286 3.0480 0.9144 0.0000 3.0480 0.9144 0.0000 2.7432 4.5720 0.2286 2.7432 4.5720 0.2286 3.0480 4.5720 0.0000 3.0480 4.5720</float_array>
+          <float_array id="col_C3-positions-array" count="24">-0.2286 2.5908 0.9144 0.0000 2.5908 0.9144 0.0000 2.8956 0.9144 -0.2286 2.8956 0.9144 -0.2286 2.5908 4.5720 0.0000 2.5908 4.5720 0.0000 2.8956 4.5720 -0.2286 2.8956 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C3-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -478,31 +457,10 @@
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="col_C4-geom" name="col_C4">
-      <mesh>
-        <source id="col_C4-positions">
-          <float_array id="col_C4-positions-array" count="24">5.8674 2.7432 0.9144 6.0960 2.7432 0.9144 6.0960 3.0480 0.9144 5.8674 3.0480 0.9144 5.8674 2.7432 4.5720 6.0960 2.7432 4.5720 6.0960 3.0480 4.5720 5.8674 3.0480 4.5720</float_array>
-          <technique_common>
-            <accessor source="#col_C4-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="col_C4-vertices">
-          <input semantic="POSITION" source="#col_C4-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#col_C4-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
     <geometry id="col_C5-geom" name="col_C5">
       <mesh>
         <source id="col_C5-positions">
-          <float_array id="col_C5-positions-array" count="24">0.0000 0.0000 0.9144 0.2286 0.0000 0.9144 0.2286 0.3048 0.9144 0.0000 0.3048 0.9144 0.0000 0.0000 4.5720 0.2286 0.0000 4.5720 0.2286 0.3048 4.5720 0.0000 0.3048 4.5720</float_array>
+          <float_array id="col_C5-positions-array" count="24">-0.2286 -0.2286 0.9144 0.0000 -0.2286 0.9144 0.0000 0.0762 0.9144 -0.2286 0.0762 0.9144 -0.2286 -0.2286 4.5720 0.0000 -0.2286 4.5720 0.0000 0.0762 4.5720 -0.2286 0.0762 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C5-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -520,10 +478,73 @@
         </triangles>
       </mesh>
     </geometry>
+    <geometry id="col_C2-geom" name="col_C2">
+      <mesh>
+        <source id="col_C2-positions">
+          <float_array id="col_C2-positions-array" count="24">6.0960 7.3152 0.9144 6.3246 7.3152 0.9144 6.3246 7.6200 0.9144 6.0960 7.6200 0.9144 6.0960 7.3152 4.5720 6.3246 7.3152 4.5720 6.3246 7.6200 4.5720 6.0960 7.6200 4.5720</float_array>
+          <technique_common>
+            <accessor source="#col_C2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_C2-vertices">
+          <input semantic="POSITION" source="#col_C2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_C2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_C4-geom" name="col_C4">
+      <mesh>
+        <source id="col_C4-positions">
+          <float_array id="col_C4-positions-array" count="24">6.0960 2.5908 0.9144 6.3246 2.5908 0.9144 6.3246 2.8956 0.9144 6.0960 2.8956 0.9144 6.0960 2.5908 4.5720 6.3246 2.5908 4.5720 6.3246 2.8956 4.5720 6.0960 2.8956 4.5720</float_array>
+          <technique_common>
+            <accessor source="#col_C4-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_C4-vertices">
+          <input semantic="POSITION" source="#col_C4-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_C4-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_C8-geom" name="col_C8">
+      <mesh>
+        <source id="col_C8-positions">
+          <float_array id="col_C8-positions-array" count="24">6.0960 -0.2286 0.9144 6.3246 -0.2286 0.9144 6.3246 0.0762 0.9144 6.0960 0.0762 0.9144 6.0960 -0.2286 4.5720 6.3246 -0.2286 4.5720 6.3246 0.0762 4.5720 6.0960 0.0762 4.5720</float_array>
+          <technique_common>
+            <accessor source="#col_C8-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_C8-vertices">
+          <input semantic="POSITION" source="#col_C8-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_C8-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
     <geometry id="col_C6-geom" name="col_C6">
       <mesh>
         <source id="col_C6-positions">
-          <float_array id="col_C6-positions-array" count="24">1.8288 0.0000 0.9144 2.1336 0.0000 0.9144 2.1336 0.2286 0.9144 1.8288 0.2286 0.9144 1.8288 0.0000 4.5720 2.1336 0.0000 4.5720 2.1336 0.2286 4.5720 1.8288 0.2286 4.5720</float_array>
+          <float_array id="col_C6-positions-array" count="24">1.8288 -0.2286 0.9144 2.1336 -0.2286 0.9144 2.1336 0.0000 0.9144 1.8288 0.0000 0.9144 1.8288 -0.2286 4.5720 2.1336 -0.2286 4.5720 2.1336 0.0000 4.5720 1.8288 0.0000 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C6-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -544,7 +565,7 @@
     <geometry id="col_C7-geom" name="col_C7">
       <mesh>
         <source id="col_C7-positions">
-          <float_array id="col_C7-positions-array" count="24">5.1816 0.0000 0.9144 5.4864 0.0000 0.9144 5.4864 0.2286 0.9144 5.1816 0.2286 0.9144 5.1816 0.0000 4.5720 5.4864 0.0000 4.5720 5.4864 0.2286 4.5720 5.1816 0.2286 4.5720</float_array>
+          <float_array id="col_C7-positions-array" count="24">5.1816 -0.2286 0.9144 5.4864 -0.2286 0.9144 5.4864 0.0000 0.9144 5.1816 0.0000 0.9144 5.1816 -0.2286 4.5720 5.4864 -0.2286 4.5720 5.4864 0.0000 4.5720 5.1816 0.0000 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C7-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -558,27 +579,6 @@
         </vertices>
         <triangles count="12">
           <input semantic="VERTEX" source="#col_C7-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="col_C8-geom" name="col_C8">
-      <mesh>
-        <source id="col_C8-positions">
-          <float_array id="col_C8-positions-array" count="24">5.8674 0.0000 0.9144 6.0960 0.0000 0.9144 6.0960 0.3048 0.9144 5.8674 0.3048 0.9144 5.8674 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 0.3048 4.5720 5.8674 0.3048 4.5720</float_array>
-          <technique_common>
-            <accessor source="#col_C8-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="col_C8-vertices">
-          <input semantic="POSITION" source="#col_C8-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#col_C8-vertices" offset="0"/>
           <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
         </triangles>
       </mesh>
@@ -628,7 +628,7 @@
     <geometry id="stair_flight2-geom" name="stair_flight2">
       <mesh>
         <source id="stair_flight2-positions">
-          <float_array id="stair_flight2-positions-array" count="216">0.0000 2.3622 2.7432 0.8382 2.3622 2.7432 0.8382 2.5908 2.7432 0.0000 2.5908 2.7432 0.0000 2.3622 2.9464 0.8382 2.3622 2.9464 0.8382 2.5908 2.9464 0.0000 2.5908 2.9464 0.0000 2.1336 2.9464 0.8382 2.1336 2.9464 0.8382 2.3622 2.9464 0.0000 2.3622 2.9464 0.0000 2.1336 3.1496 0.8382 2.1336 3.1496 0.8382 2.3622 3.1496 0.0000 2.3622 3.1496 0.0000 1.9050 3.1496 0.8382 1.9050 3.1496 0.8382 2.1336 3.1496 0.0000 2.1336 3.1496 0.0000 1.9050 3.3528 0.8382 1.9050 3.3528 0.8382 2.1336 3.3528 0.0000 2.1336 3.3528 0.0000 1.6764 3.3528 0.8382 1.6764 3.3528 0.8382 1.9050 3.3528 0.0000 1.9050 3.3528 0.0000 1.6764 3.5560 0.8382 1.6764 3.5560 0.8382 1.9050 3.5560 0.0000 1.9050 3.5560 0.0000 1.4478 3.5560 0.8382 1.4478 3.5560 0.8382 1.6764 3.5560 0.0000 1.6764 3.5560 0.0000 1.4478 3.7592 0.8382 1.4478 3.7592 0.8382 1.6764 3.7592 0.0000 1.6764 3.7592 0.0000 1.2192 3.7592 0.8382 1.2192 3.7592 0.8382 1.4478 3.7592 0.0000 1.4478 3.7592 0.0000 1.2192 3.9624 0.8382 1.2192 3.9624 0.8382 1.4478 3.9624 0.0000 1.4478 3.9624 0.0000 0.9906 3.9624 0.8382 0.9906 3.9624 0.8382 1.2192 3.9624 0.0000 1.2192 3.9624 0.0000 0.9906 4.1656 0.8382 0.9906 4.1656 0.8382 1.2192 4.1656 0.0000 1.2192 4.1656 0.0000 0.7620 4.1656 0.8382 0.7620 4.1656 0.8382 0.9906 4.1656 0.0000 0.9906 4.1656 0.0000 0.7620 4.3688 0.8382 0.7620 4.3688 0.8382 0.9906 4.3688 0.0000 0.9906 4.3688 0.0000 0.5334 4.3688 0.8382 0.5334 4.3688 0.8382 0.7620 4.3688 0.0000 0.7620 4.3688 0.0000 0.5334 4.5720 0.8382 0.5334 4.5720 0.8382 0.7620 4.5720 0.0000 0.7620 4.5720</float_array>
+          <float_array id="stair_flight2-positions-array" count="216">0.0000 2.2860 2.7432 0.8382 2.2860 2.7432 0.8382 2.5146 2.7432 0.0000 2.5146 2.7432 0.0000 2.2860 2.9464 0.8382 2.2860 2.9464 0.8382 2.5146 2.9464 0.0000 2.5146 2.9464 0.0000 2.0574 2.9464 0.8382 2.0574 2.9464 0.8382 2.2860 2.9464 0.0000 2.2860 2.9464 0.0000 2.0574 3.1496 0.8382 2.0574 3.1496 0.8382 2.2860 3.1496 0.0000 2.2860 3.1496 0.0000 1.8288 3.1496 0.8382 1.8288 3.1496 0.8382 2.0574 3.1496 0.0000 2.0574 3.1496 0.0000 1.8288 3.3528 0.8382 1.8288 3.3528 0.8382 2.0574 3.3528 0.0000 2.0574 3.3528 0.0000 1.6002 3.3528 0.8382 1.6002 3.3528 0.8382 1.8288 3.3528 0.0000 1.8288 3.3528 0.0000 1.6002 3.5560 0.8382 1.6002 3.5560 0.8382 1.8288 3.5560 0.0000 1.8288 3.5560 0.0000 1.3716 3.5560 0.8382 1.3716 3.5560 0.8382 1.6002 3.5560 0.0000 1.6002 3.5560 0.0000 1.3716 3.7592 0.8382 1.3716 3.7592 0.8382 1.6002 3.7592 0.0000 1.6002 3.7592 0.0000 1.1430 3.7592 0.8382 1.1430 3.7592 0.8382 1.3716 3.7592 0.0000 1.3716 3.7592 0.0000 1.1430 3.9624 0.8382 1.1430 3.9624 0.8382 1.3716 3.9624 0.0000 1.3716 3.9624 0.0000 0.9144 3.9624 0.8382 0.9144 3.9624 0.8382 1.1430 3.9624 0.0000 1.1430 3.9624 0.0000 0.9144 4.1656 0.8382 0.9144 4.1656 0.8382 1.1430 4.1656 0.0000 1.1430 4.1656 0.0000 0.6858 4.1656 0.8382 0.6858 4.1656 0.8382 0.9144 4.1656 0.0000 0.9144 4.1656 0.0000 0.6858 4.3688 0.8382 0.6858 4.3688 0.8382 0.9144 4.3688 0.0000 0.9144 4.3688 0.0000 0.4572 4.3688 0.8382 0.4572 4.3688 0.8382 0.6858 4.3688 0.0000 0.6858 4.3688 0.0000 0.4572 4.5720 0.8382 0.4572 4.5720 0.8382 0.6858 4.5720 0.0000 0.6858 4.5720</float_array>
           <technique_common>
             <accessor source="#stair_flight2-positions-array" count="72" stride="3">
               <param name="X" type="float"/>
@@ -1315,8 +1315,8 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="col_C2-node" name="col_C2" type="NODE">
-        <instance_geometry url="#col_C2-geom">
+      <node id="col_C3-node" name="col_C3" type="NODE">
+        <instance_geometry url="#col_C3-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="column" target="#column-mat"/>
@@ -1324,8 +1324,17 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="col_C3-node" name="col_C3" type="NODE">
-        <instance_geometry url="#col_C3-geom">
+      <node id="col_C5-node" name="col_C5" type="NODE">
+        <instance_geometry url="#col_C5-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_C2-node" name="col_C2" type="NODE">
+        <instance_geometry url="#col_C2-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="column" target="#column-mat"/>
@@ -1342,8 +1351,8 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="col_C5-node" name="col_C5" type="NODE">
-        <instance_geometry url="#col_C5-geom">
+      <node id="col_C8-node" name="col_C8" type="NODE">
+        <instance_geometry url="#col_C8-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="column" target="#column-mat"/>
@@ -1362,15 +1371,6 @@
       </node>
       <node id="col_C7-node" name="col_C7" type="NODE">
         <instance_geometry url="#col_C7-geom">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="column" target="#column-mat"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
-      <node id="col_C8-node" name="col_C8" type="NODE">
-        <instance_geometry url="#col_C8-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="column" target="#column-mat"/>

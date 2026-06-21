@@ -299,54 +299,55 @@ def build_ground_floor():
     cb.add_geometry('wall_front_right', v, t, 'wall')
 
     # ============ 4. COLUMNS ============
-    # All 9"x12" (0.75ft x 1ft), 12ft high from z=3 to z=15
+    # All 9"x12" RCC. 12" ALONG the wall, 9" ACROSS (= wall thickness = flush/hidden).
+    # Columns positioned WITHIN the walls (overlapping wall geometry).
+    # Visible as different color; when walls hidden, columns show structural positions.
     COL_9 = 0.75   # 9 inches in feet
     COL_12 = 1.0   # 12 inches in feet
     COL_H = ROOM_H  # 12ft
 
-    # C1: back-left corner (inside the wall intersection)
-    v, t = box_mesh(ft(0), ft(INT_D - COL_12), ft(Z_PLINTH),
+    # LEFT WALL columns (wall at x=-0.75 to x=0): 9" across x (inside wall), 12" along y
+    # C1: back-left corner
+    v, t = box_mesh(ft(-WALL_T), ft(INT_D - COL_12), ft(Z_PLINTH),
                     ft(COL_9), ft(COL_12), ft(COL_H))
     cb.add_geometry('col_C1', v, t, 'column')
 
-    # C2: back-right corner
-    v, t = box_mesh(ft(INT_W - COL_9), ft(INT_D - COL_12), ft(Z_PLINTH),
-                    ft(COL_9), ft(COL_12), ft(COL_H))
-    cb.add_geometry('col_C2', v, t, 'column')
-
-    # C3: left wall, 9ft from front
-    v, t = box_mesh(ft(0), ft(9.0), ft(Z_PLINTH),
+    # C3: left wall at y=9 (9ft from front)
+    v, t = box_mesh(ft(-WALL_T), ft(9.0 - COL_12/2), ft(Z_PLINTH),
                     ft(COL_9), ft(COL_12), ft(COL_H))
     cb.add_geometry('col_C3', v, t, 'column')
 
-    # C4: right wall, 9ft from front
-    v, t = box_mesh(ft(INT_W - COL_9), ft(9.0), ft(Z_PLINTH),
-                    ft(COL_9), ft(COL_12), ft(COL_H))
-    cb.add_geometry('col_C4', v, t, 'column')
-
     # C5: front-left corner
-    v, t = box_mesh(ft(0), ft(0), ft(Z_PLINTH),
+    v, t = box_mesh(ft(-WALL_T), ft(-WALL_T), ft(Z_PLINTH),
                     ft(COL_9), ft(COL_12), ft(COL_H))
     cb.add_geometry('col_C5', v, t, 'column')
 
-    # C6: front wall at x=6, 9" along x-axis, 12" along y-axis (into building)
-    # C6: front wall column, 9"x12" with 12" ALONG the wall (x-axis), 9" ACROSS (y-axis = flush with 9" wall)
-    # C5-to-C6 clear = 6ft. C6 starts at x=6, extends 12" (1ft) along x = x=6 to x=7.
-    # Depth: 9" (0.75ft) along y = same as wall thickness = HIDDEN in wall.
-    v, t = box_mesh(ft(6.0), ft(0), ft(Z_PLINTH),
+    # RIGHT WALL columns (wall at x=20 to x=20.75): 9" across x, 12" along y
+    # C2: back-right corner
+    v, t = box_mesh(ft(INT_W), ft(INT_D - COL_12), ft(Z_PLINTH),
+                    ft(COL_9), ft(COL_12), ft(COL_H))
+    cb.add_geometry('col_C2', v, t, 'column')
+
+    # C4: right wall at y=9
+    v, t = box_mesh(ft(INT_W), ft(9.0 - COL_12/2), ft(Z_PLINTH),
+                    ft(COL_9), ft(COL_12), ft(COL_H))
+    cb.add_geometry('col_C4', v, t, 'column')
+
+    # C8: front-right corner
+    v, t = box_mesh(ft(INT_W), ft(-WALL_T), ft(Z_PLINTH),
+                    ft(COL_9), ft(COL_12), ft(COL_H))
+    cb.add_geometry('col_C8', v, t, 'column')
+
+    # FRONT WALL columns (wall at y=-0.75 to y=0): 12" along x (wall direction), 9" across y
+    # C6: at x=6 on front wall
+    v, t = box_mesh(ft(6.0), ft(-WALL_T), ft(Z_PLINTH),
                     ft(COL_12), ft(COL_9), ft(COL_H))
     cb.add_geometry('col_C6', v, t, 'column')
 
-    # C7: front wall column, same orientation as C6
-    # x=17 to x=18 (12" along x), y=0 to y=0.75 (9" into building = flush)
-    v, t = box_mesh(ft(17.0), ft(0), ft(Z_PLINTH),
+    # C7: at x=17 on front wall
+    v, t = box_mesh(ft(17.0), ft(-WALL_T), ft(Z_PLINTH),
                     ft(COL_12), ft(COL_9), ft(COL_H))
     cb.add_geometry('col_C7', v, t, 'column')
-
-    # C8: front-right corner (at x=20, inside right wall)
-    v, t = box_mesh(ft(INT_W - COL_9), ft(0), ft(Z_PLINTH),
-                    ft(COL_9), ft(COL_12), ft(COL_H))
-    cb.add_geometry('col_C8', v, t, 'column')
 
     # ============ 5. STAIRCASE ============
     # REVISED: Landing 2.5ft deep (comfortable turn), flight run 6ft each
@@ -373,9 +374,10 @@ def build_ground_floor():
     cb.add_geometry('stair_landing', v, t, 'staircase')
 
     # Flight 2 (LEFT side, from landing going back toward front):
-    #   x=0 to x=2.75, starting at y=8.5 going back to y=2.5
+    #   x=0 to x=2.75, starting at y=8.25 going back to y=2.25
+    #   (0.25ft offset from landing edge = small rest/turning zone before steps begin)
     #   9 risers, rising from z=9 to z=15
-    v, t = stair_mesh(ft(0), ft(8.5), ft(LANDING_Z),
+    v, t = stair_mesh(ft(0), ft(8.25), ft(LANDING_Z),
                       RISERS_PER_FLIGHT, ft(RISER_H_FT), ft(TREAD_D_FT), ft(FLIGHT_W), going_y=False)
     cb.add_geometry('stair_flight2', v, t, 'staircase')
 
@@ -611,7 +613,7 @@ def main():
     print("  - Plinth (raised platform)")
     print("  - Floor slab")
     print("  - External walls (back, left, right, front segments)")
-    print("  - Columns C1-C8")
+    print("  - Columns C1-C8 (inside walls, overlapping — different color for visibility)")
     print("  - Staircase (Flight 1, Landing, Flight 2, partition)")
     print("  - Toilet enclosure")
     print("  - Shutter (rolling)")
