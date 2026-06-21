@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-Generate a Collada (.dae) 3D model of the ground floor structure.
+Generate a Collada (.dae) 3D model of the full building (GF + 1F).
 All dimensions defined in feet, converted to meters for the DAE file.
 
 Coordinate system:
   x-axis: width (0 = left wall inside face, 20 = right wall inside face)
   y-axis: depth (0 = front wall inside face, 25 = back wall inside face)
-  z-axis: height (0 = natural ground, 3 = plinth top / GF floor, 15 = slab soffit)
+  z-axis: height (0 = natural ground, 3 = plinth top / GF floor, 15 = slab soffit,
+          15.5 = 1F floor level, 27.5 = 1F roof slab soffit)
 
-Internal clear space: 20ft x 25ft x 12ft (room height)
+Internal clear space: 20ft x 25ft x 12ft (room height per floor)
 External wall thickness: 9" (0.75ft)
 """
 
@@ -35,6 +36,10 @@ COLORS = {
     'septic': (0.45, 0.27, 0.14, 1.0),
     'ground': (0.28, 0.45, 0.22, 1.0),
     'pipe': (0.85, 0.45, 0.15, 1.0),
+    'kitchen': (0.30, 0.55, 0.25, 1.0),
+    'railing': (0.50, 0.50, 0.55, 1.0),
+    'fixture': (0.90, 0.90, 0.92, 1.0),
+    'water_tank': (0.20, 0.55, 0.82, 1.0),
 }
 
 
@@ -179,7 +184,7 @@ class ColladaBuilder:
             p.text = ' '.join(str(idx) for tri in tris for idx in tri)
 
         lib_scenes = ET.SubElement(root, 'library_visual_scenes')
-        vscene = ET.SubElement(lib_scenes, 'visual_scene', {'id': 'Scene', 'name': 'GroundFloor'})
+        vscene = ET.SubElement(lib_scenes, 'visual_scene', {'id': 'Scene', 'name': 'FullBuilding'})
 
         for name, mat_name in self.scene_nodes:
             node = ET.SubElement(vscene, 'node', {'id': f'{name}-node', 'name': name, 'type': 'NODE'})
@@ -505,11 +510,7 @@ def build_ground_floor():
                     ft(3.0), ft(CANTILEVER), ft(SLAB_T_FT))
     cb.add_geometry('roof_slab_cantilever_stairzone', v, t, 'slab')
 
-    # The STAIR WELL OPENING: x=0 to x=3, y=0 to y=8.5 (no slab here — OPEN!)
-    # Mark with a thin dark indicator at slab level
-    v, t = box_mesh(ft(0), ft(0), ft(Z_SLAB_SOFFIT + SLAB_T_FT),
-                    ft(3.0), ft(8.5), ft(0.02))
-    cb.add_geometry('stair_well_opening', v, t, 'ground')
+    # The STAIR WELL OPENING: x=0 to x=3, y=0 to y=8.5 (no slab here — visible as gap in slab pieces)
 
     # ============ 13. SHADE — PURE CANTILEVER (no walls, no pillars!) ============
     # The roof slab extends 5ft in front (y=0 to y=-5) as a pure cantilever.
@@ -564,11 +565,337 @@ def build_ground_floor():
                     ft(INT_W + 2*ground_extent), ft(INT_D + 2*ground_extent), ft(0.1))
     cb.add_geometry('ground_plane', v, t, 'ground')
 
+    # ================================================================
+    # ============ FIRST FLOOR (1F) ============
+    # ================================================================
+    # 1F floor level: z=15.5 (top of GF ceiling slab)
+    # 1F height: 12ft (z=15.5 to z=27.5)
+    # 1F roof slab: at z=27.5
+
+    Z_1F_FLOOR = Z_SLAB_TOP        # 15.5ft
+    Z_1F_ROOF = Z_1F_FLOOR + 12.0  # 27.5ft
+    WALL_1F_H = 12.0               # 1F wall height
+
+    # ============ 1F.1 EXTERNAL WALLS ============
+    # Left wall: x=-0.75 to x=0, y=0 to y=25.75, z=15.5 to z=27.5
+    v, t = box_mesh(ft(-WALL_T), ft(0), ft(Z_1F_FLOOR),
+                    ft(WALL_T), ft(INT_D + WALL_T), ft(WALL_1F_H))
+    cb.add_geometry('wall_1f_left', v, t, 'wall')
+
+    # Right wall: x=20 to x=20.75, y=0 to y=25.75, z=15.5 to z=27.5
+    v, t = box_mesh(ft(INT_W), ft(0), ft(Z_1F_FLOOR),
+                    ft(WALL_T), ft(INT_D + WALL_T), ft(WALL_1F_H))
+    cb.add_geometry('wall_1f_right', v, t, 'wall')
+
+    # Back wall: x=-0.75 to x=20.75, y=25 to y=25.75, z=15.5 to z=27.5
+    v, t = box_mesh(ft(-WALL_T), ft(INT_D), ft(Z_1F_FLOOR),
+                    ft(INT_W + 2*WALL_T), ft(WALL_T), ft(WALL_1F_H))
+    cb.add_geometry('wall_1f_back', v, t, 'wall')
+
+    # NO FRONT WALL on 1F — the balcony zone (y=0 to y=9) is OPEN AIR
+    # (roof overhead, no wall at y=0). The partition at y=9 is where the room starts.
+    # The open terrace (y=-6 to y=0) has railings only.
+
+    # ============ 1F.1b COLUMNS (extending from GF to 1F, z=15.5 to z=27.5) ============
+    # Same positions as GF, INSIDE the walls (overlapping), continuing upward.
+    # LEFT WALL columns: x=-WALL_T to x=0, 12" along y
+    v, t = box_mesh(ft(-WALL_T), ft(INT_D - COL_12), ft(Z_1F_FLOOR),
+                    ft(COL_9), ft(COL_12), ft(WALL_1F_H))
+    cb.add_geometry('col_1f_C1', v, t, 'column')
+
+    v, t = box_mesh(ft(-WALL_T), ft(9.0 - COL_12/2), ft(Z_1F_FLOOR),
+                    ft(COL_9), ft(COL_12), ft(WALL_1F_H))
+    cb.add_geometry('col_1f_C3', v, t, 'column')
+
+    v, t = box_mesh(ft(-WALL_T), ft(-WALL_T), ft(Z_1F_FLOOR),
+                    ft(COL_9), ft(COL_12), ft(WALL_1F_H))
+    cb.add_geometry('col_1f_C5', v, t, 'column')
+
+    # RIGHT WALL columns: x=INT_W to x=INT_W+COL_9, 12" along y
+    v, t = box_mesh(ft(INT_W), ft(INT_D - COL_12), ft(Z_1F_FLOOR),
+                    ft(COL_9), ft(COL_12), ft(WALL_1F_H))
+    cb.add_geometry('col_1f_C2', v, t, 'column')
+
+    v, t = box_mesh(ft(INT_W), ft(9.0 - COL_12/2), ft(Z_1F_FLOOR),
+                    ft(COL_9), ft(COL_12), ft(WALL_1F_H))
+    cb.add_geometry('col_1f_C4', v, t, 'column')
+
+    v, t = box_mesh(ft(INT_W), ft(-WALL_T), ft(Z_1F_FLOOR),
+                    ft(COL_9), ft(COL_12), ft(WALL_1F_H))
+    cb.add_geometry('col_1f_C8', v, t, 'column')
+
+    # FRONT WALL columns: C6 and C7 do NOT extend to 1F (front wall doesn't exist at 1F!)
+    # Only side wall columns (C1-C5, C2-C4-C8) continue up.
+
+    # ============ 1F.2 ROOM PARTITION WALL (y=9) ============
+    # Layout at y=9 (from x=0 to x=14, stops before bathroom at x=14):
+    # x=0-3: GATE (roof stair access from room)
+    # x=3-6: SOLID wall
+    # x=6-9: GATE (main room entry from balcony)
+    # x=9-14: SOLID wall
+
+    # Gate 1 (x=0-3): roof stair access — above gate lintel only
+    v, t = box_mesh(ft(0), ft(9.0), ft(Z_1F_FLOOR + 7.0),
+                    ft(3.0), ft(WALL_T), ft(WALL_1F_H - 7.0))
+    cb.add_geometry('wall_1f_partition_above_roof_gate', v, t, 'wall')
+    # Gate panel (roof stair gate)
+    v, t = box_mesh(ft(0), ft(9.0 + WALL_T), ft(Z_1F_FLOOR),
+                    ft(3.0), ft(0.1), ft(7.0))
+    cb.add_geometry('roof_stair_gate', v, t, 'gate')
+
+    # Solid segment: x=3 to x=6
+    v, t = box_mesh(ft(3.0), ft(9.0), ft(Z_1F_FLOOR),
+                    ft(3.0), ft(WALL_T), ft(WALL_1F_H))
+    cb.add_geometry('wall_1f_partition_solid1', v, t, 'wall')
+
+    # Gate 2 (x=6-9): main room entry from balcony — above gate lintel only
+    v, t = box_mesh(ft(6.0), ft(9.0), ft(Z_1F_FLOOR + 7.0),
+                    ft(3.0), ft(WALL_T), ft(WALL_1F_H - 7.0))
+    cb.add_geometry('wall_1f_partition_above_room_gate', v, t, 'wall')
+
+    # Solid segment: x=9 to x=14 (stops at bathroom)
+    v, t = box_mesh(ft(9.0), ft(9.0), ft(Z_1F_FLOOR),
+                    ft(5.0), ft(WALL_T), ft(WALL_1F_H))
+    cb.add_geometry('wall_1f_partition_solid2', v, t, 'wall')
+
+    # ============ 1F.3 KITCHEN (6ft × 6ft, back-right corner of room) ============
+    # Simple 6ft × 6ft zone in the back-right corner (y=19-25, x=14-20)
+    # Semi-open: half-walls (3.5ft high) on the two OPEN sides (y=19 and x=14)
+    # 6ft × 6ft EMPTY space between kitchen (y=19) and bathroom (y=13) on right side
+
+    # Half-wall at y=19 (front of kitchen, facing empty/living zone)
+    v, t = box_mesh(ft(14.0), ft(19.0), ft(Z_1F_FLOOR),
+                    ft(6.0), ft(0.375), ft(3.5))
+    cb.add_geometry('kitchen_halfwall_front', v, t, 'kitchen')
+
+    # Half-wall at x=14 (left edge of kitchen, facing living area)
+    v, t = box_mesh(ft(14.0 - 0.375), ft(19.0), ft(Z_1F_FLOOR),
+                    ft(0.375), ft(6.0), ft(3.5))
+    cb.add_geometry('kitchen_halfwall_left', v, t, 'kitchen')
+
+    # Kitchen floor indicator: 6ft × 6ft
+    v, t = box_mesh(ft(14.0), ft(19.0), ft(Z_1F_FLOOR + 0.02),
+                    ft(6.0), ft(6.0), ft(0.02))
+    cb.add_geometry('kitchen_floor', v, t, 'kitchen')
+
+    # ============ 1F.4 BATHROOM (6ft x 8ft, CONTINUOUS, RIGHT side) ============
+    # x=14 to x=20, y=5 to y=13 — ONE continuous room (NO wall in the middle!)
+    # The partition wall at y=9 STOPS at x=14 — bathroom spans freely across y=9.
+
+    # Left wall (bathroom partition): x=14, y=5 to y=13
+    # DOOR is on this wall at y=10 to y=12.5 (in the 4ft inside-room portion, y=9-13)
+    # Segment: y=5 to y=10
+    v, t = box_mesh(ft(14.0 - 0.375), ft(5.0), ft(Z_1F_FLOOR),
+                    ft(0.375), ft(5.0), ft(WALL_1F_H))
+    cb.add_geometry('bath_wall_left_1', v, t, 'toilet')
+    # Segment: y=12.5 to y=13
+    v, t = box_mesh(ft(14.0 - 0.375), ft(12.5), ft(Z_1F_FLOOR),
+                    ft(0.375), ft(0.5), ft(WALL_1F_H))
+    cb.add_geometry('bath_wall_left_2', v, t, 'toilet')
+    # Above door: y=10 to y=12.5
+    v, t = box_mesh(ft(14.0 - 0.375), ft(10.0), ft(Z_1F_FLOOR + 7.0),
+                    ft(0.375), ft(2.5), ft(WALL_1F_H - 7.0))
+    cb.add_geometry('bath_wall_left_above_door', v, t, 'toilet')
+
+    # Back wall of bathroom: y=13, x=14 to x=20, SOLID (no door here — door is on left wall)
+    v, t = box_mesh(ft(14.0), ft(13.0 - 0.375), ft(Z_1F_FLOOR),
+                    ft(6.0), ft(0.375), ft(WALL_1F_H))
+    cb.add_geometry('bath_wall_back', v, t, 'toilet')
+
+    # Front wall of bathroom: y=5, x=14 to x=20, full height
+    v, t = box_mesh(ft(14.0), ft(5.0), ft(Z_1F_FLOOR),
+                    ft(6.0), ft(0.375), ft(WALL_1F_H))
+    cb.add_geometry('bath_wall_front', v, t, 'toilet')
+
+    # NOTE: NO wall at y=9 inside the bathroom! It's one continuous 8ft room.
+    # The partition wall stops at x=14 — bathroom is uninterrupted.
+
+    # Bathroom fixtures (all on RIGHT side, x=14-20, y=5-13)
+    # Commode (WC): against right wall, near front
+    v, t = box_mesh(ft(18.0), ft(6.0), ft(Z_1F_FLOOR),
+                    ft(1.5), ft(2.0), ft(1.5))
+    cb.add_geometry('bath_commode', v, t, 'fixture')
+
+    # Shower tray: near the back of bathroom (room-side)
+    v, t = box_mesh(ft(14.5), ft(10.0), ft(Z_1F_FLOOR),
+                    ft(3.0), ft(3.0), ft(0.2))
+    cb.add_geometry('bath_shower', v, t, 'fixture')
+
+    # Wash basin: against right wall, middle area
+    v, t = box_mesh(ft(18.5), ft(9.0), ft(Z_1F_FLOOR + 2.5),
+                    ft(1.5), ft(1.0), ft(0.5))
+    cb.add_geometry('bath_basin', v, t, 'fixture')
+
+    # Geyser: REMOVED (not shown in model)
+
+    # Geyser: REMOVED (not shown in model)
+
+    # ============ 1F.5 STAIR WELL ENCLOSURE (full walls + gate) ============
+    # The stair well (x=0-3, y=0-8.5) is enclosed by WALLS (not railings!)
+    # Gate is at the FRONT of the x=3 wall — where Flight 2 arrives at the top.
+    # Flight 2 arrives at approximately y=2.25 facing forward. Gate is right there.
+
+    # Small LANDING PLATFORM at the top of stair well (fills gap between beam and Flight 2)
+    # This is where you stand after reaching the top of Flight 2, before going through gate.
+    v, t = box_mesh(ft(0), ft(0), ft(Z_1F_FLOOR - 0.5),
+                    ft(3.0), ft(2.5), ft(0.5))
+    cb.add_geometry('stairwell_top_landing', v, t, 'staircase')
+
+    # FRONT WALL of stair well enclosure (CLOSES the front above the front beam)
+    # At y=0 (front wall line), x=0 to x=3, full height.
+    # This ensures the ONLY way out of the stair well is through the GATE at x=3.
+    v, t = box_mesh(ft(-WALL_T), ft(-WALL_T), ft(Z_1F_FLOOR),
+                    ft(3.0 + WALL_T), ft(WALL_T), ft(WALL_1F_H))
+    cb.add_geometry('stairwell_wall_front', v, t, 'wall')
+
+    # Right wall: x=3, y=0 to y=9 (extends to partition line — NO gap!)
+    # Gate opening (3ft wide × 7ft high) at y=0 to y=3 (front, where Flight 2 exits)
+    # Segment: y=3 to y=9 (SOLID wall)
+    v, t = box_mesh(ft(3.0), ft(3.0), ft(Z_1F_FLOOR),
+                    ft(0.375), ft(6.0), ft(WALL_1F_H))
+    cb.add_geometry('stairwell_wall_r1', v, t, 'wall')
+
+    # Above gate: y=0 to y=3, z above 7ft only
+    v, t = box_mesh(ft(3.0), ft(0), ft(Z_1F_FLOOR + 7.0),
+                    ft(0.375), ft(3.0), ft(WALL_1F_H - 7.0))
+    cb.add_geometry('stairwell_wall_above_gate', v, t, 'wall')
+
+    # Gate panel (dark, at x=3, y=0-3, 3ft × 7ft)
+    v, t = box_mesh(ft(3.05), ft(0), ft(Z_1F_FLOOR),
+                    ft(0.1), ft(3.0), ft(7.0))
+    cb.add_geometry('stairwell_gate', v, t, 'gate')
+
+    # Back of enclosure: OPEN at y=9 — sloped stair starts here.
+    # The partition wall at x=0-3 is NOT built (enclosure merges into the sloped stair zone).
+
+    # ============ 1F.6 SLOPED STAIR-SLAB (to roof) ============
+    # x=0 to x=3, from y=9 (partition line, back of enclosure) at z=15.5
+    # rising to y=0 at z=27.5. Accessed from inside the enclosure (back is open to y=9).
+    thickness = 0.3
+    SLOPE_START_Y = 9.0  # starts at partition line
+    stair_slope_verts = [
+        # Top surface
+        (ft(0), ft(SLOPE_START_Y), ft(Z_1F_FLOOR)),
+        (ft(3), ft(SLOPE_START_Y), ft(Z_1F_FLOOR)),
+        (ft(3), ft(0), ft(Z_1F_ROOF)),
+        (ft(0), ft(0), ft(Z_1F_ROOF)),
+        # Bottom surface
+        (ft(0), ft(SLOPE_START_Y), ft(Z_1F_FLOOR - thickness)),
+        (ft(3), ft(SLOPE_START_Y), ft(Z_1F_FLOOR - thickness)),
+        (ft(3), ft(0), ft(Z_1F_ROOF - thickness)),
+        (ft(0), ft(0), ft(Z_1F_ROOF - thickness)),
+    ]
+    stair_slope_tris = [
+        (0, 1, 2), (0, 2, 3),   # top face
+        (4, 6, 5), (4, 7, 6),   # bottom face
+        (0, 1, 5), (0, 5, 4),   # front edge (y=9)
+        (2, 3, 7), (2, 7, 6),   # back edge (y=0)
+        (0, 3, 7), (0, 7, 4),   # left side
+        (1, 2, 6), (1, 6, 5),   # right side
+    ]
+    cb.add_geometry('stair_slope_1f', stair_slope_verts, stair_slope_tris, 'staircase')
+
+    # Step indicators on the slope (12 steps over 8.5ft run, 12ft rise)
+    step_run = SLOPE_START_Y / 12.0     # per step in y
+    step_rise = 12.0 / 12.0   # 1.0ft per step in z
+    for i in range(12):
+        step_y = 9.0 - i * step_run
+        step_z = Z_1F_FLOOR + i * step_rise
+        v, t = box_mesh(ft(0), ft(step_y - step_run), ft(step_z),
+                        ft(3.0), ft(step_run), ft(step_rise))
+        cb.add_geometry(f'stair_1f_step_{i}', v, t, 'staircase')
+
+    # ============ 1F.7 OPEN TERRACE RAILINGS (y=-6 to y=0, z=15.5) ============
+    # Front railing: y=-6, x=-0.75 to x=20.75, z=15.5 to z=19
+    v, t = box_mesh(ft(-WALL_T), ft(-CANTILEVER), ft(Z_1F_FLOOR),
+                    ft(INT_W + 2*WALL_T), ft(0.05), ft(3.5))
+    cb.add_geometry('railing_terrace_front', v, t, 'railing')
+
+    # Left railing: x=-0.75, y=-6 to y=0, z=15.5 to z=19
+    v, t = box_mesh(ft(-WALL_T), ft(-CANTILEVER), ft(Z_1F_FLOOR),
+                    ft(0.05), ft(CANTILEVER), ft(3.5))
+    cb.add_geometry('railing_terrace_left', v, t, 'railing')
+
+    # Right railing: x=20.75, y=-6 to y=0, z=15.5 to z=19
+    v, t = box_mesh(ft(INT_W + WALL_T - 0.05), ft(-CANTILEVER), ft(Z_1F_FLOOR),
+                    ft(0.05), ft(CANTILEVER), ft(3.5))
+    cb.add_geometry('railing_terrace_right', v, t, 'railing')
+
+    # ============ 1F.8 ROOF SLAB (with 6ft × 3ft stair well opening) ============
+    # Covers building footprint: x=-0.75 to x=20.75, y=-0.75 to y=25.75
+    # z=27.5 to z=28.0 (0.5ft thick)
+    # STAIR WELL OPENING: x=0 to x=3, y=0 to y=6 (above where sloped stair arrives)
+    # Split into pieces around the opening:
+
+    # Piece 1: BACK portion (y=6 to y=25.75) — full width
+    v, t = box_mesh(ft(-WALL_T), ft(6.0), ft(Z_1F_ROOF),
+                    ft(INT_W + 2*WALL_T), ft(INT_D - 6.0 + WALL_T), ft(SLAB_T_FT))
+    cb.add_geometry('roof_slab_1f_back', v, t, 'slab')
+
+    # Piece 2: FRONT-RIGHT (x=3 to x=20.75, y=-0.75 to y=6)
+    v, t = box_mesh(ft(3.0), ft(-WALL_T), ft(Z_1F_ROOF),
+                    ft(INT_W - 3.0 + WALL_T), ft(6.0 + WALL_T), ft(SLAB_T_FT))
+    cb.add_geometry('roof_slab_1f_front_right', v, t, 'slab')
+
+    # Piece 3: FRONT-LEFT edge (x=-0.75 to x=0, y=-0.75 to y=6) — left wall strip
+    v, t = box_mesh(ft(-WALL_T), ft(-WALL_T), ft(Z_1F_ROOF),
+                    ft(WALL_T), ft(6.0 + WALL_T), ft(SLAB_T_FT))
+    cb.add_geometry('roof_slab_1f_left_edge', v, t, 'slab')
+
+    # STAIR WELL (6ft × 3ft): x=0 to x=3, y=0 to y=6 — OPEN (no slab here)
+
+    # ============ 1F.9 PARAPET WALLS (3ft high on roof edges) ============
+    Z_PARAPET = Z_1F_ROOF + SLAB_T_FT  # 28.0
+    PARAPET_H = 3.0
+
+    # Back parapet
+    v, t = box_mesh(ft(-WALL_T), ft(INT_D), ft(Z_PARAPET),
+                    ft(INT_W + 2*WALL_T), ft(WALL_T), ft(PARAPET_H))
+    cb.add_geometry('parapet_back', v, t, 'wall')
+
+    # Left parapet
+    v, t = box_mesh(ft(-WALL_T), ft(0), ft(Z_PARAPET),
+                    ft(WALL_T), ft(INT_D + WALL_T), ft(PARAPET_H))
+    cb.add_geometry('parapet_left', v, t, 'wall')
+
+    # Right parapet
+    v, t = box_mesh(ft(INT_W), ft(0), ft(Z_PARAPET),
+                    ft(WALL_T), ft(INT_D + WALL_T), ft(PARAPET_H))
+    cb.add_geometry('parapet_right', v, t, 'wall')
+
+    # Front parapet
+    v, t = box_mesh(ft(-WALL_T), ft(-WALL_T), ft(Z_PARAPET),
+                    ft(INT_W + 2*WALL_T), ft(WALL_T), ft(PARAPET_H))
+    cb.add_geometry('parapet_front', v, t, 'wall')
+
+    # ============ 1F.10 WATER TANK (on roof, away from stair well zone) ============
+    # Positioned on clear roof area (NOT above stair well/sloped stair)
+    TANK_X = 8.0   # center-right area of roof (away from x=0-3 stair zone)
+    TANK_Y = 2.0
+    TANK_W = 3.0
+    TANK_D = 2.5
+    TANK_H = 2.5
+    STAND_H = 2.0
+    LEG_SIZE = 0.2
+    Z_ROOF_TOP = Z_PARAPET  # 28.0 (top of roof slab)
+
+    # Legs at 4 corners
+    for lx, ly in [(TANK_X, TANK_Y), (TANK_X + TANK_W - LEG_SIZE, TANK_Y),
+                   (TANK_X, TANK_Y + TANK_D - LEG_SIZE), (TANK_X + TANK_W - LEG_SIZE, TANK_Y + TANK_D - LEG_SIZE)]:
+        v, t = box_mesh(ft(lx), ft(ly), ft(Z_ROOF_TOP),
+                        ft(LEG_SIZE), ft(LEG_SIZE), ft(STAND_H))
+        cb.add_geometry(f'tank_leg_{lx:.0f}_{ly:.0f}', v, t, 'railing')
+
+    # Tank body
+    v, t = box_mesh(ft(TANK_X), ft(TANK_Y), ft(Z_ROOF_TOP + STAND_H),
+                    ft(TANK_W), ft(TANK_D), ft(TANK_H))
+    cb.add_geometry('water_tank', v, t, 'water_tank')
+
     return cb
 
 
 def main():
-    print("Generating ground floor 3D model...")
+    print("Generating full building (GF + 1F) 3D model...")
     cb = build_ground_floor()
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -610,6 +937,7 @@ def main():
         print(f"GLB generation failed: {e}")
 
     print("\nElements included:")
+    print("  GROUND FLOOR:")
     print("  - Plinth (raised platform)")
     print("  - Floor slab")
     print("  - External walls (back, left, right, front segments)")
@@ -621,10 +949,21 @@ def main():
     print("  - Ramp (front)")
     print("  - Gate steps")
     print("  - Beams (back, middle, front, left, right)")
-    print("  - Roof slab (with 5ft front cantilever)")
-    print("  - Shade: PURE CANTILEVER (no walls, no pillars — slab hangs from front beam)")
-    print("  - Septic tank + soak pit (underground)")
+    print("  - Roof slab (with 6ft front cantilever)")
+    print("  - Shade: PURE CANTILEVER (no walls, no pillars)")
+    print("  - Septic tank + soak pits (underground)")
     print("  - Ground plane")
+    print("  FIRST FLOOR:")
+    print("  - 1F External walls (left, right, back, front)")
+    print("  - 1F Room partition wall (y=9, with door opening)")
+    print("  - 1F Kitchen (L-shaped half-walls + floor indicator)")
+    print("  - 1F Bathroom (walls + fixtures: commode, shower, basin, geyser)")
+    print("  - 1F Stair well railing")
+    print("  - 1F Sloped stair-slab to roof (with step indicators)")
+    print("  - 1F Open terrace railings")
+    print("  - 1F Roof slab (building footprint only)")
+    print("  - 1F Parapet walls (3ft high)")
+    print("  - Water tank on roof (with stand)")
 
 
 if __name__ == "__main__":

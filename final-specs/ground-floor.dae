@@ -159,6 +159,50 @@
         </technique>
       </profile_COMMON>
     </effect>
+    <effect id="kitchen-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.3 0.55 0.25 1.0</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="railing-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.5 0.5 0.55 1.0</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="fixture-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.9 0.9 0.92 1.0</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="water_tank-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <diffuse>
+              <color>0.2 0.55 0.82 1.0</color>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
   </library_effects>
   <library_materials>
     <material id="plinth-mat" name="plinth">
@@ -202,6 +246,18 @@
     </material>
     <material id="pipe-mat" name="pipe">
       <instance_effect url="#pipe-effect"/>
+    </material>
+    <material id="kitchen-mat" name="kitchen">
+      <instance_effect url="#kitchen-effect"/>
+    </material>
+    <material id="railing-mat" name="railing">
+      <instance_effect url="#railing-effect"/>
+    </material>
+    <material id="fixture-mat" name="fixture">
+      <instance_effect url="#fixture-effect"/>
+    </material>
+    <material id="water_tank-mat" name="water_tank">
+      <instance_effect url="#water_tank-effect"/>
     </material>
   </library_materials>
   <library_geometries>
@@ -1066,27 +1122,6 @@
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="stair_well_opening-geom" name="stair_well_opening">
-      <mesh>
-        <source id="stair_well_opening-positions">
-          <float_array id="stair_well_opening-positions-array" count="24">0.0000 0.0000 4.7244 0.9144 0.0000 4.7244 0.9144 2.5908 4.7244 0.0000 2.5908 4.7244 0.0000 0.0000 4.7305 0.9144 0.0000 4.7305 0.9144 2.5908 4.7305 0.0000 2.5908 4.7305</float_array>
-          <technique_common>
-            <accessor source="#stair_well_opening-positions-array" count="8" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="stair_well_opening-vertices">
-          <input semantic="POSITION" source="#stair_well_opening-positions"/>
-        </vertices>
-        <triangles count="12">
-          <input semantic="VERTEX" source="#stair_well_opening-vertices" offset="0"/>
-          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
-        </triangles>
-      </mesh>
-    </geometry>
     <geometry id="septic_tank-geom" name="septic_tank">
       <mesh>
         <source id="septic_tank-positions">
@@ -1213,9 +1248,1227 @@
         </triangles>
       </mesh>
     </geometry>
+    <geometry id="wall_1f_left-geom" name="wall_1f_left">
+      <mesh>
+        <source id="wall_1f_left-positions">
+          <float_array id="wall_1f_left-positions-array" count="24">-0.2286 0.0000 4.7244 0.0000 0.0000 4.7244 0.0000 7.8486 4.7244 -0.2286 7.8486 4.7244 -0.2286 0.0000 8.3820 0.0000 0.0000 8.3820 0.0000 7.8486 8.3820 -0.2286 7.8486 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_left-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_left-vertices">
+          <input semantic="POSITION" source="#wall_1f_left-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_left-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_1f_right-geom" name="wall_1f_right">
+      <mesh>
+        <source id="wall_1f_right-positions">
+          <float_array id="wall_1f_right-positions-array" count="24">6.0960 0.0000 4.7244 6.3246 0.0000 4.7244 6.3246 7.8486 4.7244 6.0960 7.8486 4.7244 6.0960 0.0000 8.3820 6.3246 0.0000 8.3820 6.3246 7.8486 8.3820 6.0960 7.8486 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_right-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_right-vertices">
+          <input semantic="POSITION" source="#wall_1f_right-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_right-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_1f_back-geom" name="wall_1f_back">
+      <mesh>
+        <source id="wall_1f_back-positions">
+          <float_array id="wall_1f_back-positions-array" count="24">-0.2286 7.6200 4.7244 6.3246 7.6200 4.7244 6.3246 7.8486 4.7244 -0.2286 7.8486 4.7244 -0.2286 7.6200 8.3820 6.3246 7.6200 8.3820 6.3246 7.8486 8.3820 -0.2286 7.8486 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_back-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_back-vertices">
+          <input semantic="POSITION" source="#wall_1f_back-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_back-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_1f_C1-geom" name="col_1f_C1">
+      <mesh>
+        <source id="col_1f_C1-positions">
+          <float_array id="col_1f_C1-positions-array" count="24">-0.2286 7.3152 4.7244 0.0000 7.3152 4.7244 0.0000 7.6200 4.7244 -0.2286 7.6200 4.7244 -0.2286 7.3152 8.3820 0.0000 7.3152 8.3820 0.0000 7.6200 8.3820 -0.2286 7.6200 8.3820</float_array>
+          <technique_common>
+            <accessor source="#col_1f_C1-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_1f_C1-vertices">
+          <input semantic="POSITION" source="#col_1f_C1-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_1f_C1-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_1f_C3-geom" name="col_1f_C3">
+      <mesh>
+        <source id="col_1f_C3-positions">
+          <float_array id="col_1f_C3-positions-array" count="24">-0.2286 2.5908 4.7244 0.0000 2.5908 4.7244 0.0000 2.8956 4.7244 -0.2286 2.8956 4.7244 -0.2286 2.5908 8.3820 0.0000 2.5908 8.3820 0.0000 2.8956 8.3820 -0.2286 2.8956 8.3820</float_array>
+          <technique_common>
+            <accessor source="#col_1f_C3-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_1f_C3-vertices">
+          <input semantic="POSITION" source="#col_1f_C3-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_1f_C3-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_1f_C5-geom" name="col_1f_C5">
+      <mesh>
+        <source id="col_1f_C5-positions">
+          <float_array id="col_1f_C5-positions-array" count="24">-0.2286 -0.2286 4.7244 0.0000 -0.2286 4.7244 0.0000 0.0762 4.7244 -0.2286 0.0762 4.7244 -0.2286 -0.2286 8.3820 0.0000 -0.2286 8.3820 0.0000 0.0762 8.3820 -0.2286 0.0762 8.3820</float_array>
+          <technique_common>
+            <accessor source="#col_1f_C5-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_1f_C5-vertices">
+          <input semantic="POSITION" source="#col_1f_C5-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_1f_C5-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_1f_C2-geom" name="col_1f_C2">
+      <mesh>
+        <source id="col_1f_C2-positions">
+          <float_array id="col_1f_C2-positions-array" count="24">6.0960 7.3152 4.7244 6.3246 7.3152 4.7244 6.3246 7.6200 4.7244 6.0960 7.6200 4.7244 6.0960 7.3152 8.3820 6.3246 7.3152 8.3820 6.3246 7.6200 8.3820 6.0960 7.6200 8.3820</float_array>
+          <technique_common>
+            <accessor source="#col_1f_C2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_1f_C2-vertices">
+          <input semantic="POSITION" source="#col_1f_C2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_1f_C2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_1f_C4-geom" name="col_1f_C4">
+      <mesh>
+        <source id="col_1f_C4-positions">
+          <float_array id="col_1f_C4-positions-array" count="24">6.0960 2.5908 4.7244 6.3246 2.5908 4.7244 6.3246 2.8956 4.7244 6.0960 2.8956 4.7244 6.0960 2.5908 8.3820 6.3246 2.5908 8.3820 6.3246 2.8956 8.3820 6.0960 2.8956 8.3820</float_array>
+          <technique_common>
+            <accessor source="#col_1f_C4-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_1f_C4-vertices">
+          <input semantic="POSITION" source="#col_1f_C4-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_1f_C4-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="col_1f_C8-geom" name="col_1f_C8">
+      <mesh>
+        <source id="col_1f_C8-positions">
+          <float_array id="col_1f_C8-positions-array" count="24">6.0960 -0.2286 4.7244 6.3246 -0.2286 4.7244 6.3246 0.0762 4.7244 6.0960 0.0762 4.7244 6.0960 -0.2286 8.3820 6.3246 -0.2286 8.3820 6.3246 0.0762 8.3820 6.0960 0.0762 8.3820</float_array>
+          <technique_common>
+            <accessor source="#col_1f_C8-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="col_1f_C8-vertices">
+          <input semantic="POSITION" source="#col_1f_C8-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#col_1f_C8-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_1f_partition_above_roof_gate-geom" name="wall_1f_partition_above_roof_gate">
+      <mesh>
+        <source id="wall_1f_partition_above_roof_gate-positions">
+          <float_array id="wall_1f_partition_above_roof_gate-positions-array" count="24">0.0000 2.7432 6.8580 0.9144 2.7432 6.8580 0.9144 2.9718 6.8580 0.0000 2.9718 6.8580 0.0000 2.7432 8.3820 0.9144 2.7432 8.3820 0.9144 2.9718 8.3820 0.0000 2.9718 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_partition_above_roof_gate-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_partition_above_roof_gate-vertices">
+          <input semantic="POSITION" source="#wall_1f_partition_above_roof_gate-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_partition_above_roof_gate-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="roof_stair_gate-geom" name="roof_stair_gate">
+      <mesh>
+        <source id="roof_stair_gate-positions">
+          <float_array id="roof_stair_gate-positions-array" count="24">0.0000 2.9718 4.7244 0.9144 2.9718 4.7244 0.9144 3.0023 4.7244 0.0000 3.0023 4.7244 0.0000 2.9718 6.8580 0.9144 2.9718 6.8580 0.9144 3.0023 6.8580 0.0000 3.0023 6.8580</float_array>
+          <technique_common>
+            <accessor source="#roof_stair_gate-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="roof_stair_gate-vertices">
+          <input semantic="POSITION" source="#roof_stair_gate-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#roof_stair_gate-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_1f_partition_solid1-geom" name="wall_1f_partition_solid1">
+      <mesh>
+        <source id="wall_1f_partition_solid1-positions">
+          <float_array id="wall_1f_partition_solid1-positions-array" count="24">0.9144 2.7432 4.7244 1.8288 2.7432 4.7244 1.8288 2.9718 4.7244 0.9144 2.9718 4.7244 0.9144 2.7432 8.3820 1.8288 2.7432 8.3820 1.8288 2.9718 8.3820 0.9144 2.9718 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_partition_solid1-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_partition_solid1-vertices">
+          <input semantic="POSITION" source="#wall_1f_partition_solid1-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_partition_solid1-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_1f_partition_above_room_gate-geom" name="wall_1f_partition_above_room_gate">
+      <mesh>
+        <source id="wall_1f_partition_above_room_gate-positions">
+          <float_array id="wall_1f_partition_above_room_gate-positions-array" count="24">1.8288 2.7432 6.8580 2.7432 2.7432 6.8580 2.7432 2.9718 6.8580 1.8288 2.9718 6.8580 1.8288 2.7432 8.3820 2.7432 2.7432 8.3820 2.7432 2.9718 8.3820 1.8288 2.9718 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_partition_above_room_gate-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_partition_above_room_gate-vertices">
+          <input semantic="POSITION" source="#wall_1f_partition_above_room_gate-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_partition_above_room_gate-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="wall_1f_partition_solid2-geom" name="wall_1f_partition_solid2">
+      <mesh>
+        <source id="wall_1f_partition_solid2-positions">
+          <float_array id="wall_1f_partition_solid2-positions-array" count="24">2.7432 2.7432 4.7244 4.2672 2.7432 4.7244 4.2672 2.9718 4.7244 2.7432 2.9718 4.7244 2.7432 2.7432 8.3820 4.2672 2.7432 8.3820 4.2672 2.9718 8.3820 2.7432 2.9718 8.3820</float_array>
+          <technique_common>
+            <accessor source="#wall_1f_partition_solid2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="wall_1f_partition_solid2-vertices">
+          <input semantic="POSITION" source="#wall_1f_partition_solid2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#wall_1f_partition_solid2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="kitchen_halfwall_front-geom" name="kitchen_halfwall_front">
+      <mesh>
+        <source id="kitchen_halfwall_front-positions">
+          <float_array id="kitchen_halfwall_front-positions-array" count="24">4.2672 5.7912 4.7244 6.0960 5.7912 4.7244 6.0960 5.9055 4.7244 4.2672 5.9055 4.7244 4.2672 5.7912 5.7912 6.0960 5.7912 5.7912 6.0960 5.9055 5.7912 4.2672 5.9055 5.7912</float_array>
+          <technique_common>
+            <accessor source="#kitchen_halfwall_front-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="kitchen_halfwall_front-vertices">
+          <input semantic="POSITION" source="#kitchen_halfwall_front-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#kitchen_halfwall_front-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="kitchen_halfwall_left-geom" name="kitchen_halfwall_left">
+      <mesh>
+        <source id="kitchen_halfwall_left-positions">
+          <float_array id="kitchen_halfwall_left-positions-array" count="24">4.1529 5.7912 4.7244 4.2672 5.7912 4.7244 4.2672 7.6200 4.7244 4.1529 7.6200 4.7244 4.1529 5.7912 5.7912 4.2672 5.7912 5.7912 4.2672 7.6200 5.7912 4.1529 7.6200 5.7912</float_array>
+          <technique_common>
+            <accessor source="#kitchen_halfwall_left-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="kitchen_halfwall_left-vertices">
+          <input semantic="POSITION" source="#kitchen_halfwall_left-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#kitchen_halfwall_left-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="kitchen_floor-geom" name="kitchen_floor">
+      <mesh>
+        <source id="kitchen_floor-positions">
+          <float_array id="kitchen_floor-positions-array" count="24">4.2672 5.7912 4.7305 6.0960 5.7912 4.7305 6.0960 7.6200 4.7305 4.2672 7.6200 4.7305 4.2672 5.7912 4.7366 6.0960 5.7912 4.7366 6.0960 7.6200 4.7366 4.2672 7.6200 4.7366</float_array>
+          <technique_common>
+            <accessor source="#kitchen_floor-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="kitchen_floor-vertices">
+          <input semantic="POSITION" source="#kitchen_floor-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#kitchen_floor-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_wall_left_1-geom" name="bath_wall_left_1">
+      <mesh>
+        <source id="bath_wall_left_1-positions">
+          <float_array id="bath_wall_left_1-positions-array" count="24">4.1529 1.5240 4.7244 4.2672 1.5240 4.7244 4.2672 3.0480 4.7244 4.1529 3.0480 4.7244 4.1529 1.5240 8.3820 4.2672 1.5240 8.3820 4.2672 3.0480 8.3820 4.1529 3.0480 8.3820</float_array>
+          <technique_common>
+            <accessor source="#bath_wall_left_1-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_wall_left_1-vertices">
+          <input semantic="POSITION" source="#bath_wall_left_1-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_wall_left_1-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_wall_left_2-geom" name="bath_wall_left_2">
+      <mesh>
+        <source id="bath_wall_left_2-positions">
+          <float_array id="bath_wall_left_2-positions-array" count="24">4.1529 3.8100 4.7244 4.2672 3.8100 4.7244 4.2672 3.9624 4.7244 4.1529 3.9624 4.7244 4.1529 3.8100 8.3820 4.2672 3.8100 8.3820 4.2672 3.9624 8.3820 4.1529 3.9624 8.3820</float_array>
+          <technique_common>
+            <accessor source="#bath_wall_left_2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_wall_left_2-vertices">
+          <input semantic="POSITION" source="#bath_wall_left_2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_wall_left_2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_wall_left_above_door-geom" name="bath_wall_left_above_door">
+      <mesh>
+        <source id="bath_wall_left_above_door-positions">
+          <float_array id="bath_wall_left_above_door-positions-array" count="24">4.1529 3.0480 6.8580 4.2672 3.0480 6.8580 4.2672 3.8100 6.8580 4.1529 3.8100 6.8580 4.1529 3.0480 8.3820 4.2672 3.0480 8.3820 4.2672 3.8100 8.3820 4.1529 3.8100 8.3820</float_array>
+          <technique_common>
+            <accessor source="#bath_wall_left_above_door-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_wall_left_above_door-vertices">
+          <input semantic="POSITION" source="#bath_wall_left_above_door-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_wall_left_above_door-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_wall_back-geom" name="bath_wall_back">
+      <mesh>
+        <source id="bath_wall_back-positions">
+          <float_array id="bath_wall_back-positions-array" count="24">4.2672 3.8481 4.7244 6.0960 3.8481 4.7244 6.0960 3.9624 4.7244 4.2672 3.9624 4.7244 4.2672 3.8481 8.3820 6.0960 3.8481 8.3820 6.0960 3.9624 8.3820 4.2672 3.9624 8.3820</float_array>
+          <technique_common>
+            <accessor source="#bath_wall_back-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_wall_back-vertices">
+          <input semantic="POSITION" source="#bath_wall_back-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_wall_back-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_wall_front-geom" name="bath_wall_front">
+      <mesh>
+        <source id="bath_wall_front-positions">
+          <float_array id="bath_wall_front-positions-array" count="24">4.2672 1.5240 4.7244 6.0960 1.5240 4.7244 6.0960 1.6383 4.7244 4.2672 1.6383 4.7244 4.2672 1.5240 8.3820 6.0960 1.5240 8.3820 6.0960 1.6383 8.3820 4.2672 1.6383 8.3820</float_array>
+          <technique_common>
+            <accessor source="#bath_wall_front-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_wall_front-vertices">
+          <input semantic="POSITION" source="#bath_wall_front-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_wall_front-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_commode-geom" name="bath_commode">
+      <mesh>
+        <source id="bath_commode-positions">
+          <float_array id="bath_commode-positions-array" count="24">5.4864 1.8288 4.7244 5.9436 1.8288 4.7244 5.9436 2.4384 4.7244 5.4864 2.4384 4.7244 5.4864 1.8288 5.1816 5.9436 1.8288 5.1816 5.9436 2.4384 5.1816 5.4864 2.4384 5.1816</float_array>
+          <technique_common>
+            <accessor source="#bath_commode-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_commode-vertices">
+          <input semantic="POSITION" source="#bath_commode-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_commode-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_shower-geom" name="bath_shower">
+      <mesh>
+        <source id="bath_shower-positions">
+          <float_array id="bath_shower-positions-array" count="24">4.4196 3.0480 4.7244 5.3340 3.0480 4.7244 5.3340 3.9624 4.7244 4.4196 3.9624 4.7244 4.4196 3.0480 4.7854 5.3340 3.0480 4.7854 5.3340 3.9624 4.7854 4.4196 3.9624 4.7854</float_array>
+          <technique_common>
+            <accessor source="#bath_shower-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_shower-vertices">
+          <input semantic="POSITION" source="#bath_shower-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_shower-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="bath_basin-geom" name="bath_basin">
+      <mesh>
+        <source id="bath_basin-positions">
+          <float_array id="bath_basin-positions-array" count="24">5.6388 2.7432 5.4864 6.0960 2.7432 5.4864 6.0960 3.0480 5.4864 5.6388 3.0480 5.4864 5.6388 2.7432 5.6388 6.0960 2.7432 5.6388 6.0960 3.0480 5.6388 5.6388 3.0480 5.6388</float_array>
+          <technique_common>
+            <accessor source="#bath_basin-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="bath_basin-vertices">
+          <input semantic="POSITION" source="#bath_basin-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#bath_basin-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stairwell_top_landing-geom" name="stairwell_top_landing">
+      <mesh>
+        <source id="stairwell_top_landing-positions">
+          <float_array id="stairwell_top_landing-positions-array" count="24">0.0000 0.0000 4.5720 0.9144 0.0000 4.5720 0.9144 0.7620 4.5720 0.0000 0.7620 4.5720 0.0000 0.0000 4.7244 0.9144 0.0000 4.7244 0.9144 0.7620 4.7244 0.0000 0.7620 4.7244</float_array>
+          <technique_common>
+            <accessor source="#stairwell_top_landing-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stairwell_top_landing-vertices">
+          <input semantic="POSITION" source="#stairwell_top_landing-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stairwell_top_landing-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stairwell_wall_front-geom" name="stairwell_wall_front">
+      <mesh>
+        <source id="stairwell_wall_front-positions">
+          <float_array id="stairwell_wall_front-positions-array" count="24">-0.2286 -0.2286 4.7244 0.9144 -0.2286 4.7244 0.9144 0.0000 4.7244 -0.2286 0.0000 4.7244 -0.2286 -0.2286 8.3820 0.9144 -0.2286 8.3820 0.9144 0.0000 8.3820 -0.2286 0.0000 8.3820</float_array>
+          <technique_common>
+            <accessor source="#stairwell_wall_front-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stairwell_wall_front-vertices">
+          <input semantic="POSITION" source="#stairwell_wall_front-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stairwell_wall_front-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stairwell_wall_r1-geom" name="stairwell_wall_r1">
+      <mesh>
+        <source id="stairwell_wall_r1-positions">
+          <float_array id="stairwell_wall_r1-positions-array" count="24">0.9144 0.9144 4.7244 1.0287 0.9144 4.7244 1.0287 2.7432 4.7244 0.9144 2.7432 4.7244 0.9144 0.9144 8.3820 1.0287 0.9144 8.3820 1.0287 2.7432 8.3820 0.9144 2.7432 8.3820</float_array>
+          <technique_common>
+            <accessor source="#stairwell_wall_r1-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stairwell_wall_r1-vertices">
+          <input semantic="POSITION" source="#stairwell_wall_r1-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stairwell_wall_r1-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stairwell_wall_above_gate-geom" name="stairwell_wall_above_gate">
+      <mesh>
+        <source id="stairwell_wall_above_gate-positions">
+          <float_array id="stairwell_wall_above_gate-positions-array" count="24">0.9144 0.0000 6.8580 1.0287 0.0000 6.8580 1.0287 0.9144 6.8580 0.9144 0.9144 6.8580 0.9144 0.0000 8.3820 1.0287 0.0000 8.3820 1.0287 0.9144 8.3820 0.9144 0.9144 8.3820</float_array>
+          <technique_common>
+            <accessor source="#stairwell_wall_above_gate-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stairwell_wall_above_gate-vertices">
+          <input semantic="POSITION" source="#stairwell_wall_above_gate-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stairwell_wall_above_gate-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stairwell_gate-geom" name="stairwell_gate">
+      <mesh>
+        <source id="stairwell_gate-positions">
+          <float_array id="stairwell_gate-positions-array" count="24">0.9296 0.0000 4.7244 0.9601 0.0000 4.7244 0.9601 0.9144 4.7244 0.9296 0.9144 4.7244 0.9296 0.0000 6.8580 0.9601 0.0000 6.8580 0.9601 0.9144 6.8580 0.9296 0.9144 6.8580</float_array>
+          <technique_common>
+            <accessor source="#stairwell_gate-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stairwell_gate-vertices">
+          <input semantic="POSITION" source="#stairwell_gate-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stairwell_gate-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_slope_1f-geom" name="stair_slope_1f">
+      <mesh>
+        <source id="stair_slope_1f-positions">
+          <float_array id="stair_slope_1f-positions-array" count="24">0.0000 2.7432 4.7244 0.9144 2.7432 4.7244 0.9144 0.0000 8.3820 0.0000 0.0000 8.3820 0.0000 2.7432 4.6330 0.9144 2.7432 4.6330 0.9144 0.0000 8.2906 0.0000 0.0000 8.2906</float_array>
+          <technique_common>
+            <accessor source="#stair_slope_1f-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_slope_1f-vertices">
+          <input semantic="POSITION" source="#stair_slope_1f-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_slope_1f-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_0-geom" name="stair_1f_step_0">
+      <mesh>
+        <source id="stair_1f_step_0-positions">
+          <float_array id="stair_1f_step_0-positions-array" count="24">0.0000 2.5146 4.7244 0.9144 2.5146 4.7244 0.9144 2.7432 4.7244 0.0000 2.7432 4.7244 0.0000 2.5146 5.0292 0.9144 2.5146 5.0292 0.9144 2.7432 5.0292 0.0000 2.7432 5.0292</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_0-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_0-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_0-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_0-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_1-geom" name="stair_1f_step_1">
+      <mesh>
+        <source id="stair_1f_step_1-positions">
+          <float_array id="stair_1f_step_1-positions-array" count="24">0.0000 2.2860 5.0292 0.9144 2.2860 5.0292 0.9144 2.5146 5.0292 0.0000 2.5146 5.0292 0.0000 2.2860 5.3340 0.9144 2.2860 5.3340 0.9144 2.5146 5.3340 0.0000 2.5146 5.3340</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_1-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_1-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_1-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_1-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_2-geom" name="stair_1f_step_2">
+      <mesh>
+        <source id="stair_1f_step_2-positions">
+          <float_array id="stair_1f_step_2-positions-array" count="24">0.0000 2.0574 5.3340 0.9144 2.0574 5.3340 0.9144 2.2860 5.3340 0.0000 2.2860 5.3340 0.0000 2.0574 5.6388 0.9144 2.0574 5.6388 0.9144 2.2860 5.6388 0.0000 2.2860 5.6388</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_2-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_3-geom" name="stair_1f_step_3">
+      <mesh>
+        <source id="stair_1f_step_3-positions">
+          <float_array id="stair_1f_step_3-positions-array" count="24">0.0000 1.8288 5.6388 0.9144 1.8288 5.6388 0.9144 2.0574 5.6388 0.0000 2.0574 5.6388 0.0000 1.8288 5.9436 0.9144 1.8288 5.9436 0.9144 2.0574 5.9436 0.0000 2.0574 5.9436</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_3-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_3-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_3-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_3-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_4-geom" name="stair_1f_step_4">
+      <mesh>
+        <source id="stair_1f_step_4-positions">
+          <float_array id="stair_1f_step_4-positions-array" count="24">0.0000 1.6002 5.9436 0.9144 1.6002 5.9436 0.9144 1.8288 5.9436 0.0000 1.8288 5.9436 0.0000 1.6002 6.2484 0.9144 1.6002 6.2484 0.9144 1.8288 6.2484 0.0000 1.8288 6.2484</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_4-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_4-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_4-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_4-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_5-geom" name="stair_1f_step_5">
+      <mesh>
+        <source id="stair_1f_step_5-positions">
+          <float_array id="stair_1f_step_5-positions-array" count="24">0.0000 1.3716 6.2484 0.9144 1.3716 6.2484 0.9144 1.6002 6.2484 0.0000 1.6002 6.2484 0.0000 1.3716 6.5532 0.9144 1.3716 6.5532 0.9144 1.6002 6.5532 0.0000 1.6002 6.5532</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_5-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_5-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_5-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_5-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_6-geom" name="stair_1f_step_6">
+      <mesh>
+        <source id="stair_1f_step_6-positions">
+          <float_array id="stair_1f_step_6-positions-array" count="24">0.0000 1.1430 6.5532 0.9144 1.1430 6.5532 0.9144 1.3716 6.5532 0.0000 1.3716 6.5532 0.0000 1.1430 6.8580 0.9144 1.1430 6.8580 0.9144 1.3716 6.8580 0.0000 1.3716 6.8580</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_6-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_6-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_6-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_6-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_7-geom" name="stair_1f_step_7">
+      <mesh>
+        <source id="stair_1f_step_7-positions">
+          <float_array id="stair_1f_step_7-positions-array" count="24">0.0000 0.9144 6.8580 0.9144 0.9144 6.8580 0.9144 1.1430 6.8580 0.0000 1.1430 6.8580 0.0000 0.9144 7.1628 0.9144 0.9144 7.1628 0.9144 1.1430 7.1628 0.0000 1.1430 7.1628</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_7-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_7-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_7-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_7-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_8-geom" name="stair_1f_step_8">
+      <mesh>
+        <source id="stair_1f_step_8-positions">
+          <float_array id="stair_1f_step_8-positions-array" count="24">0.0000 0.6858 7.1628 0.9144 0.6858 7.1628 0.9144 0.9144 7.1628 0.0000 0.9144 7.1628 0.0000 0.6858 7.4676 0.9144 0.6858 7.4676 0.9144 0.9144 7.4676 0.0000 0.9144 7.4676</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_8-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_8-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_8-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_8-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_9-geom" name="stair_1f_step_9">
+      <mesh>
+        <source id="stair_1f_step_9-positions">
+          <float_array id="stair_1f_step_9-positions-array" count="24">0.0000 0.4572 7.4676 0.9144 0.4572 7.4676 0.9144 0.6858 7.4676 0.0000 0.6858 7.4676 0.0000 0.4572 7.7724 0.9144 0.4572 7.7724 0.9144 0.6858 7.7724 0.0000 0.6858 7.7724</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_9-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_9-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_9-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_9-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_10-geom" name="stair_1f_step_10">
+      <mesh>
+        <source id="stair_1f_step_10-positions">
+          <float_array id="stair_1f_step_10-positions-array" count="24">0.0000 0.2286 7.7724 0.9144 0.2286 7.7724 0.9144 0.4572 7.7724 0.0000 0.4572 7.7724 0.0000 0.2286 8.0772 0.9144 0.2286 8.0772 0.9144 0.4572 8.0772 0.0000 0.4572 8.0772</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_10-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_10-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_10-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_10-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="stair_1f_step_11-geom" name="stair_1f_step_11">
+      <mesh>
+        <source id="stair_1f_step_11-positions">
+          <float_array id="stair_1f_step_11-positions-array" count="24">0.0000 0.0000 8.0772 0.9144 0.0000 8.0772 0.9144 0.2286 8.0772 0.0000 0.2286 8.0772 0.0000 0.0000 8.3820 0.9144 0.0000 8.3820 0.9144 0.2286 8.3820 0.0000 0.2286 8.3820</float_array>
+          <technique_common>
+            <accessor source="#stair_1f_step_11-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="stair_1f_step_11-vertices">
+          <input semantic="POSITION" source="#stair_1f_step_11-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#stair_1f_step_11-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="railing_terrace_front-geom" name="railing_terrace_front">
+      <mesh>
+        <source id="railing_terrace_front-positions">
+          <float_array id="railing_terrace_front-positions-array" count="24">-0.2286 -1.8288 4.7244 6.3246 -1.8288 4.7244 6.3246 -1.8136 4.7244 -0.2286 -1.8136 4.7244 -0.2286 -1.8288 5.7912 6.3246 -1.8288 5.7912 6.3246 -1.8136 5.7912 -0.2286 -1.8136 5.7912</float_array>
+          <technique_common>
+            <accessor source="#railing_terrace_front-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="railing_terrace_front-vertices">
+          <input semantic="POSITION" source="#railing_terrace_front-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#railing_terrace_front-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="railing_terrace_left-geom" name="railing_terrace_left">
+      <mesh>
+        <source id="railing_terrace_left-positions">
+          <float_array id="railing_terrace_left-positions-array" count="24">-0.2286 -1.8288 4.7244 -0.2134 -1.8288 4.7244 -0.2134 0.0000 4.7244 -0.2286 0.0000 4.7244 -0.2286 -1.8288 5.7912 -0.2134 -1.8288 5.7912 -0.2134 0.0000 5.7912 -0.2286 0.0000 5.7912</float_array>
+          <technique_common>
+            <accessor source="#railing_terrace_left-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="railing_terrace_left-vertices">
+          <input semantic="POSITION" source="#railing_terrace_left-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#railing_terrace_left-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="railing_terrace_right-geom" name="railing_terrace_right">
+      <mesh>
+        <source id="railing_terrace_right-positions">
+          <float_array id="railing_terrace_right-positions-array" count="24">6.3094 -1.8288 4.7244 6.3246 -1.8288 4.7244 6.3246 0.0000 4.7244 6.3094 0.0000 4.7244 6.3094 -1.8288 5.7912 6.3246 -1.8288 5.7912 6.3246 0.0000 5.7912 6.3094 0.0000 5.7912</float_array>
+          <technique_common>
+            <accessor source="#railing_terrace_right-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="railing_terrace_right-vertices">
+          <input semantic="POSITION" source="#railing_terrace_right-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#railing_terrace_right-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="roof_slab_1f_back-geom" name="roof_slab_1f_back">
+      <mesh>
+        <source id="roof_slab_1f_back-positions">
+          <float_array id="roof_slab_1f_back-positions-array" count="24">-0.2286 1.8288 8.3820 6.3246 1.8288 8.3820 6.3246 7.8486 8.3820 -0.2286 7.8486 8.3820 -0.2286 1.8288 8.5344 6.3246 1.8288 8.5344 6.3246 7.8486 8.5344 -0.2286 7.8486 8.5344</float_array>
+          <technique_common>
+            <accessor source="#roof_slab_1f_back-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="roof_slab_1f_back-vertices">
+          <input semantic="POSITION" source="#roof_slab_1f_back-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#roof_slab_1f_back-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="roof_slab_1f_front_right-geom" name="roof_slab_1f_front_right">
+      <mesh>
+        <source id="roof_slab_1f_front_right-positions">
+          <float_array id="roof_slab_1f_front_right-positions-array" count="24">0.9144 -0.2286 8.3820 6.3246 -0.2286 8.3820 6.3246 1.8288 8.3820 0.9144 1.8288 8.3820 0.9144 -0.2286 8.5344 6.3246 -0.2286 8.5344 6.3246 1.8288 8.5344 0.9144 1.8288 8.5344</float_array>
+          <technique_common>
+            <accessor source="#roof_slab_1f_front_right-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="roof_slab_1f_front_right-vertices">
+          <input semantic="POSITION" source="#roof_slab_1f_front_right-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#roof_slab_1f_front_right-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="roof_slab_1f_left_edge-geom" name="roof_slab_1f_left_edge">
+      <mesh>
+        <source id="roof_slab_1f_left_edge-positions">
+          <float_array id="roof_slab_1f_left_edge-positions-array" count="24">-0.2286 -0.2286 8.3820 0.0000 -0.2286 8.3820 0.0000 1.8288 8.3820 -0.2286 1.8288 8.3820 -0.2286 -0.2286 8.5344 0.0000 -0.2286 8.5344 0.0000 1.8288 8.5344 -0.2286 1.8288 8.5344</float_array>
+          <technique_common>
+            <accessor source="#roof_slab_1f_left_edge-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="roof_slab_1f_left_edge-vertices">
+          <input semantic="POSITION" source="#roof_slab_1f_left_edge-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#roof_slab_1f_left_edge-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="parapet_back-geom" name="parapet_back">
+      <mesh>
+        <source id="parapet_back-positions">
+          <float_array id="parapet_back-positions-array" count="24">-0.2286 7.6200 8.5344 6.3246 7.6200 8.5344 6.3246 7.8486 8.5344 -0.2286 7.8486 8.5344 -0.2286 7.6200 9.4488 6.3246 7.6200 9.4488 6.3246 7.8486 9.4488 -0.2286 7.8486 9.4488</float_array>
+          <technique_common>
+            <accessor source="#parapet_back-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="parapet_back-vertices">
+          <input semantic="POSITION" source="#parapet_back-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#parapet_back-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="parapet_left-geom" name="parapet_left">
+      <mesh>
+        <source id="parapet_left-positions">
+          <float_array id="parapet_left-positions-array" count="24">-0.2286 0.0000 8.5344 0.0000 0.0000 8.5344 0.0000 7.8486 8.5344 -0.2286 7.8486 8.5344 -0.2286 0.0000 9.4488 0.0000 0.0000 9.4488 0.0000 7.8486 9.4488 -0.2286 7.8486 9.4488</float_array>
+          <technique_common>
+            <accessor source="#parapet_left-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="parapet_left-vertices">
+          <input semantic="POSITION" source="#parapet_left-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#parapet_left-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="parapet_right-geom" name="parapet_right">
+      <mesh>
+        <source id="parapet_right-positions">
+          <float_array id="parapet_right-positions-array" count="24">6.0960 0.0000 8.5344 6.3246 0.0000 8.5344 6.3246 7.8486 8.5344 6.0960 7.8486 8.5344 6.0960 0.0000 9.4488 6.3246 0.0000 9.4488 6.3246 7.8486 9.4488 6.0960 7.8486 9.4488</float_array>
+          <technique_common>
+            <accessor source="#parapet_right-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="parapet_right-vertices">
+          <input semantic="POSITION" source="#parapet_right-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#parapet_right-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="parapet_front-geom" name="parapet_front">
+      <mesh>
+        <source id="parapet_front-positions">
+          <float_array id="parapet_front-positions-array" count="24">-0.2286 -0.2286 8.5344 6.3246 -0.2286 8.5344 6.3246 0.0000 8.5344 -0.2286 0.0000 8.5344 -0.2286 -0.2286 9.4488 6.3246 -0.2286 9.4488 6.3246 0.0000 9.4488 -0.2286 0.0000 9.4488</float_array>
+          <technique_common>
+            <accessor source="#parapet_front-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="parapet_front-vertices">
+          <input semantic="POSITION" source="#parapet_front-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#parapet_front-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="tank_leg_8_2-geom" name="tank_leg_8_2">
+      <mesh>
+        <source id="tank_leg_8_2-positions">
+          <float_array id="tank_leg_8_2-positions-array" count="24">2.4384 0.6096 8.5344 2.4994 0.6096 8.5344 2.4994 0.6706 8.5344 2.4384 0.6706 8.5344 2.4384 0.6096 9.1440 2.4994 0.6096 9.1440 2.4994 0.6706 9.1440 2.4384 0.6706 9.1440</float_array>
+          <technique_common>
+            <accessor source="#tank_leg_8_2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="tank_leg_8_2-vertices">
+          <input semantic="POSITION" source="#tank_leg_8_2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#tank_leg_8_2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="tank_leg_11_2-geom" name="tank_leg_11_2">
+      <mesh>
+        <source id="tank_leg_11_2-positions">
+          <float_array id="tank_leg_11_2-positions-array" count="24">3.2918 0.6096 8.5344 3.3528 0.6096 8.5344 3.3528 0.6706 8.5344 3.2918 0.6706 8.5344 3.2918 0.6096 9.1440 3.3528 0.6096 9.1440 3.3528 0.6706 9.1440 3.2918 0.6706 9.1440</float_array>
+          <technique_common>
+            <accessor source="#tank_leg_11_2-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="tank_leg_11_2-vertices">
+          <input semantic="POSITION" source="#tank_leg_11_2-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#tank_leg_11_2-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="tank_leg_8_4-geom" name="tank_leg_8_4">
+      <mesh>
+        <source id="tank_leg_8_4-positions">
+          <float_array id="tank_leg_8_4-positions-array" count="24">2.4384 1.3106 8.5344 2.4994 1.3106 8.5344 2.4994 1.3716 8.5344 2.4384 1.3716 8.5344 2.4384 1.3106 9.1440 2.4994 1.3106 9.1440 2.4994 1.3716 9.1440 2.4384 1.3716 9.1440</float_array>
+          <technique_common>
+            <accessor source="#tank_leg_8_4-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="tank_leg_8_4-vertices">
+          <input semantic="POSITION" source="#tank_leg_8_4-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#tank_leg_8_4-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="tank_leg_11_4-geom" name="tank_leg_11_4">
+      <mesh>
+        <source id="tank_leg_11_4-positions">
+          <float_array id="tank_leg_11_4-positions-array" count="24">3.2918 1.3106 8.5344 3.3528 1.3106 8.5344 3.3528 1.3716 8.5344 3.2918 1.3716 8.5344 3.2918 1.3106 9.1440 3.3528 1.3106 9.1440 3.3528 1.3716 9.1440 3.2918 1.3716 9.1440</float_array>
+          <technique_common>
+            <accessor source="#tank_leg_11_4-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="tank_leg_11_4-vertices">
+          <input semantic="POSITION" source="#tank_leg_11_4-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#tank_leg_11_4-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="water_tank-geom" name="water_tank">
+      <mesh>
+        <source id="water_tank-positions">
+          <float_array id="water_tank-positions-array" count="24">2.4384 0.6096 9.1440 3.3528 0.6096 9.1440 3.3528 1.3716 9.1440 2.4384 1.3716 9.1440 2.4384 0.6096 9.9060 3.3528 0.6096 9.9060 3.3528 1.3716 9.9060 2.4384 1.3716 9.9060</float_array>
+          <technique_common>
+            <accessor source="#water_tank-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="water_tank-vertices">
+          <input semantic="POSITION" source="#water_tank-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#water_tank-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
   </library_geometries>
   <library_visual_scenes>
-    <visual_scene id="Scene" name="GroundFloor">
+    <visual_scene id="Scene" name="FullBuilding">
       <node id="plinth-node" name="plinth" type="NODE">
         <instance_geometry url="#plinth-geom">
           <bind_material>
@@ -1585,15 +2838,6 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="stair_well_opening-node" name="stair_well_opening" type="NODE">
-        <instance_geometry url="#stair_well_opening-geom">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="ground" target="#ground-mat"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
-      </node>
       <node id="septic_tank-node" name="septic_tank" type="NODE">
         <instance_geometry url="#septic_tank-geom">
           <bind_material>
@@ -1644,6 +2888,528 @@
           <bind_material>
             <technique_common>
               <instance_material symbol="ground" target="#ground-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_left-node" name="wall_1f_left" type="NODE">
+        <instance_geometry url="#wall_1f_left-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_right-node" name="wall_1f_right" type="NODE">
+        <instance_geometry url="#wall_1f_right-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_back-node" name="wall_1f_back" type="NODE">
+        <instance_geometry url="#wall_1f_back-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_1f_C1-node" name="col_1f_C1" type="NODE">
+        <instance_geometry url="#col_1f_C1-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_1f_C3-node" name="col_1f_C3" type="NODE">
+        <instance_geometry url="#col_1f_C3-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_1f_C5-node" name="col_1f_C5" type="NODE">
+        <instance_geometry url="#col_1f_C5-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_1f_C2-node" name="col_1f_C2" type="NODE">
+        <instance_geometry url="#col_1f_C2-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_1f_C4-node" name="col_1f_C4" type="NODE">
+        <instance_geometry url="#col_1f_C4-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="col_1f_C8-node" name="col_1f_C8" type="NODE">
+        <instance_geometry url="#col_1f_C8-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="column" target="#column-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_partition_above_roof_gate-node" name="wall_1f_partition_above_roof_gate" type="NODE">
+        <instance_geometry url="#wall_1f_partition_above_roof_gate-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="roof_stair_gate-node" name="roof_stair_gate" type="NODE">
+        <instance_geometry url="#roof_stair_gate-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="gate" target="#gate-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_partition_solid1-node" name="wall_1f_partition_solid1" type="NODE">
+        <instance_geometry url="#wall_1f_partition_solid1-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_partition_above_room_gate-node" name="wall_1f_partition_above_room_gate" type="NODE">
+        <instance_geometry url="#wall_1f_partition_above_room_gate-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="wall_1f_partition_solid2-node" name="wall_1f_partition_solid2" type="NODE">
+        <instance_geometry url="#wall_1f_partition_solid2-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="kitchen_halfwall_front-node" name="kitchen_halfwall_front" type="NODE">
+        <instance_geometry url="#kitchen_halfwall_front-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="kitchen" target="#kitchen-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="kitchen_halfwall_left-node" name="kitchen_halfwall_left" type="NODE">
+        <instance_geometry url="#kitchen_halfwall_left-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="kitchen" target="#kitchen-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="kitchen_floor-node" name="kitchen_floor" type="NODE">
+        <instance_geometry url="#kitchen_floor-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="kitchen" target="#kitchen-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_wall_left_1-node" name="bath_wall_left_1" type="NODE">
+        <instance_geometry url="#bath_wall_left_1-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="toilet" target="#toilet-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_wall_left_2-node" name="bath_wall_left_2" type="NODE">
+        <instance_geometry url="#bath_wall_left_2-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="toilet" target="#toilet-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_wall_left_above_door-node" name="bath_wall_left_above_door" type="NODE">
+        <instance_geometry url="#bath_wall_left_above_door-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="toilet" target="#toilet-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_wall_back-node" name="bath_wall_back" type="NODE">
+        <instance_geometry url="#bath_wall_back-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="toilet" target="#toilet-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_wall_front-node" name="bath_wall_front" type="NODE">
+        <instance_geometry url="#bath_wall_front-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="toilet" target="#toilet-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_commode-node" name="bath_commode" type="NODE">
+        <instance_geometry url="#bath_commode-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="fixture" target="#fixture-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_shower-node" name="bath_shower" type="NODE">
+        <instance_geometry url="#bath_shower-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="fixture" target="#fixture-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="bath_basin-node" name="bath_basin" type="NODE">
+        <instance_geometry url="#bath_basin-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="fixture" target="#fixture-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stairwell_top_landing-node" name="stairwell_top_landing" type="NODE">
+        <instance_geometry url="#stairwell_top_landing-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stairwell_wall_front-node" name="stairwell_wall_front" type="NODE">
+        <instance_geometry url="#stairwell_wall_front-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stairwell_wall_r1-node" name="stairwell_wall_r1" type="NODE">
+        <instance_geometry url="#stairwell_wall_r1-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stairwell_wall_above_gate-node" name="stairwell_wall_above_gate" type="NODE">
+        <instance_geometry url="#stairwell_wall_above_gate-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stairwell_gate-node" name="stairwell_gate" type="NODE">
+        <instance_geometry url="#stairwell_gate-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="gate" target="#gate-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_slope_1f-node" name="stair_slope_1f" type="NODE">
+        <instance_geometry url="#stair_slope_1f-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_0-node" name="stair_1f_step_0" type="NODE">
+        <instance_geometry url="#stair_1f_step_0-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_1-node" name="stair_1f_step_1" type="NODE">
+        <instance_geometry url="#stair_1f_step_1-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_2-node" name="stair_1f_step_2" type="NODE">
+        <instance_geometry url="#stair_1f_step_2-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_3-node" name="stair_1f_step_3" type="NODE">
+        <instance_geometry url="#stair_1f_step_3-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_4-node" name="stair_1f_step_4" type="NODE">
+        <instance_geometry url="#stair_1f_step_4-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_5-node" name="stair_1f_step_5" type="NODE">
+        <instance_geometry url="#stair_1f_step_5-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_6-node" name="stair_1f_step_6" type="NODE">
+        <instance_geometry url="#stair_1f_step_6-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_7-node" name="stair_1f_step_7" type="NODE">
+        <instance_geometry url="#stair_1f_step_7-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_8-node" name="stair_1f_step_8" type="NODE">
+        <instance_geometry url="#stair_1f_step_8-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_9-node" name="stair_1f_step_9" type="NODE">
+        <instance_geometry url="#stair_1f_step_9-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_10-node" name="stair_1f_step_10" type="NODE">
+        <instance_geometry url="#stair_1f_step_10-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="stair_1f_step_11-node" name="stair_1f_step_11" type="NODE">
+        <instance_geometry url="#stair_1f_step_11-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="staircase" target="#staircase-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="railing_terrace_front-node" name="railing_terrace_front" type="NODE">
+        <instance_geometry url="#railing_terrace_front-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="railing_terrace_left-node" name="railing_terrace_left" type="NODE">
+        <instance_geometry url="#railing_terrace_left-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="railing_terrace_right-node" name="railing_terrace_right" type="NODE">
+        <instance_geometry url="#railing_terrace_right-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="roof_slab_1f_back-node" name="roof_slab_1f_back" type="NODE">
+        <instance_geometry url="#roof_slab_1f_back-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slab" target="#slab-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="roof_slab_1f_front_right-node" name="roof_slab_1f_front_right" type="NODE">
+        <instance_geometry url="#roof_slab_1f_front_right-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slab" target="#slab-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="roof_slab_1f_left_edge-node" name="roof_slab_1f_left_edge" type="NODE">
+        <instance_geometry url="#roof_slab_1f_left_edge-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slab" target="#slab-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="parapet_back-node" name="parapet_back" type="NODE">
+        <instance_geometry url="#parapet_back-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="parapet_left-node" name="parapet_left" type="NODE">
+        <instance_geometry url="#parapet_left-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="parapet_right-node" name="parapet_right" type="NODE">
+        <instance_geometry url="#parapet_right-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="parapet_front-node" name="parapet_front" type="NODE">
+        <instance_geometry url="#parapet_front-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="wall" target="#wall-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="tank_leg_8_2-node" name="tank_leg_8_2" type="NODE">
+        <instance_geometry url="#tank_leg_8_2-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="tank_leg_11_2-node" name="tank_leg_11_2" type="NODE">
+        <instance_geometry url="#tank_leg_11_2-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="tank_leg_8_4-node" name="tank_leg_8_4" type="NODE">
+        <instance_geometry url="#tank_leg_8_4-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="tank_leg_11_4-node" name="tank_leg_11_4" type="NODE">
+        <instance_geometry url="#tank_leg_11_4-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="railing" target="#railing-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="water_tank-node" name="water_tank" type="NODE">
+        <instance_geometry url="#water_tank-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="water_tank" target="#water_tank-mat"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
