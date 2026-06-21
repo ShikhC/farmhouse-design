@@ -202,7 +202,7 @@ Corrected stair zone plan (from front z=0 looking in):
                     │         12ft height                     │
                     ├─────────────────────────────────────────┤ ← +12ft (GF slab soffit/1F floor)
                     │                                         │
-    5ft extension   │   9"×15" FRONT BEAM (C5-C6-C7-C8)     │
+    6ft extension   │   9"×15" FRONT BEAM (C5-C6-C7-C8)     │
     (shade/balcony  ├────┬──┬──┬─┬──────────────────┬─┬──┬──┤
      for 1F above)  │    │  │  │ │                  │ │  │  │
                     │    │TD│SG│C│  ROLLING SHUTTER  │C│  │  │ ← +10ft (shutter top)
@@ -720,7 +720,7 @@ PLAN VIEW (underground pipes):
 |-----------|-------|
 | Description | First floor slab extends 5ft beyond front wall as a **PURE CANTILEVER** |
 | Function | Covered shade at GF (shutter rain protection + sitting area), balcony floor for 1F |
-| Extension | 5ft forward from front wall line (z=0 to z=-5) |
+| Extension | 6ft forward from front wall line (z=0 to z=-5) |
 | Width | Full building width |
 | Height | 12ft (from plinth top to slab soffit) |
 | **Support** | **NONE — pure cantilever from the front beam (C5-C6-C7-C8)** |
@@ -767,7 +767,7 @@ PLAN VIEW (underground pipes):
 | Reinforcement | 10mm tor @ 150mm c/c both ways (bottom) + 8mm tor @ 200mm c/c (top, at supports) |
 | Cover | 20mm (bottom), 15mm (top) |
 | Span | Multiple panels supported by beams (max clear span ~10ft between beams) |
-| Extent | Main: 20ft × 25ft (building footprint) + 5ft front extension |
+| Extent | Main: 20ft × 25ft (building footprint) + 6ft front extension |
 | Total slab area | 20ft × 30ft = 600 sq.ft (approx, including extension) |
 | Stairwell opening | **3ft wide × 8.5ft deep** (x=0 to x=3, y=0 to y=8.5). Above Flight 2 (left side). Stops before beam at y=9. Trimmer bars around all edges. |
 | Curing | Minimum 14 days continuous water curing (ponding method) |
@@ -945,7 +945,7 @@ This is a brief sequence overview. Refer to the detailed contractor-brief for st
 
 9. **Structural engineer to verify** the 16ft clear span between middle beam and back beam for the 6" slab. This may need thicker slab or additional reinforcement in that panel.
 
-10. **The 5ft front extension (shade)** is a PURE CANTILEVER — no walls, no pillars below it. Slab hangs from the front beam. Top reinforcement (10mm @ 5" c/c, anchored 10ft into main slab) is CRITICAL. Side walls stop at the front wall line (z=0).
+10. **The 6ft front extension (shade)** is a PURE CANTILEVER — no walls, no pillars below it. Slab hangs from the front beam. Top reinforcement (10mm @ 5" c/c, anchored 10ft into main slab) is CRITICAL. Side walls stop at the front wall line (z=0).
 
 ---
 

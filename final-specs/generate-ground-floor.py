@@ -330,19 +330,17 @@ def build_ground_floor():
     cb.add_geometry('col_C5', v, t, 'column')
 
     # C6: front wall at x=6, 9" along x-axis, 12" along y-axis (into building)
-    # Left face at x=6, right face at x=6.75 (but spec says 1ft wide = x=6 to x=7)
-    # "12" facing front" = 12" perpendicular to front wall (y-axis), 9" along x-axis
-    # Actually re-reading: C6 is 1ft wide along x? No - 9"x12" with 12" along y.
-    # C5 to C6 clear = 6ft. C5 inside face at x=0.75? No - C5 is IN the corner.
-    # Simplification: C6 left face at x=6, right face at x=7 (1ft along x for visibility)
-    # Depth: y=0 to y=1 (12" into the building)
+    # C6: front wall column, 9"x12" with 12" ALONG the wall (x-axis), 9" ACROSS (y-axis = flush with 9" wall)
+    # C5-to-C6 clear = 6ft. C6 starts at x=6, extends 12" (1ft) along x = x=6 to x=7.
+    # Depth: 9" (0.75ft) along y = same as wall thickness = HIDDEN in wall.
     v, t = box_mesh(ft(6.0), ft(0), ft(Z_PLINTH),
-                    ft(COL_12), ft(COL_12), ft(COL_H))
+                    ft(COL_12), ft(COL_9), ft(COL_H))
     cb.add_geometry('col_C6', v, t, 'column')
 
-    # C7: front wall, left face at x=17, right face at x=18
+    # C7: front wall column, same orientation as C6
+    # x=17 to x=18 (12" along x), y=0 to y=0.75 (9" into building = flush)
     v, t = box_mesh(ft(17.0), ft(0), ft(Z_PLINTH),
-                    ft(COL_12), ft(COL_12), ft(COL_H))
+                    ft(COL_12), ft(COL_9), ft(COL_H))
     cb.add_geometry('col_C7', v, t, 'column')
 
     # C8: front-right corner (at x=20, inside right wall)
@@ -477,32 +475,39 @@ def build_ground_floor():
     cb.add_geometry('beam_right', v, t, 'beam')
 
     # ============ 12. ROOF SLAB (with STAIR WELL OPENING) ============
-    # The slab covers: x=-0.75 to x=20.75, y=-5 to y=25.75, z=15 to z=15.5
-    # BUT there's a STAIR WELL OPENING: x=0 to x=3 (above Flight 2), y=0 to y=8.5
-    # We model the slab as 3 pieces around the opening:
+    # The slab covers full building + 6ft cantilever at front
+    # Cantilever: y=0 to y=-6 (6ft in front of building — PURE CANTILEVER, no supports)
+    # Stair well opening: x=0 to x=3, y=0 to y=8.5 (INSIDE building only)
+    # The cantilever DOES extend in front of the stair well area (covers toilet door + gate from rain)
+    CANTILEVER = 6.0  # 6ft cantilever (updated from 5ft)
 
     # Piece 1: BACK portion (y=8.5 to y=25.75) — full width
     v, t = box_mesh(ft(-WALL_T), ft(8.5), ft(Z_SLAB_SOFFIT),
                     ft(INT_W + 2*WALL_T), ft(INT_D - 8.5 + WALL_T), ft(SLAB_T_FT))
     cb.add_geometry('roof_slab_back', v, t, 'slab')
 
-    # Piece 2: FRONT-RIGHT portion (x=3 to x=20.75, y=-5 to y=8.5)
-    v, t = box_mesh(ft(3.0), ft(-5.0), ft(Z_SLAB_SOFFIT),
-                    ft(INT_W - 3.0 + WALL_T), ft(8.5 + 5.0), ft(SLAB_T_FT))
+    # Piece 2: FRONT-RIGHT portion (x=3 to x=20.75, y=-6 to y=8.5) — includes cantilever
+    v, t = box_mesh(ft(3.0), ft(-CANTILEVER), ft(Z_SLAB_SOFFIT),
+                    ft(INT_W - 3.0 + WALL_T), ft(8.5 + CANTILEVER), ft(SLAB_T_FT))
     cb.add_geometry('roof_slab_front_right', v, t, 'slab')
 
-    # Piece 3: FRONT-LEFT BELOW stair well (x=-0.75 to x=0, y=-5 to y=8.5)
-    # This is just the wall-thickness strip on the left side
-    v, t = box_mesh(ft(-WALL_T), ft(-5.0), ft(Z_SLAB_SOFFIT),
-                    ft(WALL_T), ft(8.5 + 5.0), ft(SLAB_T_FT))
+    # Piece 3: FRONT-LEFT edge (x=-0.75 to x=0, y=-6 to y=8.5) — left wall thickness strip
+    v, t = box_mesh(ft(-WALL_T), ft(-CANTILEVER), ft(Z_SLAB_SOFFIT),
+                    ft(WALL_T), ft(8.5 + CANTILEVER), ft(SLAB_T_FT))
     cb.add_geometry('roof_slab_front_left_edge', v, t, 'slab')
 
-    # The STAIR WELL OPENING is at: x=0 to x=3, y=0 to y=8.5
-    # (no slab here — open! People emerge through this opening)
-    # Mark it with a thin dark indicator
+    # Piece 4: CANTILEVER in front of stair well (x=0 to x=3, y=-6 to y=0)
+    # This IS the cantilever that covers the toilet door + stair gate from rain!
+    # The stair well opening is at y=0 to y=8.5 (INSIDE). This piece is at y=-6 to y=0 (OUTSIDE). No conflict.
+    v, t = box_mesh(ft(0), ft(-CANTILEVER), ft(Z_SLAB_SOFFIT),
+                    ft(3.0), ft(CANTILEVER), ft(SLAB_T_FT))
+    cb.add_geometry('roof_slab_cantilever_stairzone', v, t, 'slab')
+
+    # The STAIR WELL OPENING: x=0 to x=3, y=0 to y=8.5 (no slab here — OPEN!)
+    # Mark with a thin dark indicator at slab level
     v, t = box_mesh(ft(0), ft(0), ft(Z_SLAB_SOFFIT + SLAB_T_FT),
                     ft(3.0), ft(8.5), ft(0.02))
-    cb.add_geometry('stair_well_opening', v, t, 'ground')  # dark color to show the void
+    cb.add_geometry('stair_well_opening', v, t, 'ground')
 
     # ============ 13. SHADE — PURE CANTILEVER (no walls, no pillars!) ============
     # The roof slab extends 5ft in front (y=0 to y=-5) as a pure cantilever.

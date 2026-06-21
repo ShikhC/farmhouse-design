@@ -523,7 +523,7 @@
     <geometry id="col_C6-geom" name="col_C6">
       <mesh>
         <source id="col_C6-positions">
-          <float_array id="col_C6-positions-array" count="24">1.8288 0.0000 0.9144 2.1336 0.0000 0.9144 2.1336 0.3048 0.9144 1.8288 0.3048 0.9144 1.8288 0.0000 4.5720 2.1336 0.0000 4.5720 2.1336 0.3048 4.5720 1.8288 0.3048 4.5720</float_array>
+          <float_array id="col_C6-positions-array" count="24">1.8288 0.0000 0.9144 2.1336 0.0000 0.9144 2.1336 0.2286 0.9144 1.8288 0.2286 0.9144 1.8288 0.0000 4.5720 2.1336 0.0000 4.5720 2.1336 0.2286 4.5720 1.8288 0.2286 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C6-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -544,7 +544,7 @@
     <geometry id="col_C7-geom" name="col_C7">
       <mesh>
         <source id="col_C7-positions">
-          <float_array id="col_C7-positions-array" count="24">5.1816 0.0000 0.9144 5.4864 0.0000 0.9144 5.4864 0.3048 0.9144 5.1816 0.3048 0.9144 5.1816 0.0000 4.5720 5.4864 0.0000 4.5720 5.4864 0.3048 4.5720 5.1816 0.3048 4.5720</float_array>
+          <float_array id="col_C7-positions-array" count="24">5.1816 0.0000 0.9144 5.4864 0.0000 0.9144 5.4864 0.2286 0.9144 5.1816 0.2286 0.9144 5.1816 0.0000 4.5720 5.4864 0.0000 4.5720 5.4864 0.2286 4.5720 5.1816 0.2286 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C7-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1006,7 +1006,7 @@
     <geometry id="roof_slab_front_right-geom" name="roof_slab_front_right">
       <mesh>
         <source id="roof_slab_front_right-positions">
-          <float_array id="roof_slab_front_right-positions-array" count="24">0.9144 -1.5240 4.5720 6.3246 -1.5240 4.5720 6.3246 2.5908 4.5720 0.9144 2.5908 4.5720 0.9144 -1.5240 4.7244 6.3246 -1.5240 4.7244 6.3246 2.5908 4.7244 0.9144 2.5908 4.7244</float_array>
+          <float_array id="roof_slab_front_right-positions-array" count="24">0.9144 -1.8288 4.5720 6.3246 -1.8288 4.5720 6.3246 2.5908 4.5720 0.9144 2.5908 4.5720 0.9144 -1.8288 4.7244 6.3246 -1.8288 4.7244 6.3246 2.5908 4.7244 0.9144 2.5908 4.7244</float_array>
           <technique_common>
             <accessor source="#roof_slab_front_right-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1027,7 +1027,7 @@
     <geometry id="roof_slab_front_left_edge-geom" name="roof_slab_front_left_edge">
       <mesh>
         <source id="roof_slab_front_left_edge-positions">
-          <float_array id="roof_slab_front_left_edge-positions-array" count="24">-0.2286 -1.5240 4.5720 0.0000 -1.5240 4.5720 0.0000 2.5908 4.5720 -0.2286 2.5908 4.5720 -0.2286 -1.5240 4.7244 0.0000 -1.5240 4.7244 0.0000 2.5908 4.7244 -0.2286 2.5908 4.7244</float_array>
+          <float_array id="roof_slab_front_left_edge-positions-array" count="24">-0.2286 -1.8288 4.5720 0.0000 -1.8288 4.5720 0.0000 2.5908 4.5720 -0.2286 2.5908 4.5720 -0.2286 -1.8288 4.7244 0.0000 -1.8288 4.7244 0.0000 2.5908 4.7244 -0.2286 2.5908 4.7244</float_array>
           <technique_common>
             <accessor source="#roof_slab_front_left_edge-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1041,6 +1041,27 @@
         </vertices>
         <triangles count="12">
           <input semantic="VERTEX" source="#roof_slab_front_left_edge-vertices" offset="0"/>
+          <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry id="roof_slab_cantilever_stairzone-geom" name="roof_slab_cantilever_stairzone">
+      <mesh>
+        <source id="roof_slab_cantilever_stairzone-positions">
+          <float_array id="roof_slab_cantilever_stairzone-positions-array" count="24">0.0000 -1.8288 4.5720 0.9144 -1.8288 4.5720 0.9144 0.0000 4.5720 0.0000 0.0000 4.5720 0.0000 -1.8288 4.7244 0.9144 -1.8288 4.7244 0.9144 0.0000 4.7244 0.0000 0.0000 4.7244</float_array>
+          <technique_common>
+            <accessor source="#roof_slab_cantilever_stairzone-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="roof_slab_cantilever_stairzone-vertices">
+          <input semantic="POSITION" source="#roof_slab_cantilever_stairzone-positions"/>
+        </vertices>
+        <triangles count="12">
+          <input semantic="VERTEX" source="#roof_slab_cantilever_stairzone-vertices" offset="0"/>
           <p>0 1 2 0 2 3 4 6 5 4 7 6 0 1 5 0 5 4 2 3 7 2 7 6 0 3 7 0 7 4 1 2 6 1 6 5</p>
         </triangles>
       </mesh>
@@ -1548,6 +1569,15 @@
       </node>
       <node id="roof_slab_front_left_edge-node" name="roof_slab_front_left_edge" type="NODE">
         <instance_geometry url="#roof_slab_front_left_edge-geom">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slab" target="#slab-mat"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="roof_slab_cantilever_stairzone-node" name="roof_slab_cantilever_stairzone" type="NODE">
+        <instance_geometry url="#roof_slab_cantilever_stairzone-geom">
           <bind_material>
             <technique_common>
               <instance_material symbol="slab" target="#slab-mat"/>
