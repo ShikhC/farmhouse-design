@@ -701,7 +701,22 @@ function showView(view) {
   document.getElementById('view-dimensions').style.display = view === 'dimensions' ? 'block' : 'none';
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
+  history.replaceState(null, '', '#' + view);
 }
+
+// Route from URL hash on page load
+(function() {
+  const hash = window.location.hash.replace('#', '');
+  const valid = ['plan', 'section', 'dimensions'];
+  if (valid.includes(hash)) {
+    document.getElementById('view-plan').style.display = hash === 'plan' ? 'block' : 'none';
+    document.getElementById('view-section').style.display = hash === 'section' ? 'block' : 'none';
+    document.getElementById('view-dimensions').style.display = hash === 'dimensions' ? 'block' : 'none';
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.toggle('active', t.textContent.toLowerCase().includes(hash.slice(0,4)));
+    });
+  }
+})();
 
 function showBeamInfo(beamId) {
   const d = beamData[beamId];
