@@ -60,6 +60,7 @@ svg { width: 100%; height: auto; cursor: crosshair; }
     <div class="tab-bar">
       <div class="tab active" onclick="showView('plan')">Plan View (Top)</div>
       <div class="tab" onclick="showView('section')">Section View (Side)</div>
+      <div class="tab" onclick="showView('dimensions')">Dimensions</div>
     </div>
 
     <!-- PLAN VIEW -->
@@ -301,6 +302,166 @@ svg { width: 100%; height: auto; cursor: crosshair; }
       </svg>
     </div>
 
+    <!-- DIMENSIONS VIEW (matching hand-drawn sketch) -->
+    <div id="view-dimensions" style="display:none;">
+      <svg viewBox="-20 -25 155 175" xmlns="http://www.w3.org/2000/svg" id="svg-dims">
+        <defs>
+          <pattern id="grid3" width="5" height="5" patternUnits="userSpaceOnUse">
+            <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#1a2a4a" stroke-width="0.15"/>
+          </pattern>
+          <marker id="arrow-start" markerWidth="4" markerHeight="4" refX="0" refY="2" orient="auto">
+            <path d="M4,0 L0,2 L4,4" fill="none" stroke="#fff" stroke-width="0.5"/>
+          </marker>
+          <marker id="arrow-end" markerWidth="4" markerHeight="4" refX="4" refY="2" orient="auto">
+            <path d="M0,0 L4,2 L0,4" fill="none" stroke="#fff" stroke-width="0.5"/>
+          </marker>
+          <marker id="arrow-start-y" markerWidth="4" markerHeight="4" refX="0" refY="2" orient="auto">
+            <path d="M4,0 L0,2 L4,4" fill="none" stroke="#64b5f6" stroke-width="0.5"/>
+          </marker>
+          <marker id="arrow-end-y" markerWidth="4" markerHeight="4" refX="4" refY="2" orient="auto">
+            <path d="M0,0 L4,2 L0,4" fill="none" stroke="#64b5f6" stroke-width="0.5"/>
+          </marker>
+        </defs>
+        <rect x="-20" y="-25" width="155" height="175" fill="url(#grid3)"/>
+
+        <!-- Title -->
+        <text x="50" y="-18" text-anchor="middle" fill="#fff" style="font-size:4px; font-weight:bold;">COLUMN SPACING — ALL DIMENSIONS (c/c)</text>
+        <text x="50" y="-14" text-anchor="middle" fill="#94a3b8" style="font-size:2.5px;">Front = bottom, Back = top. All dims in feet.</text>
+
+        <!-- ======== COLUMNS (as filled squares) ======== -->
+        <!-- Back row: C1 (left), C2 (right) -->
+        <rect x="-2.5" y="-2.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="0" y="0.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C1</text>
+
+        <rect x="97.5" y="-2.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="100" y="0.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C2</text>
+
+        <!-- Middle row: C3 (left), C4 (right) -->
+        <rect x="-2.5" y="72.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="0" y="75.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C3</text>
+
+        <rect x="97.5" y="72.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="100" y="75.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C4</text>
+
+        <!-- Front row: C5, C6, C7, C8 -->
+        <rect x="-2.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="0" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C5</text>
+
+        <rect x="30.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="33" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C6</text>
+
+        <rect x="84.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="87" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C7</text>
+
+        <rect x="97.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
+        <text x="100" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C8</text>
+
+        <!-- ======== HORIZONTAL DIMENSIONS (X-direction) ======== -->
+
+        <!-- Back: C1 → C2 -->
+        <line x1="2.5" y1="-7" x2="97.5" y2="-7" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <rect x="38" y="-9.5" width="24" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="50" y="-6" text-anchor="middle" fill="#ffd54f" style="font-size:3px; font-weight:bold;">20.75 ft</text>
+
+        <!-- Middle: C3 → C4 -->
+        <line x1="2.5" y1="68" x2="97.5" y2="68" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <rect x="38" y="65.5" width="24" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="50" y="69" text-anchor="middle" fill="#ffd54f" style="font-size:3px; font-weight:bold;">20.75 ft</text>
+
+        <!-- Front: C5 → C6 -->
+        <line x1="2.5" y1="130" x2="30.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <rect x="9" y="127.5" width="18" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="16.5" y="131" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">6.875 ft</text>
+
+        <!-- Front: C6 → C7 -->
+        <line x1="35.5" y1="130" x2="84.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <rect x="49" y="127.5" width="18" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="60" y="131" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">11.0 ft</text>
+
+        <!-- Front: C7 → C8 -->
+        <line x1="89.5" y1="130" x2="97.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <rect x="89" y="133" width="14" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="93.5" y="136" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">2.875 ft</text>
+
+        <!-- ======== VERTICAL DIMENSIONS (Y-direction) ======== -->
+
+        <!-- Left side: C1 → C3 -->
+        <line x1="-10" y1="2.5" x2="-10" y2="72.5" stroke="#64b5f6" stroke-width="0.4" marker-start="url(#arrow-start-y)" marker-end="url(#arrow-end-y)"/>
+        <rect x="-18" y="32" width="16" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="-10" y="35.5" text-anchor="middle" fill="#64b5f6" style="font-size:3px; font-weight:bold;">15.5 ft</text>
+
+        <!-- Left side: C3 → C5 -->
+        <line x1="-10" y1="77.5" x2="-10" y2="117.5" stroke="#64b5f6" stroke-width="0.4" marker-start="url(#arrow-start-y)" marker-end="url(#arrow-end-y)"/>
+        <rect x="-18" y="93" width="16" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="-10" y="96.5" text-anchor="middle" fill="#64b5f6" style="font-size:3px; font-weight:bold;">9.25 ft</text>
+
+        <!-- Right side: C2 → C4 -->
+        <line x1="110" y1="2.5" x2="110" y2="72.5" stroke="#64b5f6" stroke-width="0.4" marker-start="url(#arrow-start-y)" marker-end="url(#arrow-end-y)"/>
+        <rect x="102" y="32" width="16" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="110" y="35.5" text-anchor="middle" fill="#64b5f6" style="font-size:3px; font-weight:bold;">15.5 ft</text>
+
+        <!-- Right side: C4 → C8 -->
+        <line x1="110" y1="77.5" x2="110" y2="117.5" stroke="#64b5f6" stroke-width="0.4" marker-start="url(#arrow-start-y)" marker-end="url(#arrow-end-y)"/>
+        <rect x="102" y="93" width="16" height="5" fill="#1a1a2e" stroke="none"/>
+        <text x="110" y="96.5" text-anchor="middle" fill="#64b5f6" style="font-size:3px; font-weight:bold;">9.25 ft</text>
+
+        <!-- Middle vertical: C6 → (midpoint to back) shows total -->
+        <line x1="33" y1="2.5" x2="33" y2="117.5" stroke="#555" stroke-width="0.3" stroke-dasharray="2,2"/>
+
+        <!-- ======== COLUMN SIZE INSET ======== -->
+        <rect x="55" y="80" width="40" height="32" fill="#0f1a2e" stroke="#334" stroke-width="0.4" rx="2"/>
+        <text x="75" y="85" text-anchor="middle" fill="#fff" style="font-size:2.8px; font-weight:bold;">SIZE OF COLUMN</text>
+
+        <!-- Column cross-section drawing -->
+        <rect x="63" y="89" width="7.5" height="10" fill="none" stroke="#90a4ae" stroke-width="0.8"/>
+        <!-- 'a' dimension (width = 9") -->
+        <line x1="63" y1="101" x2="70.5" y2="101" stroke="#ffd54f" stroke-width="0.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <text x="66.75" y="104" text-anchor="middle" fill="#ffd54f" style="font-size:2.5px;">b = 12"</text>
+        <!-- 'b' dimension (depth = 12") -->
+        <line x1="61" y1="89" x2="61" y2="99" stroke="#ffd54f" stroke-width="0.3" marker-start="url(#arrow-start-y)" marker-end="url(#arrow-end-y)"/>
+        <text x="58.5" y="94.5" text-anchor="middle" fill="#ffd54f" style="font-size:2.5px;">a</text>
+
+        <!-- Values -->
+        <text x="80" y="92" text-anchor="start" fill="#fff" style="font-size:2.8px;">a = 9" (230mm)</text>
+        <text x="80" y="96" text-anchor="start" fill="#fff" style="font-size:2.8px;">b = 12" (300mm)</text>
+        <text x="80" y="101" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">All 8 columns same size</text>
+        <text x="80" y="104.5" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">C6,C7: 12" along X-axis</text>
+        <text x="80" y="107.5" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">Others: 12" along Y-axis</text>
+
+        <!-- ======== CONNECTING LINES (beam lines, thin) ======== -->
+        <!-- Back beam -->
+        <line x1="0" y1="0" x2="100" y2="0" stroke="#e57373" stroke-width="0.8" opacity="0.4"/>
+        <!-- Middle beam -->
+        <line x1="0" y1="75" x2="100" y2="75" stroke="#e57373" stroke-width="0.8" opacity="0.4"/>
+        <!-- Front beam -->
+        <line x1="0" y1="120" x2="100" y2="120" stroke="#ffb74d" stroke-width="0.8" opacity="0.4"/>
+        <!-- Left beam -->
+        <line x1="0" y1="0" x2="0" y2="120" stroke="#4fc3f7" stroke-width="0.8" opacity="0.4"/>
+        <!-- Right beam -->
+        <line x1="100" y1="0" x2="100" y2="120" stroke="#4fc3f7" stroke-width="0.8" opacity="0.4"/>
+
+        <!-- ======== CLEAR SPAN LABELS (inside bays) ======== -->
+        <text x="50" y="37.5" text-anchor="middle" fill="#444" style="font-size:2.5px;">BACK BAY</text>
+        <text x="50" y="41" text-anchor="middle" fill="#555" style="font-size:2.2px;">clear: 14.5 ft</text>
+
+        <text x="50" y="97" text-anchor="middle" fill="#444" style="font-size:2.5px;">FRONT BAY</text>
+        <text x="50" y="100.5" text-anchor="middle" fill="#555" style="font-size:2.2px;">clear: 8.25 ft</text>
+
+        <!-- Front opening labels -->
+        <text x="16.5" y="124" text-anchor="middle" fill="#555" style="font-size:2px;">STAIR+TOILET</text>
+        <text x="60" y="124" text-anchor="middle" fill="#555" style="font-size:2px;">SHUTTER (10ft clear)</text>
+        <text x="93.5" y="124" text-anchor="middle" fill="#555" style="font-size:2px;">WALL</text>
+
+        <!-- Total dimensions outside -->
+        <line x1="2.5" y1="142" x2="97.5" y2="142" stroke="#aaa" stroke-width="0.3" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <text x="50" y="146" text-anchor="middle" fill="#aaa" style="font-size:2.8px;">TOTAL WIDTH: 20.75 ft (c/c) | 21.5 ft (external)</text>
+
+        <line x1="-15" y1="2.5" x2="-15" y2="117.5" stroke="#aaa" stroke-width="0.3" marker-start="url(#arrow-start-y)" marker-end="url(#arrow-end-y)"/>
+        <text x="-15" y="60" text-anchor="middle" fill="#aaa" style="font-size:2.8px;" transform="rotate(-90,-15,60)">TOTAL DEPTH: 24.75 ft (c/c) | 26.5 ft (ext)</text>
+
+      </svg>
+    </div>
+
     <div class="legend">
       <div class="legend-item"><div class="legend-swatch" style="background:#e57373"></div> Cross beams (Back + Middle) — 9"×20", 20.75ft span</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#ffb74d"></div> Front beam — 9"×20", segmented by C6/C7</div>
@@ -537,6 +698,7 @@ const colData = {
 function showView(view) {
   document.getElementById('view-plan').style.display = view === 'plan' ? 'block' : 'none';
   document.getElementById('view-section').style.display = view === 'section' ? 'block' : 'none';
+  document.getElementById('view-dimensions').style.display = view === 'dimensions' ? 'block' : 'none';
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
 }
