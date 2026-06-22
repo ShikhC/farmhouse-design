@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GF Beam & Channel Layout — Interactive Drawing</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #1a1a2e; color: #e0e0e0; min-height: 100vh; }
+header { background: #16213e; padding: 16px 24px; border-bottom: 1px solid #0f3460; }
+header h1 { font-size: 1.3rem; color: #fff; }
+header p { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+.container { display: flex; flex-wrap: wrap; gap: 0; }
+.view-panel { flex: 1; min-width: 500px; padding: 20px; border-right: 1px solid #0f3460; }
+.view-panel h2 { font-size: 1rem; color: #64b5f6; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.info-panel { width: 320px; padding: 20px; background: #16213e; min-height: calc(100vh - 70px); }
+.info-panel h3 { font-size: 0.9rem; color: #64b5f6; margin-bottom: 10px; }
+.info-panel .placeholder { color: #666; font-style: italic; font-size: 0.85rem; }
+.info-card { background: #1a1a2e; border: 1px solid #0f3460; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+.info-card h4 { color: #fff; font-size: 0.95rem; margin-bottom: 8px; }
+.info-card table { width: 100%; font-size: 0.8rem; }
+.info-card td { padding: 3px 0; }
+.info-card td:first-child { color: #94a3b8; width: 45%; }
+.info-card td:last-child { color: #fff; font-weight: 500; }
+.info-card .reinforcement { color: #ffd54f; font-size: 0.75rem; margin-top: 8px; padding-top: 8px; border-top: 1px solid #333; }
+svg { width: 100%; height: auto; cursor: crosshair; }
+.beam-line { stroke-width: 3; cursor: pointer; transition: stroke-width 0.2s, opacity 0.2s; }
+.beam-line:hover { stroke-width: 6; opacity: 1; }
+.beam-line.active { stroke-width: 6; filter: drop-shadow(0 0 6px currentColor); }
+.col-marker { fill: #546e7a; stroke: #90a4ae; stroke-width: 1; cursor: pointer; }
+.col-marker:hover { fill: #78909c; stroke: #fff; }
+.dim-line { stroke: #555; stroke-width: 0.5; stroke-dasharray: 3,3; }
+.dim-text { font-size: 3.5px; fill: #aaa; text-anchor: middle; }
+.label-text { font-size: 3.2px; fill: #ccc; text-anchor: middle; font-weight: bold; }
+.col-label { font-size: 3px; fill: #fff; text-anchor: middle; font-weight: bold; }
+.section-beam { stroke: #455a64; stroke-width: 1; fill: none; }
+.section-fill { opacity: 0.3; }
+.tab-bar { display: flex; gap: 0; margin-bottom: 12px; }
+.tab { padding: 8px 16px; background: #0f3460; color: #94a3b8; cursor: pointer; font-size: 0.8rem; border: 1px solid #1a3a6e; }
+.tab:first-child { border-radius: 6px 0 0 6px; }
+.tab:last-child { border-radius: 0 6px 6px 0; }
+.tab.active { background: #1a5276; color: #fff; border-color: #2980b9; }
+.legend { margin-top: 16px; padding: 12px; background: #0f1a2e; border-radius: 6px; font-size: 0.75rem; }
+.legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.legend-swatch { width: 24px; height: 4px; border-radius: 2px; }
+.channel-label { font-size: 2.8px; fill: #81c784; }
+@media (max-width: 900px) { .info-panel { width: 100%; min-height: auto; } .view-panel { min-width: 100%; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Ground Floor — Beam & Channel Layout</h1>
+  <p>Click any beam or column to see dimensions. All measurements in feet/inches.</p>
+</header>
+<div class="container">
+  <div class="view-panel" style="flex:2;">
+    <div class="tab-bar">
+      <div class="tab active" onclick="showView('plan')">Plan View (Top)</div>
+      <div class="tab" onclick="showView('section')">Section View (Side)</div>
+    </div>
+
+    <!-- PLAN VIEW -->
+    <div id="view-plan">
+      <svg viewBox="-12 -12 130 145" xmlns="http://www.w3.org/2000/svg" id="svg-plan">
+        <!-- Grid background -->
+        <defs>
+          <pattern id="grid" width="5" height="5" patternUnits="userSpaceOnUse">
+            <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#1a2a4a" stroke-width="0.2"/>
+          </pattern>
+        </defs>
+        <rect x="-12" y="-12" width="130" height="145" fill="url(#grid)"/>
+
+        <!-- Building outline (walls) -->
+        <rect x="-3.75" y="-3.75" width="107.5" height="132.5" fill="none" stroke="#334" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+        <!-- Slab area fill -->
+        <rect x="0" y="0" width="100" height="125" fill="#1a2233" stroke="#2a3a5a" stroke-width="0.3"/>
+
+        <!-- BEAMS (scaled: 1ft = 5 units) -->
+
+        <!-- Back Beam (C1-C2): y=25 → svg y=125, x=0 to x=20 → svg 0 to 100 -->
+        <line class="beam-line" id="beam-back" x1="-1.875" y1="122.5" x2="101.875" y2="122.5" stroke="#e57373" data-beam="back"/>
+
+        <!-- Middle Beam (C3-C4): y=9 → svg y=45 -->
+        <line class="beam-line" id="beam-middle" x1="-1.875" y1="45" x2="101.875" y2="45" stroke="#e57373" data-beam="middle"/>
+
+        <!-- Front Beam (C5-C6-C7-C8): y=0 → svg y=0 -->
+        <line class="beam-line" id="beam-front" x1="-1.875" y1="-1.25" x2="101.875" y2="-1.25" stroke="#ffb74d" data-beam="front"/>
+
+        <!-- Left Beam (C1-C3-C5): x=0 → svg x=0 -->
+        <line class="beam-line" id="beam-left" x1="-1.875" y1="-1.25" x2="-1.875" y2="122.5" stroke="#4fc3f7" data-beam="left"/>
+
+        <!-- Right Beam (C2-C4-C8): x=20 → svg x=100 -->
+        <line class="beam-line" id="beam-right" x1="101.875" y1="-1.25" x2="101.875" y2="122.5" stroke="#4fc3f7" data-beam="right"/>
+
+        <!-- COLUMNS (9"×12" = 3.75×5 in svg units) -->
+        <!-- C1: back-left -->
+        <rect class="col-marker" id="col-C1" x="-3.75" y="120" width="3.75" height="5" data-col="C1"/>
+        <!-- C2: back-right -->
+        <rect class="col-marker" id="col-C2" x="100" y="120" width="3.75" height="5" data-col="C2"/>
+        <!-- C3: mid-left -->
+        <rect class="col-marker" id="col-C3" x="-3.75" y="42.5" width="3.75" height="5" data-col="C3"/>
+        <!-- C4: mid-right -->
+        <rect class="col-marker" id="col-C4" x="100" y="42.5" width="3.75" height="5" data-col="C4"/>
+        <!-- C5: front-left -->
+        <rect class="col-marker" id="col-C5" x="-3.75" y="-3.75" width="3.75" height="5" data-col="C5"/>
+        <!-- C6: front @ 6ft (12"×9" oriented differently) -->
+        <rect class="col-marker" id="col-C6" x="30" y="-3.75" width="5" height="3.75" data-col="C6"/>
+        <!-- C7: front @ 17ft -->
+        <rect class="col-marker" id="col-C7" x="85" y="-3.75" width="5" height="3.75" data-col="C7"/>
+        <!-- C8: front-right -->
+        <rect class="col-marker" id="col-C8" x="100" y="-3.75" width="3.75" height="5" data-col="C8"/>
+
+        <!-- Column labels -->
+        <text class="col-label" x="-1.875" y="118.5">C1</text>
+        <text class="col-label" x="101.875" y="118.5">C2</text>
+        <text class="col-label" x="-1.875" y="41">C3</text>
+        <text class="col-label" x="101.875" y="41">C4</text>
+        <text class="col-label" x="-1.875" y="-5.5">C5</text>
+        <text class="col-label" x="32.5" y="-5.5">C6</text>
+        <text class="col-label" x="87.5" y="-5.5">C7</text>
+        <text class="col-label" x="101.875" y="-5.5">C8</text>
+
+        <!-- DIMENSION LINES -->
+        <!-- X-direction spans along front beam -->
+        <line class="dim-line" x1="-1.875" y1="-9" x2="32.5" y2="-9"/>
+        <text class="dim-text" x="15" y="-10">6.875 ft (c/c)</text>
+
+        <line class="dim-line" x1="32.5" y1="-9" x2="87.5" y2="-9"/>
+        <text class="dim-text" x="60" y="-10">11.0 ft (c/c)</text>
+
+        <line class="dim-line" x1="87.5" y1="-9" x2="101.875" y2="-9"/>
+        <text class="dim-text" x="95" y="-10">2.875 ft</text>
+
+        <!-- Y-direction spans along left beam -->
+        <line class="dim-line" x1="-9" y1="-1.25" x2="-9" y2="45"/>
+        <text class="dim-text" x="-9" y="22" transform="rotate(-90,-9,22)">9.25 ft (c/c)</text>
+
+        <line class="dim-line" x1="-9" y1="45" x2="-9" y2="122.5"/>
+        <text class="dim-text" x="-9" y="84" transform="rotate(-90,-9,84)">15.5 ft (c/c)</text>
+
+        <!-- Full width dimension -->
+        <line class="dim-line" x1="-1.875" y1="128" x2="101.875" y2="128"/>
+        <text class="dim-text" x="50" y="131">20.75 ft (c/c, full width)</text>
+
+        <!-- Bay labels -->
+        <text class="label-text" x="50" y="85" fill="#555">BACK BAY</text>
+        <text class="dim-text" x="50" y="89" fill="#444">14.5ft clear span</text>
+
+        <text class="label-text" x="50" y="22" fill="#555">FRONT BAY</text>
+        <text class="dim-text" x="50" y="26" fill="#444">8.25ft clear span</text>
+
+        <!-- Beam labels -->
+        <text class="label-text" x="50" y="124.5" fill="#e57373">BACK BEAM 9"×20"</text>
+        <text class="label-text" x="50" y="47" fill="#e57373">MIDDLE BEAM 9"×20"</text>
+        <text class="label-text" x="60" y="2.5" fill="#ffb74d">FRONT BEAM 9"×20"</text>
+        <text class="label-text" x="-1.875" y="70" fill="#4fc3f7" transform="rotate(-90,-1.875,70)">LEFT BEAM 9"×24"</text>
+        <text class="label-text" x="101.875" y="70" fill="#4fc3f7" transform="rotate(-90,101.875,70)">RIGHT BEAM 9"×24"</text>
+
+        <!-- Shutter opening indicator -->
+        <rect x="32.5" y="-2.5" width="55" height="1.5" fill="none" stroke="#666" stroke-width="0.3" stroke-dasharray="1,1"/>
+        <text class="dim-text" x="60" y="5.5" fill="#666">10ft SHUTTER</text>
+
+        <!-- Floor drain channel -->
+        <line x1="50" y1="0" x2="50" y2="125" stroke="#81c784" stroke-width="0.8" stroke-dasharray="2,1" opacity="0.5"/>
+        <text class="channel-label" x="53" y="63">Floor Drain</text>
+      </svg>
+    </div>
+
+    <!-- SECTION VIEW -->
+    <div id="view-section" style="display:none;">
+      <svg viewBox="-10 -5 130 85" xmlns="http://www.w3.org/2000/svg" id="svg-section">
+        <defs>
+          <pattern id="grid2" width="5" height="5" patternUnits="userSpaceOnUse">
+            <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#1a2a4a" stroke-width="0.2"/>
+          </pattern>
+          <pattern id="hatch" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="2" stroke="#3a4a6a" stroke-width="0.3"/>
+          </pattern>
+        </defs>
+        <rect x="-10" y="-5" width="130" height="85" fill="url(#grid2)"/>
+
+        <!-- SECTION LOOKING FROM FRONT (Y=0 toward back) -->
+        <!-- Shows: Left beam, Right beam, Back beam cross-section, columns, slab -->
+
+        <!-- Ground level -->
+        <line x1="-8" y1="75" x2="118" y2="75" stroke="#4a5a3a" stroke-width="0.5"/>
+        <text class="dim-text" x="-6" y="77" text-anchor="start" fill="#6a7a5a">NGL (z=0)</text>
+
+        <!-- Plinth -->
+        <rect x="0" y="60" width="110" height="15" fill="#3d2e1a" opacity="0.4" stroke="#5a4020" stroke-width="0.3"/>
+        <text class="dim-text" x="55" y="69" fill="#8a7050">PLINTH (3ft)</text>
+
+        <!-- GF Room height -->
+        <rect x="0" y="0" width="110" height="60" fill="#1a2233" stroke="#2a3a5a" stroke-width="0.3"/>
+
+        <!-- Floor level -->
+        <line x1="0" y1="60" x2="110" y2="60" stroke="#5a6a4a" stroke-width="0.5"/>
+        <text class="dim-text" x="112" y="61" text-anchor="start" fill="#888">GF Floor (z=3ft)</text>
+
+        <!-- Slab (6" = 2.5 svg units, each ft = 5 units) -->
+        <rect x="-5" y="-2.5" width="120" height="2.5" fill="#546e7a" opacity="0.6" stroke="#78909c" stroke-width="0.3"/>
+        <text class="dim-text" x="55" y="-0.5" fill="#aaa">6" RCC SLAB</text>
+
+        <!-- Slab top level -->
+        <text class="dim-text" x="112" y="-3" text-anchor="start" fill="#888">Slab top (z=15.5ft)</text>
+        <text class="dim-text" x="112" y="1" text-anchor="start" fill="#888">Slab soffit (z=15ft)</text>
+
+        <!-- LEFT BEAM (9"×24" = 3.75 wide × 10 deep in svg) -->
+        <rect class="beam-line" x="0" y="0" width="3.75" height="10" fill="#4fc3f7" opacity="0.4" stroke="#4fc3f7" stroke-width="0.8" data-beam="left" style="cursor:pointer"/>
+        <text class="dim-text" x="1.875" y="12" fill="#4fc3f7">9"×24"</text>
+
+        <!-- RIGHT BEAM (9"×24") -->
+        <rect class="beam-line" x="106.25" y="0" width="3.75" height="10" fill="#4fc3f7" opacity="0.4" stroke="#4fc3f7" stroke-width="0.8" data-beam="right" style="cursor:pointer"/>
+        <text class="dim-text" x="108" y="12" fill="#4fc3f7">9"×24"</text>
+
+        <!-- Columns (section view: 9" wide = 3.75, full room height = 60) -->
+        <!-- C5/C1 left column -->
+        <rect x="0" y="0" width="3.75" height="60" fill="#455a64" opacity="0.5" stroke="#607d8b" stroke-width="0.3"/>
+        <text class="col-label" x="1.875" y="35">C5/C1</text>
+
+        <!-- C8/C2 right column -->
+        <rect x="106.25" y="0" width="3.75" height="60" fill="#455a64" opacity="0.5" stroke="#607d8b" stroke-width="0.3"/>
+        <text class="col-label" x="108" y="35">C8/C2</text>
+
+        <!-- C6 column (at x=6ft from left = 30 svg) -->
+        <rect x="30" y="0" width="3.75" height="60" fill="#455a64" opacity="0.3" stroke="#607d8b" stroke-width="0.3"/>
+        <text class="col-label" x="31.875" y="57">C6</text>
+
+        <!-- C7 column (at x=17ft = 85 svg) -->
+        <rect x="85" y="0" width="3.75" height="60" fill="#455a64" opacity="0.3" stroke="#607d8b" stroke-width="0.3"/>
+        <text class="col-label" x="86.875" y="57">C7</text>
+
+        <!-- FRONT BEAM cross section (9"×20" = 3.75 wide × 8.33 deep) -->
+        <!-- Shown between C6 and C7 as the critical shutter span -->
+        <rect x="33.75" y="0" width="51.25" height="1.5" fill="#ffb74d" opacity="0.2" stroke="#ffb74d" stroke-width="0.5"/>
+        <rect class="beam-line" x="33.75" y="0" width="51.25" height="8.33" fill="none" stroke="#ffb74d" stroke-width="0.5" stroke-dasharray="1,1" data-beam="front" style="cursor:pointer"/>
+        <text class="dim-text" x="59" y="5" fill="#ffb74d">FRONT BEAM 9"×20" (shown in section)</text>
+
+        <!-- Dimension: room height -->
+        <line class="dim-line" x1="115" y1="0" x2="115" y2="60"/>
+        <text class="dim-text" x="117" y="30" transform="rotate(-90,117,30)">12ft (room height)</text>
+
+        <!-- Dimension: beam depths -->
+        <line x1="-3" y1="0" x2="-3" y2="10" stroke="#4fc3f7" stroke-width="0.3"/>
+        <text class="dim-text" x="-5" y="5" fill="#4fc3f7" transform="rotate(-90,-5,5)">24" (2ft)</text>
+
+        <!-- Clear height under beam -->
+        <line class="dim-line" x1="-7" y1="10" x2="-7" y2="60"/>
+        <text class="dim-text" x="-8" y="35" fill="#aaa" transform="rotate(-90,-8,35)">10ft clear</text>
+
+        <!-- Front beam depth marker -->
+        <line x1="60" y1="0" x2="60" y2="8.33" stroke="#ffb74d" stroke-width="0.3"/>
+        <text class="dim-text" x="63" y="4.5" fill="#ffb74d">20" (1.67ft)</text>
+
+        <!-- Clear under front beam -->
+        <text class="dim-text" x="60" y="11" fill="#aaa">Clear: 10ft 4"</text>
+
+        <!-- Cantilever shade (6ft in front = 30 svg units) -->
+        <rect x="-30" y="-2.5" width="30" height="2.5" fill="#546e7a" opacity="0.3" stroke="#78909c" stroke-width="0.3" stroke-dasharray="1,1"/>
+        <text class="dim-text" x="-15" y="-0.5" fill="#666">6ft CANTILEVER</text>
+      </svg>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#e57373"></div> Cross beams (Back + Middle) — 9"×20", 20.75ft span</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#ffb74d"></div> Front beam — 9"×20", segmented by C6/C7</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#4fc3f7"></div> Side beams (Left + Right) — 9"×24", 25ft continuous</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#546e7a"></div> Columns — 9"×12" RCC (all 8)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#81c784"></div> Floor drain channel (6" wide, center)</div>
+    </div>
+  </div>
+
+  <!-- INFO PANEL -->
+  <div class="info-panel">
+    <h3>Element Details</h3>
+    <div id="info-content">
+      <p class="placeholder">Click a beam or column to view measurements.</p>
+    </div>
+
+    <div class="info-card" style="margin-top:20px;">
+      <h4>Beam-to-Beam Distances</h4>
+      <table>
+        <tr><td>Front → Middle (Y)</td><td>9.25 ft (c/c)</td></tr>
+        <tr><td>Middle → Back (Y)</td><td>15.50 ft (c/c)</td></tr>
+        <tr><td>Left → Right (X)</td><td>20.75 ft (c/c)</td></tr>
+        <tr><td>Front bay clear span</td><td>8.25 ft</td></tr>
+        <tr><td>Back bay clear span</td><td>14.50 ft</td></tr>
+      </table>
+    </div>
+
+    <div class="info-card">
+      <h4>Column Spacing (c/c)</h4>
+      <table>
+        <tr><td>C5 → C6 (front)</td><td>6.875 ft</td></tr>
+        <tr><td>C6 → C7 (shutter)</td><td>11.0 ft</td></tr>
+        <tr><td>C7 → C8 (solid)</td><td>2.875 ft</td></tr>
+        <tr><td>C5 → C3 (left side)</td><td>9.25 ft</td></tr>
+        <tr><td>C3 → C1 (left side)</td><td>15.5 ft</td></tr>
+      </table>
+    </div>
+
+    <div class="info-card">
+      <h4>Key Levels (from NGL)</h4>
+      <table>
+        <tr><td>NGL (ground)</td><td>z = 0 ft</td></tr>
+        <tr><td>Plinth top / GF floor</td><td>z = 3.0 ft</td></tr>
+        <tr><td>Slab soffit</td><td>z = 15.0 ft</td></tr>
+        <tr><td>Slab top / 1F floor</td><td>z = 15.5 ft</td></tr>
+        <tr><td>Side beam bottom</td><td>z = 13.0 ft (10ft above floor)</td></tr>
+        <tr><td>Cross beam bottom</td><td>z = 13.33 ft (10ft 4" above floor)</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const beamData = {
+  back: {
+    name: 'Back Beam (C1–C2)',
+    size: '9" × 20" (230mm × 500mm)',
+    span_cc: '20.75 ft (6.32m) c/c',
+    clear_span: '20.0 ft (6.10m)',
+    position: 'y = 25ft (along back wall)',
+    z_top: 'z = 15.0 ft (slab soffit)',
+    z_bottom: 'z = 13.33 ft (beam soffit)',
+    depth_below_slab: '20" (1.67 ft / 500mm)',
+    clear_height_below: '10 ft 4" (from GF floor to beam soffit)',
+    supports: 'Back wall + 1F room slab (16ft tributary) + roof load',
+    reinforcement: '4-20mm bottom + 2-16mm top + 8mm stirrups @150mm (ends), @200mm (mid)',
+    priority: '🔴 Critical (#1 heaviest)',
+    factored_moment: '266.3 kN·m'
+  },
+  middle: {
+    name: 'Middle Beam (C3–C4)',
+    size: '9" × 20" (230mm × 500mm)',
+    span_cc: '20.75 ft (6.32m) c/c',
+    clear_span: '20.0 ft (6.10m)',
+    position: 'y = 9ft (9ft from front wall)',
+    z_top: 'z = 15.0 ft (slab soffit)',
+    z_bottom: 'z = 13.33 ft (beam soffit)',
+    depth_below_slab: '20" (1.67 ft / 500mm)',
+    clear_height_below: '10 ft 4" (from GF floor to beam soffit)',
+    supports: '1F partition wall + slab both sides (front 9ft + back 15.5ft) + sloped stair-slab',
+    reinforcement: '4-20mm bottom + 2-16mm top + 8mm stirrups @150mm (ends), @200mm (mid)',
+    priority: '🔴 Critical (#2 heaviest)',
+    factored_moment: '266.3 kN·m'
+  },
+  front: {
+    name: 'Front Beam (C5–C6–C7–C8)',
+    size: '9" × 20" (230mm × 500mm)',
+    span_cc: '20.75 ft total (segmented: 6.875 + 11.0 + 2.875)',
+    clear_span: 'Max segment: 10.0 ft (C6–C7, shutter opening)',
+    position: 'y = 0 ft (front wall line)',
+    z_top: 'z = 15.0 ft (slab soffit)',
+    z_bottom: 'z = 13.33 ft (beam soffit)',
+    depth_below_slab: '20" (1.67 ft / 500mm)',
+    clear_height_below: '10 ft 4" (from GF floor to beam soffit)',
+    supports: '1F open terrace slab + 6ft cantilever + wall above shutter',
+    reinforcement: '3-20mm + 2-16mm bottom + 2-20mm + 2-16mm top (at C6-C7 segment)',
+    priority: '🟡 Important (#4) — shutter span unsupported below',
+    factored_moment: '143.8 kN·m (C6-C7 segment)'
+  },
+  left: {
+    name: 'Left Beam (C1–C3–C5)',
+    size: '9" × 24" (230mm × 600mm)',
+    span_cc: '24.75 ft total (continuous, 2-span: 15.5 + 9.25)',
+    clear_span: 'Max: 14.5 ft (C3–C1, back bay)',
+    position: 'x = 0 ft (left wall line)',
+    z_top: 'z = 15.0 ft (slab soffit)',
+    z_bottom: 'z = 13.0 ft (beam soffit)',
+    depth_below_slab: '24" (2.0 ft / 600mm)',
+    clear_height_below: '10 ft 0" (from GF floor to beam soffit)',
+    supports: 'External wall (9" brick, 3.16m ht) + two-way slab tributary (~10ft width)',
+    reinforcement: '5-20mm bottom + 2-16mm + 2-20mm top (at supports) + 8mm stirrups @100mm (ends L/4), @175mm (mid)',
+    priority: '🟡 Important (#3) — deepest beam, longest continuous span',
+    factored_moment: '386.1 kN·m'
+  },
+  right: {
+    name: 'Right Beam (C2–C4–C8)',
+    size: '9" × 24" (230mm × 600mm)',
+    span_cc: '24.75 ft total (continuous, 2-span: 15.5 + 9.25)',
+    clear_span: 'Max: 14.5 ft (C4–C2, back bay)',
+    position: 'x = 20 ft (right wall line)',
+    z_top: 'z = 15.0 ft (slab soffit)',
+    z_bottom: 'z = 13.0 ft (beam soffit)',
+    depth_below_slab: '24" (2.0 ft / 600mm)',
+    clear_height_below: '10 ft 0" (from GF floor to beam soffit)',
+    supports: 'External wall (9" brick) + two-way slab tributary (~10ft width)',
+    reinforcement: '5-20mm bottom + 2-16mm + 2-20mm top (at supports) + 8mm stirrups @100mm (ends L/4), @175mm (mid)',
+    priority: '🟡 Important (#3) — same as left beam (mirror)',
+    factored_moment: '386.1 kN·m'
+  }
+};
+
+const colData = {
+  C1: { name: 'C1 (Back-Left Corner)', size: '9"×12" (230×300mm)', pos: 'x=-0.375, y=24.5 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '4-16mm + 4-12mm (1.82%)', utilization: '45%' },
+  C2: { name: 'C2 (Back-Right Corner)', size: '9"×12" (230×300mm)', pos: 'x=20.375, y=24.5 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '4-16mm + 4-12mm (1.82%)', utilization: '45%' },
+  C3: { name: 'C3 (Mid-Left)', size: '9"×12" (230×300mm)', pos: 'x=-0.375, y=9.0 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '6-16mm + 2-12mm (2.08%)', utilization: '52%' },
+  C4: { name: 'C4 (Mid-Right)', size: '9"×12" (230×300mm)', pos: 'x=20.375, y=9.0 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '6-16mm + 2-12mm (2.08%)', utilization: '52%' },
+  C5: { name: 'C5 (Front-Left Corner)', size: '9"×12" (230×300mm)', pos: 'x=-0.375, y=-0.25 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '4-16mm + 4-12mm (1.82%)', utilization: '45%' },
+  C6: { name: 'C6 (Front @ 6ft)', size: '12"×9" (300×230mm)', pos: 'x=6.5, y=-0.375 (center)', orient: '12" along X', floors: 'GF ONLY', steel: '4-16mm + 2-12mm (1.49%)', utilization: '35%' },
+  C7: { name: 'C7 (Front @ 17ft)', size: '12"×9" (300×230mm)', pos: 'x=17.5, y=-0.375 (center)', orient: '12" along X', floors: 'GF ONLY', steel: '4-16mm + 2-12mm (1.49%)', utilization: '35%' },
+  C8: { name: 'C8 (Front-Right Corner)', size: '9"×12" (230×300mm)', pos: 'x=20.375, y=-0.25 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '4-16mm + 4-12mm (1.82%)', utilization: '45%' }
+};
+
+function showView(view) {
+  document.getElementById('view-plan').style.display = view === 'plan' ? 'block' : 'none';
+  document.getElementById('view-section').style.display = view === 'section' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function showBeamInfo(beamId) {
+  const d = beamData[beamId];
+  if (!d) return;
+  document.getElementById('info-content').innerHTML = `
+    <div class="info-card">
+      <h4>${d.name}</h4>
+      <table>
+        <tr><td>Size</td><td>${d.size}</td></tr>
+        <tr><td>Span (c/c)</td><td>${d.span_cc}</td></tr>
+        <tr><td>Clear span</td><td>${d.clear_span}</td></tr>
+        <tr><td>Position</td><td>${d.position}</td></tr>
+        <tr><td>Beam top (z)</td><td>${d.z_top}</td></tr>
+        <tr><td>Beam bottom (z)</td><td>${d.z_bottom}</td></tr>
+        <tr><td>Depth below slab</td><td>${d.depth_below_slab}</td></tr>
+        <tr><td>Clear height below</td><td>${d.clear_height_below}</td></tr>
+        <tr><td>Supports</td><td>${d.supports}</td></tr>
+        <tr><td>Priority</td><td>${d.priority}</td></tr>
+        <tr><td>Factored Mu</td><td>${d.factored_moment}</td></tr>
+      </table>
+      <div class="reinforcement">
+        <strong>Reinforcement:</strong><br>${d.reinforcement}
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.beam-line').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-beam="${beamId}"]`).forEach(b => b.classList.add('active'));
+}
+
+function showColInfo(colId) {
+  const d = colData[colId];
+  if (!d) return;
+  document.getElementById('info-content').innerHTML = `
+    <div class="info-card">
+      <h4>${d.name}</h4>
+      <table>
+        <tr><td>Size</td><td>${d.size}</td></tr>
+        <tr><td>Center position</td><td>${d.pos}</td></tr>
+        <tr><td>Orientation</td><td>${d.orient}</td></tr>
+        <tr><td>Extends to</td><td>${d.floors}</td></tr>
+        <tr><td>Steel</td><td>${d.steel}</td></tr>
+        <tr><td>Utilization</td><td>${d.utilization}</td></tr>
+        <tr><td>Height (GF)</td><td>12ft (3.66m)</td></tr>
+        <tr><td>Ties</td><td>8mm @ 150mm c/c (100mm in joint zone)</td></tr>
+      </table>
+    </div>
+  `;
+  document.querySelectorAll('.beam-line').forEach(b => b.classList.remove('active'));
+}
+
+document.querySelectorAll('[data-beam]').forEach(el => {
+  el.addEventListener('click', () => showBeamInfo(el.dataset.beam));
+});
+document.querySelectorAll('[data-col]').forEach(el => {
+  el.addEventListener('click', () => showColInfo(el.dataset.col));
+});
+</script>
+</body>
+</html>
