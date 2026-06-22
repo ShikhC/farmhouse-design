@@ -849,7 +849,33 @@ def build_ground_floor():
                     ft(0.1), ft(3.0), ft(2.0))
     cb.add_geometry('window_bathroom', v, t, WIN_COLOR)
 
-    # ============ 1F.7b GF VENTILATORS (3ft × 1.5ft, JUST BELOW beams) ============
+    # ============ 1F.7a2 GF PROVISIONAL LINTELS (for future windows) ============
+    # RCC lintels cast NOW in GF walls at future window positions.
+    # Bricks below can be knocked out later to create windows.
+    # Lintel size: 9" deep × 9" wide (same as wall thickness) × 5ft long (4ft window + 6" bearing each side)
+    # Position: lintel TOP at 7ft from GF floor (z=3+7=10). Future window: 3ft sill, 4ft high.
+    # Aligned with 1F windows above for symmetry.
+    LINTEL_DEPTH = 0.75  # 9" deep
+    LINTEL_W = 5.0       # 5ft long (4ft opening + 6" bearing each side)
+    LINTEL_Z = Z_PLINTH + 7.0  # top of future window = 7ft from GF floor = z=10
+
+    # LEFT WALL: 2 lintels (aligned with 1F windows at y=14, y=20)
+    for ly in [14.0, 20.0]:
+        v, t = box_mesh(ft(-WALL_T), ft(ly - LINTEL_W/2), ft(LINTEL_Z),
+                        ft(WALL_T), ft(LINTEL_W), ft(LINTEL_DEPTH))
+        cb.add_geometry(f'lintel_gf_left_{ly:.0f}', v, t, 'beam')
+
+    # RIGHT WALL: 2 lintels (utility at y=16, bathroom area at y=7)
+    for ly in [16.0, 7.0]:
+        v, t = box_mesh(ft(INT_W), ft(ly - LINTEL_W/2), ft(LINTEL_Z),
+                        ft(WALL_T), ft(LINTEL_W), ft(LINTEL_DEPTH))
+        cb.add_geometry(f'lintel_gf_right_{ly:.0f}', v, t, 'beam')
+
+    # BACK WALL: 2 lintels (aligned with 1F windows at x=4, x=10)
+    for lx in [4.0, 10.0]:
+        v, t = box_mesh(ft(lx - LINTEL_W/2), ft(INT_D), ft(LINTEL_Z),
+                        ft(LINTEL_W), ft(WALL_T), ft(LINTEL_DEPTH))
+        cb.add_geometry(f'lintel_gf_back_{lx:.0f}', v, t, 'beam')
     VENT_W = 3.0
     VENT_H = 1.5
     # Side walls: beam is 9"×15" (1.25ft deep), bottom at z=15-1.25=13.75
