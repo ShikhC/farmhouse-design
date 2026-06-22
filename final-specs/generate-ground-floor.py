@@ -805,66 +805,78 @@ def build_ground_floor():
                         ft(3.0), ft(step_run), ft(step_rise))
         cb.add_geometry(f'stair_1f_step_{i}', v, t, 'staircase')
 
-    # ============ 1F.7a WINDOWS (6 nos. on first floor) ============
-    # Shown as light blue panels (representing glass + MS grill) recessed in the walls.
-    # All windows: MS grill (fixed) + sliding glass (dust-sealed)
-    WIN_COLOR = 'railing'  # grey-blue to represent glass+grill
+    # ============ 1F.7a WINDOWS (symmetrical, aligned sills, no columns, no kitchen) ============
+    # All room windows: 4ft W × 4ft H, sill at 3ft from 1F floor
+    # Bathroom: 3ft W × 2ft H, sill at 5ft (frosted)
+    # NO window in kitchen zone (chimney goes there)
+    # NO window crossing column positions
+    WIN_COLOR = 'railing'
+    WIN_SILL = 3.0
+    WIN_H = 4.0
+    WIN_W = 4.0
 
-    # W1: Back wall (y=25), x=3-7, 4ft W × 4ft H, sill at 3ft
-    v, t = box_mesh(ft(3.0), ft(INT_D + WALL_T - 0.1), ft(Z_1F_FLOOR + 3.0),
-                    ft(4.0), ft(0.1), ft(4.0))
-    cb.add_geometry('window_W1', v, t, WIN_COLOR)
+    # BACK WALL (y=25): 2 windows in LIVING zone only (x=0-14, NOT kitchen x=14-20)
+    # Evenly spaced in 14ft living portion: centers at x=4 and x=10
+    v, t = box_mesh(ft(2.0), ft(INT_D + WALL_T - 0.1), ft(Z_1F_FLOOR + WIN_SILL),
+                    ft(WIN_W), ft(0.1), ft(WIN_H))
+    cb.add_geometry('window_back_1', v, t, WIN_COLOR)
 
-    # W2: Back wall (y=25), x=15-19, 4ft W × 3ft H, sill at 4ft (above kitchen counter)
-    v, t = box_mesh(ft(15.0), ft(INT_D + WALL_T - 0.1), ft(Z_1F_FLOOR + 4.0),
-                    ft(4.0), ft(0.1), ft(3.0))
-    cb.add_geometry('window_W2', v, t, WIN_COLOR)
+    v, t = box_mesh(ft(8.0), ft(INT_D + WALL_T - 0.1), ft(Z_1F_FLOOR + WIN_SILL),
+                    ft(WIN_W), ft(0.1), ft(WIN_H))
+    cb.add_geometry('window_back_2', v, t, WIN_COLOR)
 
-    # W3: Left wall (x=0), y=13-17, 4ft W × 4ft H, sill at 3ft
-    v, t = box_mesh(ft(-WALL_T), ft(13.0), ft(Z_1F_FLOOR + 3.0),
-                    ft(0.1), ft(4.0), ft(4.0))
-    cb.add_geometry('window_W3', v, t, WIN_COLOR)
+    # LEFT WALL (x=0, room y=9-25): 2 windows evenly spaced
+    # Avoid C3 (y=8.5-9.5) and C1 (y=24-25). Available: y=10-24 (14ft)
+    # Centers at y=14 and y=20
+    v, t = box_mesh(ft(-WALL_T), ft(12.0), ft(Z_1F_FLOOR + WIN_SILL),
+                    ft(0.1), ft(WIN_W), ft(WIN_H))
+    cb.add_geometry('window_left_1', v, t, WIN_COLOR)
 
-    # W4: Left wall (x=0), y=20-24, 4ft W × 4ft H, sill at 3ft
-    v, t = box_mesh(ft(-WALL_T), ft(20.0), ft(Z_1F_FLOOR + 3.0),
-                    ft(0.1), ft(4.0), ft(4.0))
-    cb.add_geometry('window_W4', v, t, WIN_COLOR)
+    v, t = box_mesh(ft(-WALL_T), ft(18.0), ft(Z_1F_FLOOR + WIN_SILL),
+                    ft(0.1), ft(WIN_W), ft(WIN_H))
+    cb.add_geometry('window_left_2', v, t, WIN_COLOR)
 
-    # W5: Right wall (x=20), y=14-18, 4ft W × 4ft H, sill at 3ft
-    v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(14.0), ft(Z_1F_FLOOR + 3.0),
-                    ft(0.1), ft(4.0), ft(4.0))
-    cb.add_geometry('window_W5', v, t, WIN_COLOR)
+    # RIGHT WALL (x=20, room y=13-25): ONLY 1 window — in UTILITY area (y=13-19)
+    # Kitchen (y=19-25) has NO window (chimney). Only utility zone gets a window.
+    # Center at y=16 (middle of utility zone y=13-19)
+    v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(14.0), ft(Z_1F_FLOOR + WIN_SILL),
+                    ft(0.1), ft(WIN_W), ft(WIN_H))
+    cb.add_geometry('window_right_utility', v, t, WIN_COLOR)
 
-    # W6: Right wall (x=20), bathroom, y=6.5-9.5, 3ft W × 2ft H, sill at 5ft (high, frosted)
-    v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(6.5), ft(Z_1F_FLOOR + 5.0),
+    # RIGHT WALL — BATHROOM window (BELOW C4 at y=8.5-9.5)
+    # Position: y=5.5-8.5 (3ft wide), sill at 5ft, frosted, avoids C4
+    v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(5.5), ft(Z_1F_FLOOR + 5.0),
                     ft(0.1), ft(3.0), ft(2.0))
-    cb.add_geometry('window_W6_bathroom', v, t, WIN_COLOR)
+    cb.add_geometry('window_bathroom', v, t, WIN_COLOR)
 
-    # ============ 1F.7b GF VENTILATOR PROVISIONS (high up on GF walls) ============
-    # 6 ventilators already in the design — add visual indicators
-    # Left wall: 2 vents at y=8 and y=17, at z=13 (10ft from floor)
-    v, t = box_mesh(ft(-WALL_T), ft(8.0), ft(Z_PLINTH + 10.0),
-                    ft(0.1), ft(1.0), ft(0.75))
-    cb.add_geometry('vent_left_1', v, t, WIN_COLOR)
-    v, t = box_mesh(ft(-WALL_T), ft(17.0), ft(Z_PLINTH + 10.0),
-                    ft(0.1), ft(1.0), ft(0.75))
-    cb.add_geometry('vent_left_2', v, t, WIN_COLOR)
+    # ============ 1F.7b GF VENTILATORS (3ft × 1.5ft, JUST BELOW beams) ============
+    VENT_W = 3.0
+    VENT_H = 1.5
+    # Side walls: beam is 9"×15" (1.25ft deep), bottom at z=15-1.25=13.75
+    # Vent top touches beam bottom: vent at z=13.75-1.5=12.25 to z=13.75
+    VENT_Z_SIDE = 15.0 - 1.25 - VENT_H  # = 12.25 (9.25ft above GF floor)
 
-    # Right wall: 2 vents at y=8 and y=17
-    v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(8.0), ft(Z_PLINTH + 10.0),
-                    ft(0.1), ft(1.0), ft(0.75))
-    cb.add_geometry('vent_right_1', v, t, WIN_COLOR)
-    v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(17.0), ft(Z_PLINTH + 10.0),
-                    ft(0.1), ft(1.0), ft(0.75))
-    cb.add_geometry('vent_right_2', v, t, WIN_COLOR)
+    # Back wall: beam is 9"×20" (1.67ft deep), bottom at z=15-1.67=13.33
+    # Vent top touches beam bottom: vent at z=13.33-1.5=11.83 to z=13.33
+    VENT_Z_BACK = 15.0 - 1.67 - VENT_H  # = 11.83 (8.83ft above GF floor)
 
-    # Back wall: 2 vents at x=5 and x=15
-    v, t = box_mesh(ft(5.0), ft(INT_D + WALL_T - 0.1), ft(Z_PLINTH + 11.0),
-                    ft(1.0), ft(0.1), ft(0.75))
-    cb.add_geometry('vent_back_1', v, t, WIN_COLOR)
-    v, t = box_mesh(ft(15.0), ft(INT_D + WALL_T - 0.1), ft(Z_PLINTH + 11.0),
-                    ft(1.0), ft(0.1), ft(0.75))
-    cb.add_geometry('vent_back_2', v, t, WIN_COLOR)
+    # LEFT WALL: 3 vents just below side beam
+    for vy in [5.0, 14.0, 20.0]:
+        v, t = box_mesh(ft(-WALL_T), ft(vy - VENT_W/2), ft(VENT_Z_SIDE),
+                        ft(0.1), ft(VENT_W), ft(VENT_H))
+        cb.add_geometry(f'vent_left_{vy:.0f}', v, t, WIN_COLOR)
+
+    # RIGHT WALL: 3 vents just below side beam
+    for vy in [7.0, 16.0, 22.0]:
+        v, t = box_mesh(ft(INT_W + WALL_T - 0.1), ft(vy - VENT_W/2), ft(VENT_Z_SIDE),
+                        ft(0.1), ft(VENT_W), ft(VENT_H))
+        cb.add_geometry(f'vent_right_{vy:.0f}', v, t, WIN_COLOR)
+
+    # BACK WALL: 2 vents just below back beam (deeper beam = slightly lower)
+    for vx in [4.0, 10.0]:
+        v, t = box_mesh(ft(vx - VENT_W/2), ft(INT_D + WALL_T - 0.1), ft(VENT_Z_BACK),
+                        ft(VENT_W), ft(0.1), ft(VENT_H))
+        cb.add_geometry(f'vent_back_{vx:.0f}', v, t, WIN_COLOR)
 
     # ============ 1F.7c OPEN TERRACE RAILINGS (y=-6 to y=0, z=15.5) ============
     # Front railing: y=-6, x=-0.75 to x=20.75, z=15.5 to z=19
