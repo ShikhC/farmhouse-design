@@ -100,7 +100,7 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
 |------|------|------|-----------|-----------|
 | Back beam | C1 | C2 | **20.750 ft** | 9"×20" (DEEP) |
 | Middle beam | C3 | C4 | **20.750 ft** | 9"×20" (DEEP) |
-| Front beam | C5 | C8 | **20.750 ft** | 9"×15" (segmented by C6, C7) |
+| Front beam | C5 | C8 | **20.750 ft** | 9"×20" (segmented by C6, C7) |
 
 ---
 
@@ -110,13 +110,13 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
 
 | Rank | Span | Clear Distance | Beam Required | Load Type |
 |------|------|---------------|---------------|-----------|
-| **1** | C3→C1 (Y-dir) | **14.50 ft** | Side beams 9"×15" (continuous 2-span) | Slab tributary load |
-| **2** | C6→C7 (X-dir) | **10.00 ft** | Front beam 9"×15" (shutter span) | Wall above shutter + slab |
-| **3** | C5→C3 (Y-dir) | **8.25 ft** | Side beams 9"×15" | Slab + stair loads |
+| **1** | C3→C1 (Y-dir) | **14.50 ft** | Side beams 9"×24" (continuous 2-span) | Slab tributary load |
+| **2** | C6→C7 (X-dir) | **10.00 ft** | Front beam 9"×20" (shutter span) | Wall above shutter + slab |
+| **3** | C5→C3 (Y-dir) | **8.25 ft** | Side beams 9"×24" | Slab + stair loads |
 | **4** | Back beam C1→C2 | **20.75 ft c/c** | 9"×20" DEEP beam | Full width, back wall + 1F room |
 | **5** | Middle beam C3→C4 | **20.75 ft c/c** | 9"×20" DEEP beam | Full width, 1F partition + room |
-| **6** | C5→C6 (X-dir) | **6.00 ft** | Front beam 9"×15" | Stair zone wall |
-| **7** | C7→C8 (X-dir) | **2.00 ft** | Front beam 9"×15" | Small solid wall |
+| **6** | C5→C6 (X-dir) | **6.00 ft** | Front beam 9"×20" | Stair zone wall |
+| **7** | C7→C8 (X-dir) | **2.00 ft** | Front beam 9"×20" | Small solid wall |
 
 ### Heaviest Beam Loads (where most reinforcement needed):
 
@@ -124,8 +124,8 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
 |----------|------|--------------|
 | **🔴 #1** | **Back beam (C1-C2), 9"×20"** | Spans 20.75ft, carries: back wall weight + 1F room slab (16ft tributary) + future roof load. LONGEST single-span beam in the building. |
 | **🔴 #2** | **Middle beam (C3-C4), 9"×20"** | Spans 20.75ft, carries: 1F partition wall + slab from both sides (front bay 9ft + back bay 15.5ft tributary) + 1F room load above. Also supports the sloped stair-slab. |
-| **🟡 #3** | **Shutter beam (C6-C7), 9"×15"** | Spans 11ft c/c (10ft clear), carries: wall above 10ft×10ft opening + 1F slab load. Critical because it has a large opening below (no wall support beneath). |
-| **🟡 #4** | **Side beams (left/right), 9"×15"** | 2-span continuous (9.25ft + 15.5ft), carries: slab tributary width (~10ft) on each side. The 15.5ft back span is the critical section. |
+| **🟡 #3** | **Side beams (left/right), 9"×24"** | 2-span continuous (9.25ft + 15.5ft), carries: slab tributary width (~10ft) on each side. The 15.5ft back span is the critical section. Deepest beams in building (increased from 9"×15"). |
+| **🟡 #4** | **Front/Shutter beam (C5-C8), 9"×20"** | Spans 11ft c/c (C6-C7, 10ft clear), carries: wall above 10ft×10ft opening + 1F slab load. Critical because it has a large opening below (no wall support beneath). Increased from 9"×15". |
 
 ---
 
@@ -157,24 +157,32 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
               ←── 6.875 ──→←──────── 11.000 ────────→←──── 2.875 ───→
                   ft            ft (SHUTTER)              ft
 
-              FRONT BEAM (9"×15", segmented: 6.875 + 11.0 + 2.875)
+              FRONT BEAM (9"×20", segmented: 6.875 + 11.0 + 2.875)
 ```
 
 ---
 
 ## 6. Structural Verification Notes
 
-1. **Back bay Y-span (14.5ft clear):** The 6" slab spanning 14.5ft needs verification. For residential loads, maximum slab span for 6" is typically 12-14ft. At 14.5ft, the slab is at its LIMIT. Consider:
+**UPDATED per `structural-load-calculations.md` (June 2026):**
+
+1. **Side beams INCREASED to 9"×24" (230×600mm):** Original 9"×15" was grossly inadequate for the 7.62m (25ft) continuous span. At 9"×15", Mu_required = 132.2 kN·m vs capacity of only 77.4 kN·m (ratio 1.71). The 9"×24" provides adequate capacity with proper 5-20mm bottom reinforcement.
+
+2. **Front beam INCREASED to 9"×20" (230×500mm):** The C6-C7 segment (3.35m unsupported) carries wall + slab load above the shutter opening. Original 9"×15" was inadequate for the combined loading.
+
+3. **Back bay Y-span (14.5ft clear):** The 6" slab spanning 14.5ft needs attention. Per structural calc, may need 175-200mm (7-8") thickness or an intermediate beam. Consider:
    - Increasing slab to 7" in the back bay, OR
    - Adding a secondary beam at mid-span (would need a new column on each side wall at y≈17)
 
-2. **Deep beams (20.75ft span):** These are the most critical elements. Ensure:
+4. **Deep beams (20.75ft span, 9"×20"):** These remain the most critical cross-beams. Ensure:
    - Bottom steel: 4-20mm tor (minimum)
    - Stirrups at 150mm c/c near supports (within L/4 from each column)
    - No holes/sleeves cut through these beams
 
-3. **Shutter beam (11ft span with 10ft opening below):** No masonry support beneath for 10ft — the beam carries everything. Ensure adequate reinforcement for this unsupported span.
+5. **Columns ADEQUATE:** All 8 columns at 9"×12" (230×300mm) verified OK at 45% utilization ratio. No increase needed.
 
-4. **Slab panels:**
-   - Front bay: 9.25ft × 11ft (or 6.875 + 2.875 sub-panels) — comfortable
-   - Back bay: 15.5ft × 20.75ft — CRITICAL (needs structural engineer verification for 6" slab)
+6. **Seismic governs over wind:** Base shear (seismic) = 175.6 kN vs wind = 99.3 kN. Zone IV (Z=0.24), Ah=0.10. All beams designed for seismic moment redistribution.
+
+7. **Slab panels:**
+   - Front bay: 9.25ft × 11ft — comfortable for 6" slab
+   - Back bay: 15.5ft × 20.75ft — CRITICAL (structural calc recommends 175-200mm or secondary beam)

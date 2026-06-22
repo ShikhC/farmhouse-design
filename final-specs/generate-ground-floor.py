@@ -453,8 +453,8 @@ def build_ground_floor():
 
     # ============ 11. BEAMS ============
     BEAM_9 = COL_9         # 9 inches = 0.75ft
-    BEAM_20 = 20.0 / 12.0  # 20 inches = 1.667ft
-    BEAM_15 = 15.0 / 12.0  # 15 inches = 1.25ft
+    BEAM_20 = 20.0 / 12.0  # 20 inches = 1.67ft (deep beams: back + middle + front)
+    BEAM_24 = 24.0 / 12.0  # 24 inches = 2.0ft (SIDE beams: left + right — increased per structural calc)
 
     # Back beam (9"x20"): spans x=0-20, at y=25
     v, t = box_mesh(ft(0), ft(INT_D - BEAM_9), ft(Z_SLAB_SOFFIT - BEAM_20),
@@ -466,19 +466,19 @@ def build_ground_floor():
                     ft(INT_W), ft(BEAM_9), ft(BEAM_20))
     cb.add_geometry('beam_middle', v, t, 'beam')
 
-    # Front beam (9"x15"): spans x=0-20, at y=0
-    v, t = box_mesh(ft(0), ft(0), ft(Z_SLAB_SOFFIT - BEAM_15),
-                    ft(INT_W), ft(BEAM_9), ft(BEAM_15))
+    # Front beam (9"x20"): spans x=0-20, at y=0 (INCREASED from 15" per structural calc)
+    v, t = box_mesh(ft(0), ft(0), ft(Z_SLAB_SOFFIT - BEAM_20),
+                    ft(INT_W), ft(BEAM_9), ft(BEAM_20))
     cb.add_geometry('beam_front', v, t, 'beam')
 
-    # Left beam (9"x15"): spans y=0-25, at x=0
-    v, t = box_mesh(ft(0), ft(0), ft(Z_SLAB_SOFFIT - BEAM_15),
-                    ft(BEAM_9), ft(INT_D), ft(BEAM_15))
+    # Left beam (9"x24"): spans y=0-25, at x=0 (INCREASED from 15" — 7.62m span needs deeper beam)
+    v, t = box_mesh(ft(0), ft(0), ft(Z_SLAB_SOFFIT - BEAM_24),
+                    ft(BEAM_9), ft(INT_D), ft(BEAM_24))
     cb.add_geometry('beam_left', v, t, 'beam')
 
-    # Right beam (9"x15"): spans y=0-25, at x=20
-    v, t = box_mesh(ft(INT_W - BEAM_9), ft(0), ft(Z_SLAB_SOFFIT - BEAM_15),
-                    ft(BEAM_9), ft(INT_D), ft(BEAM_15))
+    # Right beam (9"x24"): spans y=0-25, at x=20 (INCREASED from 15")
+    v, t = box_mesh(ft(INT_W - BEAM_9), ft(0), ft(Z_SLAB_SOFFIT - BEAM_24),
+                    ft(BEAM_9), ft(INT_D), ft(BEAM_24))
     cb.add_geometry('beam_right', v, t, 'beam')
 
     # ============ 12. ROOF SLAB (with STAIR WELL OPENING) ============
@@ -878,9 +878,9 @@ def build_ground_floor():
         cb.add_geometry(f'lintel_gf_back_{lx:.0f}', v, t, 'beam')
     VENT_W = 3.0
     VENT_H = 1.5
-    # Side walls: beam is 9"×15" (1.25ft deep), bottom at z=15-1.25=13.75
-    # Vent top touches beam bottom: vent at z=13.75-1.5=12.25 to z=13.75
-    VENT_Z_SIDE = 15.0 - 1.25 - VENT_H  # = 12.25 (9.25ft above GF floor)
+    # Side walls: beam is 9"×24" (2.0ft deep), bottom at z=15-2.0=13.0
+    # Vent top touches beam bottom: vent at z=13.0-1.5=11.5 to z=13.0
+    VENT_Z_SIDE = 15.0 - 2.0 - VENT_H  # = 11.5 (8.5ft above GF floor)
 
     # Back wall: beam is 9"×20" (1.67ft deep), bottom at z=15-1.67=13.33
     # Vent top touches beam bottom: vent at z=13.33-1.5=11.83 to z=13.33

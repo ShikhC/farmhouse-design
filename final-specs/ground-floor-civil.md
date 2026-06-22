@@ -52,15 +52,17 @@ All columns are 9" x 12" RCC. The 12" dimension faces the front wall (i.e., 12" 
 
 | Beam | Span | Size | Position | Notes |
 |------|------|------|----------|-------|
-| Back beam (C1-C2) | 20ft | 9" x 20" RCC | z=25 (back wall) | Main structural beam |
-| Middle beam (C3-C4) | 20ft | 9" x 20" RCC | z=16 (9ft from front) | Supports 1F partition |
-| Front beam (C5-C6-C7-C8) | 20ft | 9" x 15" RCC | z=0 (front wall) | Carries wall above shutter |
-| Left beam (C1-C3-C5) | 25ft | 9" x 15" RCC | x=0 (left wall) | Continuous, 2-span |
-| Right beam (C2-C4-C8) | 25ft | 9" x 15" RCC | x=20 (right wall) | Continuous, 2-span |
+| Back beam (C1-C2) | 20ft | 9" x 20" RCC | y=25 (back wall) | Main structural beam |
+| Middle beam (C3-C4) | 20ft | 9" x 20" RCC | y=9 (9ft from front) | Supports 1F partition |
+| Front beam (C5-C6-C7-C8) | 20ft | 9" x 20" RCC | y=0 (front wall) | Increased from 15" per structural calc |
+| Left beam (C1-C3-C5) | 25ft | 9" x 24" RCC | x=0 (left wall) | Continuous, 2-span. Increased from 15" — 7.62m span requires deeper beam |
+| Right beam (C2-C4-C8) | 25ft | 9" x 24" RCC | x=20 (right wall) | Continuous, 2-span. Increased from 15" — 7.62m span requires deeper beam |
 
-**Beam Reinforcement (typical):**
-- 9" x 20" beams: 4-20mm tor bottom + 2-16mm tor top + 8mm stirrups @ 150mm c/c (ends), 200mm c/c (middle)
-- 9" x 15" beams: 3-16mm tor bottom + 2-12mm tor top + 8mm stirrups @ 150mm c/c (ends), 200mm c/c (middle)
+**Beam Reinforcement (per structural load calculations):**
+- 9" x 24" beams (side): 5-20mm tor bottom + 2-16mm tor top + 8mm stirrups @ 100mm c/c (ends L/4), 175mm c/c (middle)
+- 9" x 20" beams (cross): 4-20mm tor bottom + 2-16mm tor top + 8mm stirrups @ 150mm c/c (ends), 200mm c/c (middle)
+
+**IMPORTANT:** See `structural-load-calculations.md` for full design verification. Side beams were found INADEQUATE at 9"×15" and increased to 9"×24" (230×600mm). Front beam increased from 9"×15" to 9"×20".
 
 ---
 
@@ -202,7 +204,7 @@ Corrected stair zone plan (from front z=0 looking in):
                     │         12ft height                     │
                     ├─────────────────────────────────────────┤ ← +12ft (GF slab soffit/1F floor)
                     │                                         │
-    6ft extension   │   9"×15" FRONT BEAM (C5-C6-C7-C8)     │
+    6ft extension   │   9"×20" FRONT BEAM (C5-C6-C7-C8)     │
     (shade/balcony  ├────┬──┬──┬─┬──────────────────┬─┬──┬──┤
      for 1F above)  │    │  │  │ │                  │ │  │  │
                     │    │TD│SG│C│  ROLLING SHUTTER  │C│  │  │ ← +10ft (shutter top)
@@ -239,7 +241,7 @@ Corrected stair zone plan (from front z=0 looking in):
                          │   6" RCC SLAB (M20)  │ ← Slab top = +12ft 6"
                          ├─────────────────────┤ ← Slab soffit = +12ft
                          │                     │
-                         │  9"×15" BEAM        │ ← Beam soffit = +12ft - 15" = +10ft 9"
+                         │  9"×24" SIDE BEAM    │ ← Beam soffit = +12ft - 24" = +10ft 0"
                          ├─────────────────────┤
                          │                     │
                          │                     │
@@ -427,7 +429,7 @@ Corrected stair zone plan (from front z=0 looking in):
 |-----------|-------|
 | Clear width | ~14ft (from stair partition at x=6ft to right wall at x=20ft) |
 | Clear depth | 25ft (full building depth) |
-| Clear height | 12ft (plinth to slab soffit), reduced to ~10ft 9" under beams |
+| Clear height | 12ft (plinth to slab soffit), reduced to ~10ft under side beams (9"×24"), ~10ft 4" under cross beams (9"×20") |
 | Area | ~350 sq.ft (14ft × 25ft) |
 | Access | 10ft × 10ft rolling shutter (front wall, C6 to C7) |
 | Floor finish | IPS / cement smooth (polished cement) |
@@ -452,7 +454,7 @@ Corrected stair zone plan (from front z=0 looking in):
 | Bottom rail | MS flat 50mm × 6mm with rubber seal |
 | Locking | Center lock + side locks (tower bolts) |
 | Operation | Manual (chain/gear operated) |
-| Lintel above | Part of front beam (9" × 15" RCC) — no separate lintel needed |
+| Lintel above | Part of front beam (9" × 20" RCC) — no separate lintel needed |
 | Hood box | MS cover at top, painted |
 
 ---
@@ -778,9 +780,10 @@ The slab is supported on all four beams plus middle beam:
 - Panel 1 (rear): Front beam to middle beam (9ft span) — supported on left and right beams
 - Panel 2 (back): Middle beam to back beam (16ft span) — NOTE: This is a large span. Additional reinforcement required or design as two-way slab with adequate thickness.
 
-**IMPORTANT:** The 16ft span (middle beam to back beam) requires structural engineer verification. The 6" slab with 10mm @ 150mm c/c may need enhancement for this panel. Consider:
-- Increasing bottom steel to 12mm @ 125mm c/c for the 16ft span panel
-- OR adding a secondary beam at mid-span (z=20.5)
+**IMPORTANT (confirmed by structural load calculations):** The 16ft span (middle beam to back beam) is at the LIMIT for a 6" (150mm) slab. Options:
+- Increase slab to 7" (175mm) in the back bay with 12mm @ 125mm c/c bottom steel
+- OR increase to 8" (200mm) for additional safety margin
+- OR add a secondary beam at mid-span (y≈17, would require new columns on side walls)
 
 ---
 
@@ -911,7 +914,8 @@ This is a brief sequence overview. Refer to the detailed contractor-brief for st
     │ Plinth height:         3ft above NGL                    │
     │ Slab thickness:        6" RCC (M20)                     │
     │ Beams (back/middle):   9" × 20"                        │
-    │ Beams (front/sides):   9" × 15"                        │
+    │ Beams (front):         9" × 20"                        │
+    │ Beams (left/right):    9" × 24"                        │
     │ Shutter opening:       10ft W × 10ft H                  │
     │ Stair zone:            6ft W × ~9ft D                   │
     │ Toilet:                2.75ft W × 5ft D                 │

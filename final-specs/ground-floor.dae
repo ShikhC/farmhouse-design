@@ -978,7 +978,7 @@
     <geometry id="beam_front-geom" name="beam_front">
       <mesh>
         <source id="beam_front-positions">
-          <float_array id="beam_front-positions-array" count="24">0.0000 0.0000 4.1910 6.0960 0.0000 4.1910 6.0960 0.2286 4.1910 0.0000 0.2286 4.1910 0.0000 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 0.2286 4.5720 0.0000 0.2286 4.5720</float_array>
+          <float_array id="beam_front-positions-array" count="24">0.0000 0.0000 4.0640 6.0960 0.0000 4.0640 6.0960 0.2286 4.0640 0.0000 0.2286 4.0640 0.0000 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 0.2286 4.5720 0.0000 0.2286 4.5720</float_array>
           <technique_common>
             <accessor source="#beam_front-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -999,7 +999,7 @@
     <geometry id="beam_left-geom" name="beam_left">
       <mesh>
         <source id="beam_left-positions">
-          <float_array id="beam_left-positions-array" count="24">0.0000 0.0000 4.1910 0.2286 0.0000 4.1910 0.2286 7.6200 4.1910 0.0000 7.6200 4.1910 0.0000 0.0000 4.5720 0.2286 0.0000 4.5720 0.2286 7.6200 4.5720 0.0000 7.6200 4.5720</float_array>
+          <float_array id="beam_left-positions-array" count="24">0.0000 0.0000 3.9624 0.2286 0.0000 3.9624 0.2286 7.6200 3.9624 0.0000 7.6200 3.9624 0.0000 0.0000 4.5720 0.2286 0.0000 4.5720 0.2286 7.6200 4.5720 0.0000 7.6200 4.5720</float_array>
           <technique_common>
             <accessor source="#beam_left-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1020,7 +1020,7 @@
     <geometry id="beam_right-geom" name="beam_right">
       <mesh>
         <source id="beam_right-positions">
-          <float_array id="beam_right-positions-array" count="24">5.8674 0.0000 4.1910 6.0960 0.0000 4.1910 6.0960 7.6200 4.1910 5.8674 7.6200 4.1910 5.8674 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 7.6200 4.5720 5.8674 7.6200 4.5720</float_array>
+          <float_array id="beam_right-positions-array" count="24">5.8674 0.0000 3.9624 6.0960 0.0000 3.9624 6.0960 7.6200 3.9624 5.8674 7.6200 3.9624 5.8674 0.0000 4.5720 6.0960 0.0000 4.5720 6.0960 7.6200 4.5720 5.8674 7.6200 4.5720</float_array>
           <technique_common>
             <accessor source="#beam_right-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2406,7 +2406,7 @@
     <geometry id="vent_left_5-geom" name="vent_left_5">
       <mesh>
         <source id="vent_left_5-positions">
-          <float_array id="vent_left_5-positions-array" count="24">-0.2286 1.0668 3.7338 -0.1981 1.0668 3.7338 -0.1981 1.9812 3.7338 -0.2286 1.9812 3.7338 -0.2286 1.0668 4.1910 -0.1981 1.0668 4.1910 -0.1981 1.9812 4.1910 -0.2286 1.9812 4.1910</float_array>
+          <float_array id="vent_left_5-positions-array" count="24">-0.2286 1.0668 3.5052 -0.1981 1.0668 3.5052 -0.1981 1.9812 3.5052 -0.2286 1.9812 3.5052 -0.2286 1.0668 3.9624 -0.1981 1.0668 3.9624 -0.1981 1.9812 3.9624 -0.2286 1.9812 3.9624</float_array>
           <technique_common>
             <accessor source="#vent_left_5-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2427,7 +2427,7 @@
     <geometry id="vent_left_14-geom" name="vent_left_14">
       <mesh>
         <source id="vent_left_14-positions">
-          <float_array id="vent_left_14-positions-array" count="24">-0.2286 3.8100 3.7338 -0.1981 3.8100 3.7338 -0.1981 4.7244 3.7338 -0.2286 4.7244 3.7338 -0.2286 3.8100 4.1910 -0.1981 3.8100 4.1910 -0.1981 4.7244 4.1910 -0.2286 4.7244 4.1910</float_array>
+          <float_array id="vent_left_14-positions-array" count="24">-0.2286 3.8100 3.5052 -0.1981 3.8100 3.5052 -0.1981 4.7244 3.5052 -0.2286 4.7244 3.5052 -0.2286 3.8100 3.9624 -0.1981 3.8100 3.9624 -0.1981 4.7244 3.9624 -0.2286 4.7244 3.9624</float_array>
           <technique_common>
             <accessor source="#vent_left_14-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2448,7 +2448,7 @@
     <geometry id="vent_left_20-geom" name="vent_left_20">
       <mesh>
         <source id="vent_left_20-positions">
-          <float_array id="vent_left_20-positions-array" count="24">-0.2286 5.6388 3.7338 -0.1981 5.6388 3.7338 -0.1981 6.5532 3.7338 -0.2286 6.5532 3.7338 -0.2286 5.6388 4.1910 -0.1981 5.6388 4.1910 -0.1981 6.5532 4.1910 -0.2286 6.5532 4.1910</float_array>
+          <float_array id="vent_left_20-positions-array" count="24">-0.2286 5.6388 3.5052 -0.1981 5.6388 3.5052 -0.1981 6.5532 3.5052 -0.2286 6.5532 3.5052 -0.2286 5.6388 3.9624 -0.1981 5.6388 3.9624 -0.1981 6.5532 3.9624 -0.2286 6.5532 3.9624</float_array>
           <technique_common>
             <accessor source="#vent_left_20-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2469,7 +2469,7 @@
     <geometry id="vent_right_7-geom" name="vent_right_7">
       <mesh>
         <source id="vent_right_7-positions">
-          <float_array id="vent_right_7-positions-array" count="24">6.2941 1.6764 3.7338 6.3246 1.6764 3.7338 6.3246 2.5908 3.7338 6.2941 2.5908 3.7338 6.2941 1.6764 4.1910 6.3246 1.6764 4.1910 6.3246 2.5908 4.1910 6.2941 2.5908 4.1910</float_array>
+          <float_array id="vent_right_7-positions-array" count="24">6.2941 1.6764 3.5052 6.3246 1.6764 3.5052 6.3246 2.5908 3.5052 6.2941 2.5908 3.5052 6.2941 1.6764 3.9624 6.3246 1.6764 3.9624 6.3246 2.5908 3.9624 6.2941 2.5908 3.9624</float_array>
           <technique_common>
             <accessor source="#vent_right_7-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2490,7 +2490,7 @@
     <geometry id="vent_right_16-geom" name="vent_right_16">
       <mesh>
         <source id="vent_right_16-positions">
-          <float_array id="vent_right_16-positions-array" count="24">6.2941 4.4196 3.7338 6.3246 4.4196 3.7338 6.3246 5.3340 3.7338 6.2941 5.3340 3.7338 6.2941 4.4196 4.1910 6.3246 4.4196 4.1910 6.3246 5.3340 4.1910 6.2941 5.3340 4.1910</float_array>
+          <float_array id="vent_right_16-positions-array" count="24">6.2941 4.4196 3.5052 6.3246 4.4196 3.5052 6.3246 5.3340 3.5052 6.2941 5.3340 3.5052 6.2941 4.4196 3.9624 6.3246 4.4196 3.9624 6.3246 5.3340 3.9624 6.2941 5.3340 3.9624</float_array>
           <technique_common>
             <accessor source="#vent_right_16-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -2511,7 +2511,7 @@
     <geometry id="vent_right_22-geom" name="vent_right_22">
       <mesh>
         <source id="vent_right_22-positions">
-          <float_array id="vent_right_22-positions-array" count="24">6.2941 6.2484 3.7338 6.3246 6.2484 3.7338 6.3246 7.1628 3.7338 6.2941 7.1628 3.7338 6.2941 6.2484 4.1910 6.3246 6.2484 4.1910 6.3246 7.1628 4.1910 6.2941 7.1628 4.1910</float_array>
+          <float_array id="vent_right_22-positions-array" count="24">6.2941 6.2484 3.5052 6.3246 6.2484 3.5052 6.3246 7.1628 3.5052 6.2941 7.1628 3.5052 6.2941 6.2484 3.9624 6.3246 6.2484 3.9624 6.3246 7.1628 3.9624 6.2941 7.1628 3.9624</float_array>
           <technique_common>
             <accessor source="#vent_right_22-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
