@@ -11,7 +11,7 @@
 ### Ground Floor Columns (z = 3.0ft to 15.0ft, height = 12ft)
 ### First Floor Columns (z = 15.5ft to 27.5ft, height = 12ft)
 
-All columns are 9"×12" RCC. Position is where the column starts (x_start, y_start). Center = geometric center.
+All columns are 9"×12" RCC except C6 and C7 which are 9"×9" (square). Position is where the column starts (x_start, y_start). Center = geometric center.
 
 | Column | X_start (ft) | Y_start (ft) | Width_X (ft) | Depth_Y (ft) | **Center_X** | **Center_Y** | Wall | Orientation |
 |--------|-------------|-------------|-------------|-------------|------------|------------|------|-------------|
@@ -20,14 +20,14 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
 | C3 | -0.750 | 8.500 | 0.750 (9") | 1.000 (12") | **-0.375** | **9.000** | Left wall @ 9ft from front | 12" along Y |
 | C4 | 20.000 | 8.500 | 0.750 (9") | 1.000 (12") | **20.375** | **9.000** | Right wall @ 9ft from front | 12" along Y |
 | C5 | -0.750 | -0.750 | 0.750 (9") | 1.000 (12") | **-0.375** | **-0.250** | Front + Left corner | 12" along Y |
-| C6 | 6.000 | -0.750 | 1.000 (12") | 0.750 (9") | **6.500** | **-0.375** | Front wall @ 6ft | 12" along X |
-| C7 | 17.000 | -0.750 | 1.000 (12") | 0.750 (9") | **17.500** | **-0.375** | Front wall @ 17ft | 12" along X |
+| C6 | 6.000 | -0.750 | 0.750 (9") | 0.750 (9") | **6.375** | **-0.375** | Front wall @ 6ft | 9"×9" square |
+| C7 | 17.000 | -0.750 | 0.750 (9") | 0.750 (9") | **17.375** | **-0.375** | Front wall @ 17ft | 9"×9" square |
 | C8 | 20.000 | -0.750 | 0.750 (9") | 1.000 (12") | **20.375** | **-0.250** | Front + Right corner | 12" along Y |
 
 **Note:** 
 - Negative coordinates indicate the column is in the WALL zone (outside the 20×25ft internal space)
 - All columns flush within 9" walls (not protruding)
-- C6, C7 have 12" along X-axis (front wall direction); all others have 12" along Y-axis (side wall direction)
+- C6, C7 are 9"×9" square columns (smaller than others)
 - First floor columns (col_1f_*) are at SAME X,Y positions, different Z range (15.5-27.5ft)
 - C6 and C7 do NOT extend to first floor (front wall doesn't exist at 1F)
 
@@ -74,9 +74,9 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
 
 | From | To | Distance (c/c) | Clear Span | Zone |
 |------|------|----------------|------------|------|
-| C5 | C6 | **6.875 ft** | 6.0 ft | Gate + Stair zone |
-| C6 | C7 | **11.000 ft** | 10.0 ft | **SHUTTER (longest X-span!)** |
-| C7 | C8 | **2.875 ft** | 2.0 ft | Solid wall |
+| C5 | C6 | **6.750 ft** | 6.0 ft | Gate + Stair zone |
+| C6 | C7 | **11.000 ft** | 10.25 ft | **SHUTTER (longest X-span!)** |
+| C7 | C8 | **3.000 ft** | 2.25 ft | Solid wall |
 | C5 | C8 | **20.750 ft** | — | Total width (external) |
 
 ### Y-Direction (along left wall, Grid Line 1):
@@ -154,10 +154,10 @@ All columns are 9"×12" RCC. Position is where the column starts (x_start, y_sta
               ║                                                            ║   │
               C5          C6                          C7                   C8  │
               ●═══════════●═══════════════════════════●════════════════════●  ─┘
-              ←── 6.875 ──→←──────── 11.000 ────────→←──── 2.875 ───→
+              ←── 6.750 ──→←──────── 11.000 ────────→←──── 3.000 ───→
                   ft            ft (SHUTTER)              ft
 
-              FRONT BEAM (9"×20", segmented: 6.875 + 11.0 + 2.875)
+              FRONT BEAM (9"×20", segmented: 6.75 + 11.0 + 3.0)
 ```
 
 ---

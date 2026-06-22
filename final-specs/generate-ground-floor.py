@@ -343,15 +343,15 @@ def build_ground_floor():
                     ft(COL_9), ft(COL_12), ft(COL_H))
     cb.add_geometry('col_C8', v, t, 'column')
 
-    # FRONT WALL columns (wall at y=-0.75 to y=0): 12" along x (wall direction), 9" across y
+    # FRONT WALL columns: C6 and C7 are 9"×9" (square columns, smaller than others)
     # C6: at x=6 on front wall
     v, t = box_mesh(ft(6.0), ft(-WALL_T), ft(Z_PLINTH),
-                    ft(COL_12), ft(COL_9), ft(COL_H))
+                    ft(COL_9), ft(COL_9), ft(COL_H))
     cb.add_geometry('col_C6', v, t, 'column')
 
     # C7: at x=17 on front wall
     v, t = box_mesh(ft(17.0), ft(-WALL_T), ft(Z_PLINTH),
-                    ft(COL_12), ft(COL_9), ft(COL_H))
+                    ft(COL_9), ft(COL_9), ft(COL_H))
     cb.add_geometry('col_C7', v, t, 'column')
 
     # ============ 5. STAIRCASE ============

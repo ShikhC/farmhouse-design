@@ -493,8 +493,8 @@ Lower redundancy in Y-direction means collapse is more likely to be triggered by
 | C3 (mid-left) | 230×300 | 6-16 + 2-12 (1432 mm², 2.08%) | 8mm @ 150 c/c | 8mm @ 75 c/c (higher shear) |
 | C4 (mid-right) | 230×300 | Same as C3 | Same | Same |
 | C5 (front-left) | 230×300 | 4-16 + 4-12 | 8mm @ 150 c/c | 8mm @ 100 c/c |
-| C6 (front-GF only) | 300×230 | 4-16 + 2-12 (1030 mm², 1.49%) | 8mm @ 150 c/c | 8mm @ 100 c/c |
-| C7 (front-GF only) | 300×230 | Same as C6 | Same | Same |
+| C6 (front-GF only) | 230×230 | 4-12mm (452 mm², 0.85%) | 8mm @ 150 c/c | 8mm @ 100 c/c |
+| C7 (front-GF only) | 230×230 | Same as C6 | Same | Same |
 | C8 (front-right) | 230×300 | 4-16 + 4-12 | 8mm @ 150 c/c | 8mm @ 100 c/c |
 
 **Special confining zone length (IS 13920 Cl. 7.4.1):**

@@ -600,7 +600,7 @@
     <geometry id="col_C6-geom" name="col_C6">
       <mesh>
         <source id="col_C6-positions">
-          <float_array id="col_C6-positions-array" count="24">1.8288 -0.2286 0.9144 2.1336 -0.2286 0.9144 2.1336 0.0000 0.9144 1.8288 0.0000 0.9144 1.8288 -0.2286 4.5720 2.1336 -0.2286 4.5720 2.1336 0.0000 4.5720 1.8288 0.0000 4.5720</float_array>
+          <float_array id="col_C6-positions-array" count="24">1.8288 -0.2286 0.9144 2.0574 -0.2286 0.9144 2.0574 0.0000 0.9144 1.8288 0.0000 0.9144 1.8288 -0.2286 4.5720 2.0574 -0.2286 4.5720 2.0574 0.0000 4.5720 1.8288 0.0000 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C6-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -621,7 +621,7 @@
     <geometry id="col_C7-geom" name="col_C7">
       <mesh>
         <source id="col_C7-positions">
-          <float_array id="col_C7-positions-array" count="24">5.1816 -0.2286 0.9144 5.4864 -0.2286 0.9144 5.4864 0.0000 0.9144 5.1816 0.0000 0.9144 5.1816 -0.2286 4.5720 5.4864 -0.2286 4.5720 5.4864 0.0000 4.5720 5.1816 0.0000 4.5720</float_array>
+          <float_array id="col_C7-positions-array" count="24">5.1816 -0.2286 0.9144 5.4102 -0.2286 0.9144 5.4102 0.0000 0.9144 5.1816 0.0000 0.9144 5.1816 -0.2286 4.5720 5.4102 -0.2286 4.5720 5.4102 0.0000 4.5720 5.1816 0.0000 4.5720</float_array>
           <technique_common>
             <accessor source="#col_C7-positions-array" count="8" stride="3">
               <param name="X" type="float"/>

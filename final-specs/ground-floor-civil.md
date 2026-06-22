@@ -19,7 +19,7 @@
 | External walls (bahari deewar) | 9" brick (230mm) |
 | Internal partition walls | 4.5" brick (115mm) |
 | Number of columns (pillar) | 8 nos. (all embedded in walls) |
-| Column size | 9" x 12" RCC |
+| Column size | 9" x 12" RCC (C1-C5, C8); 9" x 9" RCC (C6, C7) |
 | Ground floor use | Storage (godown) + Staircase + Toilet |
 
 ---
@@ -28,7 +28,7 @@
 
 ### 2.1 Column Positions
 
-All columns are 9" x 12" RCC. The 12" dimension faces the front wall (i.e., 12" along the width/x-axis, 9" along the depth/z-axis).
+All columns are 9" x 12" RCC except C6 and C7 which are 9" x 9" (square). For 9"×12" columns, the 12" dimension is along Y-axis (wall direction). C6 and C7 are square columns in the front wall (GF only, do not extend to 1F).
 
 **Coordinate System:**
 - X-axis: Left to Right (as viewed from OUTSIDE), origin at C5 inner face
@@ -910,7 +910,7 @@ This is a brief sequence overview. Refer to the detailed contractor-brief for st
     │ Building internal:     20ft (W) × 25ft (D) × 12ft (H)  │
     │ External walls:        9" (230mm)                       │
     │ Internal partition:    4.5" (115mm)                      │
-    │ Columns:               9" × 12", total 8 nos.          │
+    │ Columns:               9" × 12" (6 nos) + 9" × 9" (C6,C7) │
     │ Plinth height:         3ft above NGL                    │
     │ Slab thickness:        6" RCC (M20)                     │
     │ Beams (back/middle):   9" × 20"                        │

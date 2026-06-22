@@ -108,10 +108,10 @@ svg { width: 100%; height: auto; cursor: crosshair; }
         <rect class="col-marker" id="col-C4" x="100" y="42.5" width="3.75" height="5" data-col="C4"/>
         <!-- C5: front-left -->
         <rect class="col-marker" id="col-C5" x="-3.75" y="-3.75" width="3.75" height="5" data-col="C5"/>
-        <!-- C6: front @ 6ft (12"×9" oriented differently) -->
-        <rect class="col-marker" id="col-C6" x="30" y="-3.75" width="5" height="3.75" data-col="C6"/>
-        <!-- C7: front @ 17ft -->
-        <rect class="col-marker" id="col-C7" x="85" y="-3.75" width="5" height="3.75" data-col="C7"/>
+        <!-- C6: front @ 6ft (9"×9" square column) -->
+        <rect class="col-marker" id="col-C6" x="30" y="-3.75" width="3.75" height="3.75" data-col="C6"/>
+        <!-- C7: front @ 17ft (9"×9" square column) -->
+        <rect class="col-marker" id="col-C7" x="85" y="-3.75" width="3.75" height="3.75" data-col="C7"/>
         <!-- C8: front-right -->
         <rect class="col-marker" id="col-C8" x="100" y="-3.75" width="3.75" height="5" data-col="C8"/>
 
@@ -121,20 +121,20 @@ svg { width: 100%; height: auto; cursor: crosshair; }
         <text class="col-label" x="-1.875" y="41">C3</text>
         <text class="col-label" x="101.875" y="41">C4</text>
         <text class="col-label" x="-1.875" y="-5.5">C5</text>
-        <text class="col-label" x="32.5" y="-5.5">C6</text>
-        <text class="col-label" x="87.5" y="-5.5">C7</text>
+        <text class="col-label" x="31.875" y="-5.5">C6</text>
+        <text class="col-label" x="86.875" y="-5.5">C7</text>
         <text class="col-label" x="101.875" y="-5.5">C8</text>
 
         <!-- DIMENSION LINES -->
         <!-- X-direction spans along front beam -->
-        <line class="dim-line" x1="-1.875" y1="-9" x2="32.5" y2="-9"/>
-        <text class="dim-text" x="15" y="-10">6.875 ft (c/c)</text>
+        <line class="dim-line" x1="-1.875" y1="-9" x2="31.875" y2="-9"/>
+        <text class="dim-text" x="15" y="-10">6.75 ft (c/c)</text>
 
-        <line class="dim-line" x1="32.5" y1="-9" x2="87.5" y2="-9"/>
-        <text class="dim-text" x="60" y="-10">11.0 ft (c/c)</text>
+        <line class="dim-line" x1="31.875" y1="-9" x2="86.875" y2="-9"/>
+        <text class="dim-text" x="59" y="-10">11.0 ft (c/c)</text>
 
-        <line class="dim-line" x1="87.5" y1="-9" x2="101.875" y2="-9"/>
-        <text class="dim-text" x="95" y="-10">2.875 ft</text>
+        <line class="dim-line" x1="86.875" y1="-9" x2="101.875" y2="-9"/>
+        <text class="dim-text" x="95" y="-10">3.0 ft</text>
 
         <!-- Y-direction spans along left beam -->
         <line class="dim-line" x1="-9" y1="-1.25" x2="-9" y2="45"/>
@@ -246,11 +246,11 @@ svg { width: 100%; height: auto; cursor: crosshair; }
         <rect x="106.25" y="0" width="3.75" height="60" fill="#455a64" opacity="0.5" stroke="#607d8b" stroke-width="0.3"/>
         <text class="col-label" x="108" y="35">C8/C2</text>
 
-        <!-- C6 column (at x=6ft from left = 30 svg) -->
+        <!-- C6 column (at x=6ft from left = 30 svg, 9"×9" = 3.75 wide) -->
         <rect x="30" y="0" width="3.75" height="60" fill="#455a64" opacity="0.3" stroke="#607d8b" stroke-width="0.3"/>
         <text class="col-label" x="31.875" y="57">C6</text>
 
-        <!-- C7 column (at x=17ft = 85 svg) -->
+        <!-- C7 column (at x=17ft = 85 svg, 9"×9" = 3.75 wide) -->
         <rect x="85" y="0" width="3.75" height="60" fill="#455a64" opacity="0.3" stroke="#607d8b" stroke-width="0.3"/>
         <text class="col-label" x="86.875" y="57">C7</text>
 
@@ -347,11 +347,11 @@ svg { width: 100%; height: auto; cursor: crosshair; }
         <rect x="-2.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
         <text x="0" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C5</text>
 
-        <rect x="30.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
-        <text x="33" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C6</text>
+        <rect x="31.375" y="118.125" width="3.75" height="3.75" fill="#78909c" stroke="#fff" stroke-width="0.6"/>
+        <text x="33.25" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C6</text>
 
-        <rect x="84.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
-        <text x="87" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C7</text>
+        <rect x="85.375" y="118.125" width="3.75" height="3.75" fill="#78909c" stroke="#fff" stroke-width="0.6"/>
+        <text x="87.25" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C7</text>
 
         <rect x="97.5" y="117.5" width="5" height="5" fill="#546e7a" stroke="#fff" stroke-width="0.6"/>
         <text x="100" y="120.8" text-anchor="middle" fill="#fff" style="font-size:2.5px; font-weight:bold;">C8</text>
@@ -369,19 +369,19 @@ svg { width: 100%; height: auto; cursor: crosshair; }
         <text x="50" y="69" text-anchor="middle" fill="#ffd54f" style="font-size:3px; font-weight:bold;">20.75 ft</text>
 
         <!-- Front: C5 → C6 -->
-        <line x1="2.5" y1="130" x2="30.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <line x1="2.5" y1="130" x2="31.375" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
         <rect x="9" y="127.5" width="18" height="5" fill="#1a1a2e" stroke="none"/>
-        <text x="16.5" y="131" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">6.875 ft</text>
+        <text x="17" y="131" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">6.75 ft</text>
 
         <!-- Front: C6 → C7 -->
-        <line x1="35.5" y1="130" x2="84.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <line x1="35.125" y1="130" x2="85.375" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
         <rect x="49" y="127.5" width="18" height="5" fill="#1a1a2e" stroke="none"/>
         <text x="60" y="131" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">11.0 ft</text>
 
         <!-- Front: C7 → C8 -->
-        <line x1="89.5" y1="130" x2="97.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+        <line x1="89.125" y1="130" x2="97.5" y2="130" stroke="#fff" stroke-width="0.4" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
         <rect x="89" y="133" width="14" height="5" fill="#1a1a2e" stroke="none"/>
-        <text x="93.5" y="136" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">2.875 ft</text>
+        <text x="93.5" y="136" text-anchor="middle" fill="#ffd54f" style="font-size:2.8px; font-weight:bold;">3.0 ft</text>
 
         <!-- ======== VERTICAL DIMENSIONS (Y-direction) ======== -->
 
@@ -424,9 +424,9 @@ svg { width: 100%; height: auto; cursor: crosshair; }
         <!-- Values -->
         <text x="80" y="92" text-anchor="start" fill="#fff" style="font-size:2.8px;">a = 9" (230mm)</text>
         <text x="80" y="96" text-anchor="start" fill="#fff" style="font-size:2.8px;">b = 12" (300mm)</text>
-        <text x="80" y="101" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">All 8 columns same size</text>
-        <text x="80" y="104.5" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">C6,C7: 12" along X-axis</text>
-        <text x="80" y="107.5" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">Others: 12" along Y-axis</text>
+        <text x="80" y="101" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">C1-C5, C8: 9"×12"</text>
+        <text x="80" y="104.5" text-anchor="start" fill="#ffd54f" style="font-size:2.3px;">C6, C7: 9"×9" (square)</text>
+        <text x="80" y="107.5" text-anchor="start" fill="#94a3b8" style="font-size:2.3px;">C6/C7 are GF only</text>
 
         <!-- ======== CONNECTING LINES (beam lines, thin) ======== -->
         <!-- Back beam -->
@@ -493,9 +493,9 @@ svg { width: 100%; height: auto; cursor: crosshair; }
     <div class="info-card">
       <h4>Column Spacing (c/c)</h4>
       <table>
-        <tr><td>C5 → C6 (front)</td><td>6.875 ft</td></tr>
+        <tr><td>C5 → C6 (front)</td><td>6.75 ft</td></tr>
         <tr><td>C6 → C7 (shutter)</td><td>11.0 ft</td></tr>
-        <tr><td>C7 → C8 (solid)</td><td>2.875 ft</td></tr>
+        <tr><td>C7 → C8 (solid)</td><td>3.0 ft</td></tr>
         <tr><td>C5 → C3 (left side)</td><td>9.25 ft</td></tr>
         <tr><td>C3 → C1 (left side)</td><td>15.5 ft</td></tr>
       </table>
@@ -690,8 +690,8 @@ const colData = {
   C3: { name: 'C3 (Mid-Left)', size: '9"×12" (230×300mm)', pos: 'x=-0.375, y=9.0 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '6-16mm + 2-12mm (2.08%)', utilization: '52%' },
   C4: { name: 'C4 (Mid-Right)', size: '9"×12" (230×300mm)', pos: 'x=20.375, y=9.0 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '6-16mm + 2-12mm (2.08%)', utilization: '52%' },
   C5: { name: 'C5 (Front-Left Corner)', size: '9"×12" (230×300mm)', pos: 'x=-0.375, y=-0.25 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '4-16mm + 4-12mm (1.82%)', utilization: '45%' },
-  C6: { name: 'C6 (Front @ 6ft)', size: '12"×9" (300×230mm)', pos: 'x=6.5, y=-0.375 (center)', orient: '12" along X', floors: 'GF ONLY', steel: '4-16mm + 2-12mm (1.49%)', utilization: '35%' },
-  C7: { name: 'C7 (Front @ 17ft)', size: '12"×9" (300×230mm)', pos: 'x=17.5, y=-0.375 (center)', orient: '12" along X', floors: 'GF ONLY', steel: '4-16mm + 2-12mm (1.49%)', utilization: '35%' },
+  C6: { name: 'C6 (Front @ 6ft)', size: '9"×9" (230×230mm)', pos: 'x=6.375, y=-0.375 (center)', orient: '9"×9" square', floors: 'GF ONLY', steel: '4-12mm (452 mm², 0.85%)', utilization: '25%' },
+  C7: { name: 'C7 (Front @ 17ft)', size: '9"×9" (230×230mm)', pos: 'x=17.375, y=-0.375 (center)', orient: '9"×9" square', floors: 'GF ONLY', steel: '4-12mm (452 mm², 0.85%)', utilization: '25%' },
   C8: { name: 'C8 (Front-Right Corner)', size: '9"×12" (230×300mm)', pos: 'x=20.375, y=-0.25 (center)', orient: '12" along Y', floors: 'GF + 1F', steel: '4-16mm + 4-12mm (1.82%)', utilization: '45%' }
 };
 
