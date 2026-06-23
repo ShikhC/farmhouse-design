@@ -519,44 +519,51 @@ def build_ground_floor():
     # (The slab extension is already part of the roof_slab geometry above.)
     # Nothing else to add here — the shade area below is completely open.
 
-    # ============ 14. SEPTIC TANK + SOAK PIT (Black Water System) ============
-    # Septic tank: 5ft x 2.5ft x 4.5ft (per architect, toilet-only, 3-5 users)
-    SEPTIC_X = 3.0
-    SEPTIC_Y = -7.0
+    # ============ 14. SEPTIC TANK + SOAK PITS (per plumbing-drainage-spec.md) ============
+    # ALL behind building (high Y values), dug into ground (top at z=0)
+    # Septic on LEFT, pits spread behind with min 10ft spacing between each
+
+    # Septic tank: 5ft x 2.5ft x 4.5ft, LEFT side behind building (x=-5, y=28)
+    SEPTIC_X = -7.5
+    SEPTIC_Y = 28.0
     SEPTIC_W = 5.0
     SEPTIC_D = 2.5
     SEPTIC_H = 4.5
-    v, t = box_mesh(ft(SEPTIC_X - SEPTIC_W/2), ft(SEPTIC_Y - SEPTIC_D/2), ft(-SEPTIC_H),
+    v, t = box_mesh(ft(SEPTIC_X), ft(SEPTIC_Y), ft(-SEPTIC_H),
                     ft(SEPTIC_W), ft(SEPTIC_D), ft(SEPTIC_H))
     cb.add_geometry('septic_tank', v, t, 'septic')
 
-    # Black Water Soak pit: 5ft dia x 7ft deep (approximated as box)
-    SOAK_Y = -14.0
-    SOAK_DIA = 5.0
-    SOAK_H = 7.0
-    v, t = box_mesh(ft(SEPTIC_X - SOAK_DIA/2), ft(SOAK_Y - SOAK_DIA/2), ft(-SOAK_H),
-                    ft(SOAK_DIA), ft(SOAK_DIA), ft(SOAK_H))
+    # Black Water Soak pit: 5ft dia x 7ft deep, back-left (x=-5, y=40)
+    BW_PIT_X = -5.0
+    BW_PIT_Y = 40.0
+    BW_PIT_DIA = 5.0
+    BW_PIT_H = 7.0
+    v, t = box_mesh(ft(BW_PIT_X - BW_PIT_DIA/2), ft(BW_PIT_Y - BW_PIT_DIA/2), ft(-BW_PIT_H),
+                    ft(BW_PIT_DIA), ft(BW_PIT_DIA), ft(BW_PIT_H))
     cb.add_geometry('bw_soak_pit', v, t, 'septic')
 
-    # Grey Water Soak pit (SEPARATE, on the RIGHT side of building)
-    GW_SOAK_X = 17.0  # right side
-    GW_SOAK_Y = -10.0
-    v, t = box_mesh(ft(GW_SOAK_X - 2.0), ft(GW_SOAK_Y - 2.0), ft(-6.0),
-                    ft(4.0), ft(4.0), ft(6.0))
+    # Grey Water Soak pit: 4ft dia x 6ft deep, 10ft right of BW pit (x=5, y=40)
+    GW_PIT_X = 5.0
+    GW_PIT_Y = 40.0
+    GW_PIT_DIA = 4.0
+    GW_PIT_H = 6.0
+    v, t = box_mesh(ft(GW_PIT_X - GW_PIT_DIA/2), ft(GW_PIT_Y - GW_PIT_DIA/2), ft(-GW_PIT_H),
+                    ft(GW_PIT_DIA), ft(GW_PIT_DIA), ft(GW_PIT_H))
     cb.add_geometry('gw_soak_pit', v, t, 'septic')
 
-    # Wash Water Soak pit (SEPARATE, near the ramp/front)
-    WW_SOAK_X = 10.0  # center front
-    WW_SOAK_Y = -12.0
-    v, t = box_mesh(ft(WW_SOAK_X - 2.5), ft(WW_SOAK_Y - 2.5), ft(-6.5),
-                    ft(5.0), ft(5.0), ft(6.5))
+    # Wash Water Soak pit: 5ft dia x 6.5ft deep, further right (x=15, y=38)
+    WW_PIT_X = 15.0
+    WW_PIT_Y = 38.0
+    WW_PIT_DIA = 5.0
+    WW_PIT_H = 6.5
+    v, t = box_mesh(ft(WW_PIT_X - WW_PIT_DIA/2), ft(WW_PIT_Y - WW_PIT_DIA/2), ft(-WW_PIT_H),
+                    ft(WW_PIT_DIA), ft(WW_PIT_DIA), ft(WW_PIT_H))
     cb.add_geometry('ww_soak_pit', v, t, 'septic')
 
-    # Connecting pipe (thin orange box from septic to soak pit)
+    # Connecting pipe: septic → BW soak pit (underground, runs from y=28 to y=40)
     PIPE_SIZE = 0.33  # ~4 inches
-    pipe_length = abs(SOAK_Y - SEPTIC_Y) - SEPTIC_D/2 - SOAK_DIA/2
-    v, t = box_mesh(ft(SEPTIC_X - PIPE_SIZE/2), ft(SEPTIC_Y - SEPTIC_D/2 - pipe_length), ft(-3.0),
-                    ft(PIPE_SIZE), ft(pipe_length), ft(PIPE_SIZE))
+    v, t = box_mesh(ft(SEPTIC_X + SEPTIC_W/2 - PIPE_SIZE/2), ft(SEPTIC_Y + SEPTIC_D), ft(-1.5),
+                    ft(PIPE_SIZE), ft(BW_PIT_Y - BW_PIT_DIA/2 - SEPTIC_Y - SEPTIC_D), ft(PIPE_SIZE))
     cb.add_geometry('septic_pipe', v, t, 'pipe')
 
     # ============ GROUND PLANE ============

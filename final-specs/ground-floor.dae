@@ -1125,7 +1125,7 @@
     <geometry id="septic_tank-geom" name="septic_tank">
       <mesh>
         <source id="septic_tank-positions">
-          <float_array id="septic_tank-positions-array" count="24">0.1524 -2.5146 -1.3716 1.6764 -2.5146 -1.3716 1.6764 -1.7526 -1.3716 0.1524 -1.7526 -1.3716 0.1524 -2.5146 0.0000 1.6764 -2.5146 0.0000 1.6764 -1.7526 0.0000 0.1524 -1.7526 0.0000</float_array>
+          <float_array id="septic_tank-positions-array" count="24">-2.2860 8.5344 -1.3716 -0.7620 8.5344 -1.3716 -0.7620 9.2964 -1.3716 -2.2860 9.2964 -1.3716 -2.2860 8.5344 0.0000 -0.7620 8.5344 0.0000 -0.7620 9.2964 0.0000 -2.2860 9.2964 0.0000</float_array>
           <technique_common>
             <accessor source="#septic_tank-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1146,7 +1146,7 @@
     <geometry id="bw_soak_pit-geom" name="bw_soak_pit">
       <mesh>
         <source id="bw_soak_pit-positions">
-          <float_array id="bw_soak_pit-positions-array" count="24">0.1524 -5.0292 -2.1336 1.6764 -5.0292 -2.1336 1.6764 -3.5052 -2.1336 0.1524 -3.5052 -2.1336 0.1524 -5.0292 0.0000 1.6764 -5.0292 0.0000 1.6764 -3.5052 0.0000 0.1524 -3.5052 0.0000</float_array>
+          <float_array id="bw_soak_pit-positions-array" count="24">-2.2860 11.4300 -2.1336 -0.7620 11.4300 -2.1336 -0.7620 12.9540 -2.1336 -2.2860 12.9540 -2.1336 -2.2860 11.4300 0.0000 -0.7620 11.4300 0.0000 -0.7620 12.9540 0.0000 -2.2860 12.9540 0.0000</float_array>
           <technique_common>
             <accessor source="#bw_soak_pit-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1167,7 +1167,7 @@
     <geometry id="gw_soak_pit-geom" name="gw_soak_pit">
       <mesh>
         <source id="gw_soak_pit-positions">
-          <float_array id="gw_soak_pit-positions-array" count="24">4.5720 -3.6576 -1.8288 5.7912 -3.6576 -1.8288 5.7912 -2.4384 -1.8288 4.5720 -2.4384 -1.8288 4.5720 -3.6576 0.0000 5.7912 -3.6576 0.0000 5.7912 -2.4384 0.0000 4.5720 -2.4384 0.0000</float_array>
+          <float_array id="gw_soak_pit-positions-array" count="24">0.9144 11.5824 -1.8288 2.1336 11.5824 -1.8288 2.1336 12.8016 -1.8288 0.9144 12.8016 -1.8288 0.9144 11.5824 0.0000 2.1336 11.5824 0.0000 2.1336 12.8016 0.0000 0.9144 12.8016 0.0000</float_array>
           <technique_common>
             <accessor source="#gw_soak_pit-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1188,7 +1188,7 @@
     <geometry id="ww_soak_pit-geom" name="ww_soak_pit">
       <mesh>
         <source id="ww_soak_pit-positions">
-          <float_array id="ww_soak_pit-positions-array" count="24">2.2860 -4.4196 -1.9812 3.8100 -4.4196 -1.9812 3.8100 -2.8956 -1.9812 2.2860 -2.8956 -1.9812 2.2860 -4.4196 0.0000 3.8100 -4.4196 0.0000 3.8100 -2.8956 0.0000 2.2860 -2.8956 0.0000</float_array>
+          <float_array id="ww_soak_pit-positions-array" count="24">3.8100 10.8204 -1.9812 5.3340 10.8204 -1.9812 5.3340 12.3444 -1.9812 3.8100 12.3444 -1.9812 3.8100 10.8204 0.0000 5.3340 10.8204 0.0000 5.3340 12.3444 0.0000 3.8100 12.3444 0.0000</float_array>
           <technique_common>
             <accessor source="#ww_soak_pit-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
@@ -1209,7 +1209,7 @@
     <geometry id="septic_pipe-geom" name="septic_pipe">
       <mesh>
         <source id="septic_pipe-positions">
-          <float_array id="septic_pipe-positions-array" count="24">0.8641 -3.5052 -0.9144 0.9647 -3.5052 -0.9144 0.9647 -2.5146 -0.9144 0.8641 -2.5146 -0.9144 0.8641 -3.5052 -0.8138 0.9647 -3.5052 -0.8138 0.9647 -2.5146 -0.8138 0.8641 -2.5146 -0.8138</float_array>
+          <float_array id="septic_pipe-positions-array" count="24">-1.5743 9.2964 -0.4572 -1.4737 9.2964 -0.4572 -1.4737 11.4300 -0.4572 -1.5743 11.4300 -0.4572 -1.5743 9.2964 -0.3566 -1.4737 9.2964 -0.3566 -1.4737 11.4300 -0.3566 -1.5743 11.4300 -0.3566</float_array>
           <technique_common>
             <accessor source="#septic_pipe-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
