@@ -311,10 +311,174 @@ def build_pdf():
     pdf.cell(50, 4, 'Tie beams (plinth) 9"x12"')
     pdf.set_draw_color(0)
 
-    # ========== PAGE 4: SECTION VIEWS (A3 Landscape) ==========
+    # ========== PAGE 4: FIRST FLOOR PLAN (A3 Landscape) ==========
     pdf.add_a3_page()
     pdf.border_frame()
-    pdf.title_block('SHEET 4: STRUCTURAL SECTIONS', 'Section A-A (Front to Back, through left wall) | Section B-B (Left to Right, through middle beam)')
+    pdf.title_block('SHEET 4: FIRST FLOOR PLAN', 'Plan at z = 15.5ft (1F floor level). Shows room layout, partition, stairwell, kitchen, bathroom.')
+
+    ox, oy = 80, 50
+    scale = 8
+
+    def px(ft_x): return ox + ft_x * scale
+    def py(ft_y): return oy + (25.042 - ft_y) * scale
+
+    # Building outline (walls)
+    pdf.set_draw_color(0)
+    pdf.set_line_width(0.5)
+    # Left wall
+    pdf.rect(px(-0.75), py(25.75), 0.75 * scale, 26.5 * scale)
+    # Right wall
+    pdf.rect(px(20.0), py(25.75), 0.75 * scale, 26.5 * scale)
+    # Back wall
+    pdf.rect(px(-0.75), py(25.75), 21.5 * scale, 0.75 * scale)
+
+    # NO front wall on 1F (open terrace)
+    pdf.set_draw_color(150, 150, 150)
+    pdf.set_line_width(0.2)
+    pdf.set_dash_pattern(2, 1)
+    pdf.line(px(-0.75), py(0), px(20.75), py(0))
+    pdf.set_dash_pattern()
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_xy(px(7), py(0) + 3)
+    pdf.cell(30, 3, '(No front wall - open terrace zone)')
+
+    # 1F Columns (6 nos — C6/C7 don't extend)
+    pdf.set_draw_color(0)
+    pdf.set_line_width(0.3)
+    pdf.set_fill_color(80, 80, 80)
+    for name, (cx, cy, size) in cols.items():
+        if name in ('C6', 'C7'):
+            continue
+        w = 0.75 * scale
+        h = 1.0 * scale
+        pdf.rect(px(cx) - w/2, py(cy) - h/2, w, h, 'F')
+        pdf.set_font('Helvetica', '', 5)
+        pdf.set_xy(px(cx) - 4, py(cy) - h/2 - 4)
+        pdf.cell(8, 3, name, align='C')
+
+    # Partition wall at y = 8.417 (from x=0 to x=20, with door openings)
+    pdf.set_fill_color(160, 140, 120)
+    PART_Y = 8.417
+    # Partition segment 1: x=0 to x=3 (gate to sloped stair)
+    pdf.rect(px(0), py(PART_Y + 0.375/2), 3.0 * scale, 0.375 * scale, 'DF')
+    # Partition segment 2: x=3 to x=6 (gate opening — no wall)
+    # Partition segment 3: x=6 to x=9 (door opening — no wall)
+    # Partition segment 4: x=9 to x=20 (solid wall)
+    pdf.rect(px(9.0), py(PART_Y + 0.375/2), 11.0 * scale, 0.375 * scale, 'DF')
+
+    pdf.set_font('Helvetica', '', 4.5)
+    pdf.set_xy(px(3.5), py(PART_Y) - 5)
+    pdf.cell(15, 3, 'GATE (stair)')
+    pdf.set_xy(px(6.5), py(PART_Y) - 5)
+    pdf.cell(15, 3, 'DOOR (room)')
+
+    # Room label (back zone: y=8.4 to y=25)
+    pdf.set_font('Helvetica', 'B', 8)
+    pdf.set_xy(px(7), py(17))
+    pdf.cell(40, 5, 'ROOM (1BHK)')
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_xy(px(7), py(15.5))
+    pdf.cell(40, 3, 'Clear: 20ft x 16.6ft = 332 sq.ft')
+
+    # Kitchen (6ft x 6ft, back-right corner: x=14-20, y=19-25)
+    pdf.set_draw_color(60, 140, 60)
+    pdf.set_line_width(0.4)
+    pdf.rect(px(14), py(25), 6.0 * scale, 6.0 * scale)
+    pdf.set_font('Helvetica', 'B', 6)
+    pdf.set_text_color(60, 140, 60)
+    pdf.set_xy(px(15), py(22))
+    pdf.cell(20, 4, 'KITCHEN')
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_xy(px(15), py(21))
+    pdf.cell(20, 3, '6ft x 6ft')
+    pdf.set_text_color(0)
+
+    # Bathroom (x=14-20, y=5-13, 6ft x 8ft)
+    pdf.set_draw_color(60, 100, 180)
+    pdf.rect(px(14), py(13), 6.0 * scale, 8.0 * scale)
+    pdf.set_font('Helvetica', 'B', 6)
+    pdf.set_text_color(60, 100, 180)
+    pdf.set_xy(px(15), py(9.5))
+    pdf.cell(20, 4, 'BATHROOM')
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_xy(px(15), py(8.5))
+    pdf.cell(20, 3, '6ft x 8ft')
+    pdf.set_text_color(0)
+
+    # Stairwell opening (x=0-3, y=0-7.7)
+    pdf.set_draw_color(180, 80, 40)
+    pdf.set_line_width(0.3)
+    pdf.set_dash_pattern(1.5, 1)
+    pdf.rect(px(0), py(7.7), 3.0 * scale, 7.7 * scale)
+    pdf.set_dash_pattern()
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_text_color(180, 80, 40)
+    pdf.set_xy(px(0.2), py(4))
+    pdf.cell(15, 3, 'STAIR WELL')
+    pdf.set_xy(px(0.2), py(3))
+    pdf.cell(15, 3, '3ft x 7.7ft')
+    pdf.set_text_color(0)
+
+    # Open terrace (y=0 to y=-6, full width)
+    pdf.set_fill_color(230, 240, 250)
+    pdf.rect(px(-0.75), py(0), 21.5 * scale, 6.0 * scale, 'DF')
+    pdf.set_font('Helvetica', 'B', 6)
+    pdf.set_xy(px(6), py(-2.5))
+    pdf.cell(40, 4, 'OPEN TERRACE (6ft cantilever)')
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_xy(px(6), py(-3.5))
+    pdf.cell(40, 3, '6ft x 21.5ft = 129 sq.ft (no roof above)')
+
+    # Railings around terrace
+    pdf.set_draw_color(120, 120, 120)
+    pdf.set_line_width(0.2)
+    pdf.line(px(-0.75), py(-6), px(20.75), py(-6))
+    pdf.line(px(-0.75), py(0), px(-0.75), py(-6))
+    pdf.line(px(20.75), py(0), px(20.75), py(-6))
+    pdf.set_font('Helvetica', '', 4)
+    pdf.set_xy(px(8), py(-6) + 2)
+    pdf.cell(20, 3, 'RAILING (3ft high)')
+
+    # Dimensions
+    pdf.set_draw_color(0)
+    pdf.set_line_width(0.15)
+    # Y-dimension: partition to back
+    dim_x = px(20.375) + 12
+    pdf.line(dim_x, py(PART_Y), dim_x, py(25.042))
+    pdf.set_font('Helvetica', '', 5)
+    pdf.set_xy(dim_x + 2, (py(PART_Y) + py(25.042))/2 - 2)
+    pdf.cell(15, 3, "16'-7.5\" (room)")
+    # Y-dimension: front to partition
+    pdf.line(dim_x, py(0), dim_x, py(PART_Y))
+    pdf.set_xy(dim_x + 2, (py(0) + py(PART_Y))/2 - 2)
+    pdf.cell(15, 3, "8'-5\" (terrace+stair)")
+
+    # Legend/notes
+    pdf.set_font('Helvetica', 'B', 6)
+    pdf.set_xy(310, 40)
+    pdf.cell(60, 4, '1F NOTES:')
+    pdf.set_font('Helvetica', '', 5.5)
+    notes_1f = [
+        'C6 & C7 do NOT extend to 1F',
+        'No front wall (open terrace)',
+        'Partition wall: 4.5" brick (115mm)',
+        'Floor: 6" RCC slab (from GF beams)',
+        'Roof: 6" RCC slab at z=27.5ft',
+        'Parapet: 4.5" brick, 3ft high',
+        'Terrace: cantilever, no roof',
+        'Stairwell: 3ft x 7.7ft opening',
+        'Sloped stair covers stairwell',
+    ]
+    ny = 46
+    for n in notes_1f:
+        pdf.set_xy(310, ny)
+        pdf.cell(60, 3.5, n)
+        ny += 3.5
+
+    # ========== PAGE 5: SECTION VIEWS (A3 Landscape) ==========
+    pdf.add_a3_page()
+    pdf.border_frame()
+    pdf.title_block('SHEET 5: STRUCTURAL SECTIONS', 'Section A-A (Front to Back, through left wall) | Section B-B (Left to Right, through middle beam)')
 
     # Section A-A (left half of page)
     sec_ox, sec_oy = 30, 35
@@ -412,7 +576,7 @@ def build_pdf():
     # ========== PAGE 5: COLUMN SCHEDULE (A4) ==========
     pdf.add_a4_page()
     pdf.border_frame()
-    pdf.title_block('SHEET 5: COLUMN & TIE BEAM SCHEDULE')
+    pdf.title_block('SHEET 6: COLUMN & TIE BEAM SCHEDULE')
 
     y = 22
     y = pdf.section_header(y, 'A. COLUMN SCHEDULE')
@@ -490,7 +654,7 @@ def build_pdf():
     # ========== PAGE 6: BEAM SCHEDULE (A4) ==========
     pdf.add_a4_page()
     pdf.border_frame()
-    pdf.title_block('SHEET 6: BEAM SCHEDULE (GF Ceiling / 1F Floor Level)')
+    pdf.title_block('SHEET 7: BEAM SCHEDULE (GF Ceiling / 1F Floor Level)')
 
     y = 22
     y = pdf.section_header(y, 'A. MAIN BEAM SCHEDULE')
@@ -579,7 +743,7 @@ def build_pdf():
     # ========== PAGE 7: SLAB & FOUNDATION (A4) ==========
     pdf.add_a4_page()
     pdf.border_frame()
-    pdf.title_block('SHEET 7: SLAB & FOUNDATION DETAILS')
+    pdf.title_block('SHEET 8: SLAB & FOUNDATION DETAILS')
 
     y = 22
     y = pdf.section_header(y, 'A. SLAB SCHEDULE')
@@ -637,7 +801,7 @@ def build_pdf():
     # ========== PAGE 8: CONSTRUCTION NOTES (A4) ==========
     pdf.add_a4_page()
     pdf.border_frame()
-    pdf.title_block('SHEET 8: GENERAL CONSTRUCTION NOTES & SPECIFICATIONS')
+    pdf.title_block('SHEET 9: GENERAL CONSTRUCTION NOTES & SPECIFICATIONS')
 
     y = 22
     notes_sections = [
@@ -691,7 +855,7 @@ def build_pdf():
     # ========== PAGE 9: STRUCTURAL REVIEW (A4) ==========
     pdf.add_a4_page()
     pdf.border_frame()
-    pdf.title_block('SHEET 9: INDEPENDENT STRUCTURAL REVIEW & RECOMMENDATIONS')
+    pdf.title_block('SHEET 10: INDEPENDENT STRUCTURAL REVIEW & RECOMMENDATIONS')
 
     y = 22
     y = pdf.section_header(y, 'A. OVERALL STRUCTURAL CONFIDENCE ASSESSMENT')
@@ -799,17 +963,18 @@ def main():
     size_kb = os.path.getsize(output_path) / 1024
     print(f"PDF saved: {output_path}")
     print(f"  Size: {size_kb:.0f} KB")
-    print(f"  Pages: 9")
+    print(f"  Pages: 10")
     print(f"\nContents:")
     print("  Page 1: Title Sheet (A4)")
     print("  Page 2: Column Grid Plan (A3 Landscape)")
     print("  Page 3: Beam Layout Plan (A3 Landscape)")
-    print("  Page 4: Structural Sections (A3 Landscape)")
-    print("  Page 5: Column & Tie Beam Schedule (A4)")
-    print("  Page 6: Beam Schedule (A4)")
-    print("  Page 7: Slab & Foundation Details (A4)")
-    print("  Page 8: Construction Notes (A4)")
-    print("  Page 9: Structural Review & Recommendations (A4)")
+    print("  Page 4: First Floor Plan (A3 Landscape)")
+    print("  Page 5: Structural Sections (A3 Landscape)")
+    print("  Page 6: Column & Tie Beam Schedule (A4)")
+    print("  Page 7: Beam Schedule (A4)")
+    print("  Page 8: Slab & Foundation Details (A4)")
+    print("  Page 9: Construction Notes (A4)")
+    print("  Page 10: Structural Review & Recommendations (A4)")
 
 
 if __name__ == '__main__':
