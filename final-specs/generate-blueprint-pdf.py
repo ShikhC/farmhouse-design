@@ -114,9 +114,9 @@ def build_pdf():
     pdf.border_frame()
     pdf.title_block('SHEET 2: COLUMN GRID PLAN (As-Built Positions)', 'Plan View - Looking Down. Front = Bottom. All dimensions center-to-center.')
 
-    # Drawing area: 30mm margin on left, 20mm top offset from title
-    ox, oy = 50, 40  # origin (C5 position)
-    scale = 12  # 1ft = 12mm on drawing
+    # Drawing area: centered in A3 landscape (420x297mm), with margins
+    ox, oy = 80, 50  # origin (C5 position on page)
+    scale = 8  # 1ft = 8mm on drawing (fits 26.5ft in ~212mm height)
 
     # Helper to convert ft coords to drawing coords
     def px(ft_x): return ox + ft_x * scale
@@ -211,8 +211,8 @@ def build_pdf():
     pdf.border_frame()
     pdf.title_block('SHEET 3: BEAM LAYOUT PLAN', 'GF Ceiling Level (z = 15ft). Main beams + Tie beams at plinth level.')
 
-    ox, oy = 50, 40
-    scale = 12
+    ox, oy = 80, 50
+    scale = 8  # same as page 2
 
     # Main beams (thick lines)
     pdf.set_line_width(1.0)
@@ -428,14 +428,14 @@ def build_pdf():
 
     # Data
     col_data = [
-        ('C1', '230x300', 'Back-Left corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
-        ('C2', '230x300', 'Back-Right corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
-        ('C3', '230x300', 'Mid-Left (y=8.4)', '6-16+2-12 (2.08%)', '8mm@150/100', 'GF+1F (24ft)', '52%'),
-        ('C4', '230x300', 'Mid-Right (y=8.4)', '6-16+2-12 (2.08%)', '8mm@150/100', 'GF+1F (24ft)', '52%'),
-        ('C5', '230x300', 'Front-Left corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
-        ('C6', '230x230', 'Front @ x=6.0', '4-12mm (0.85%)', '8mm@150/100', 'GF only (12ft)', '25%'),
-        ('C7', '230x230', 'Front @ x=16.75', '4-12mm (0.85%)', '8mm@150/100', 'GF only (12ft)', '25%'),
-        ('C8', '230x300', 'Front-Right corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
+        ('C1', '230x300 (9"x12")', 'Back-Left corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
+        ('C2', '230x300 (9"x12")', 'Back-Right corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
+        ('C3', '230x300 (9"x12")', 'Mid-Left (y=8\'5")', '6-16+2-12 (2.08%)', '8mm@150/100', 'GF+1F (24ft)', '52%'),
+        ('C4', '230x300 (9"x12")', 'Mid-Right (y=8\'5")', '6-16+2-12 (2.08%)', '8mm@150/100', 'GF+1F (24ft)', '52%'),
+        ('C5', '230x300 (9"x12")', 'Front-Left corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
+        ('C6', '230x230 (9"x9")', 'Front @ x=6\'0"', '4-12mm (0.85%)', '8mm@150/100', 'GF only (12ft)', '25%'),
+        ('C7', '230x230 (9"x9")', 'Front @ x=16\'9"', '4-12mm (0.85%)', '8mm@150/100', 'GF only (12ft)', '25%'),
+        ('C8', '230x300 (9"x12")', 'Front-Right corner', '4-16+4-12 (1.82%)', '8mm@150/100', 'GF+1F (24ft)', '45%'),
     ]
     pdf.set_font('Helvetica', '', 6)
     for row in col_data:
@@ -456,11 +456,11 @@ def build_pdf():
     y += 5
 
     tb_data = [
-        ('TB-Back (C1-C2)', '230x300', '20.75 ft', '4-12mm (2T+2B)', '8mm @ 200 c/c', 'Plinth (z=0-1)'),
-        ('TB-Middle (C3-C4)', '230x300', '20.75 ft', '4-12mm (2T+2B)', '8mm @ 200 c/c', 'Plinth (z=0-1)'),
-        ('TB-Front (C5-C8)', '230x300', '20.75 ft', '4-12mm (2T+2B)', '8mm @ 150 c/c', 'Plinth (z=0-1)'),
-        ('TB-Left (C5-C3-C1)', '230x300', '24.75 ft', '6-12mm (3T+3B)', '8mm @ 150 c/c', 'Plinth (z=0-1)'),
-        ('TB-Right (C8-C4-C2)', '230x300', '24.75 ft', '6-12mm (3T+3B)', '8mm @ 150 c/c', 'Plinth (z=0-1)'),
+        ('TB-Back (C1-C2)', '230x300 (9"x12")', '20.75ft/6.3m', '4-12mm (2T+2B)', '8mm @ 200 c/c', 'Plinth (z=0-1ft)'),
+        ('TB-Middle (C3-C4)', '230x300 (9"x12")', '20.75ft/6.3m', '4-12mm (2T+2B)', '8mm @ 200 c/c', 'Plinth (z=0-1ft)'),
+        ('TB-Front (C5-C8)', '230x300 (9"x12")', '20.75ft/6.3m', '4-12mm (2T+2B)', '8mm @ 150 c/c', 'Plinth (z=0-1ft)'),
+        ('TB-Left (C5-C3-C1)', '230x300 (9"x12")', '24.75ft/7.5m', '6-12mm (3T+3B)', '8mm @ 150 c/c', 'Plinth (z=0-1ft)'),
+        ('TB-Right (C8-C4-C2)', '230x300 (9"x12")', '24.75ft/7.5m', '6-12mm (3T+3B)', '8mm @ 150 c/c', 'Plinth (z=0-1ft)'),
     ]
     pdf.set_font('Helvetica', '', 6)
     for row in tb_data:
@@ -504,11 +504,11 @@ def build_pdf():
     y += 5
 
     bm_data = [
-        ('Back (C1-C2)', '230x500', '20.75ft', '4-20mm+2-16mm', '4-20mm+2-16mm', '8mm@100/150', '266.3'),
-        ('Middle (C3-C4)', '230x500', '20.75ft', '4-20mm+2-16mm', '4-20mm+2-16mm', '8mm@100/150', '266.3'),
-        ('Front (C5-C8)', '230x500', '20.75ft*', '3-20mm+2-16mm', '2-20mm+2-16mm', '8mm@100/150', '143.8'),
-        ('Left (C1-C3-C5)', '230x600', '24.75ft', '5-20mm', '2-16+2-20(sup)', '8mm@100/175', '386.1'),
-        ('Right (C2-C4-C8)', '230x600', '24.75ft', '5-20mm', '2-16+2-20(sup)', '8mm@100/175', '386.1'),
+        ('Back (C1-C2)', '230x500 (9"x20")', '20.75ft/6.3m', '4-20mm+2-16mm', '4-20mm+2-16mm', '8mm@100/150', '266.3'),
+        ('Middle (C3-C4)', '230x500 (9"x20")', '20.75ft/6.3m', '4-20mm+2-16mm', '4-20mm+2-16mm', '8mm@100/150', '266.3'),
+        ('Front (C5-C8)', '230x500 (9"x20")', '20.75ft/6.3m*', '3-20mm+2-16mm', '2-20mm+2-16mm', '8mm@100/150', '143.8'),
+        ('Left (C1-C3-C5)', '230x600 (9"x24")', '24.75ft/7.5m', '5-20mm', '2-16+2-20(sup)', '8mm@100/175', '386.1'),
+        ('Right (C2-C4-C8)', '230x600 (9"x24")', '24.75ft/7.5m', '5-20mm', '2-16+2-20(sup)', '8mm@100/175', '386.1'),
     ]
     pdf.set_font('Helvetica', '', 6)
     for row in bm_data:
@@ -593,11 +593,11 @@ def build_pdf():
     y += 5
 
     sl_data = [
-        ('1F Floor (main)', '150mm', 'Two-way', '10mm@150 c/c both', '8mm@200 at supports', '6.1x7.6m'),
-        ('Roof slab', '150mm', 'Two-way', '10mm@150 c/c both', '8mm@200 at supports', '6.1x7.6m'),
-        ('Cantilever (front)', '150mm', 'Cantilever', '8mm@200 (bottom)', '12mm@125 (TOP-main)', '1.83m proj.'),
-        ('GF floor (on earth)', '100mm', 'On grade', '6mm mesh@150', 'N/A', 'On soil'),
-        ('Staircase waist', '125mm', 'One-way', '12mm@150 c/c', '8mm@200 (distr.)', '~2.5m'),
+        ('1F Floor (main)', '150mm (6")', 'Two-way', '10mm@150 c/c both', '8mm@200 at supports', '20\'x25\'/6.1x7.6m'),
+        ('Roof slab', '150mm (6")', 'Two-way', '10mm@150 c/c both', '8mm@200 at supports', '20\'x25\'/6.1x7.6m'),
+        ('Cantilever (front)', '150mm (6")', 'Cantilever', '8mm@200 (bottom)', '12mm@125 (TOP-main)', '6ft/1.83m proj.'),
+        ('GF floor (on earth)', '100mm (4")', 'On grade', '6mm mesh@150', 'N/A', 'On soil'),
+        ('Staircase waist', '125mm (5")', 'One-way', '12mm@150 c/c', '8mm@200 (distr.)', '~8ft/2.5m'),
     ]
     pdf.set_font('Helvetica', '', 6)
     for row in sl_data:
@@ -618,9 +618,9 @@ def build_pdf():
     y += 5
 
     fd_data = [
-        ('Interior cols (C3,C4)', '1.4x1.4m', '1.5m BGL', '300mm', '12mm@150 both', '130 kN/m2', 'Isolated'),
-        ('Corner cols (C1,C2,C5,C8)', '1.4x1.5m', '1.5m BGL', '300mm', '12mm@150 both', '130 kN/m2', 'Isolated'),
-        ('Front cols (C6,C7)', '1.2x1.2m', '1.5m BGL', '250mm', '10mm@150 both', '130 kN/m2', 'Isolated'),
+        ('Interior (C3,C4)', '1.4x1.4m (4.6\'x4.6\')', '1.5m/5ft BGL', '300mm/12"', '12mm@150 both', '130 kN/m2', 'Isolated'),
+        ('Corner (C1,C2,C5,C8)', '1.4x1.5m (4.6\'x5\')', '1.5m/5ft BGL', '300mm/12"', '12mm@150 both', '130 kN/m2', 'Isolated'),
+        ('Front (C6,C7)', '1.2x1.2m (4\'x4\')', '1.5m/5ft BGL', '250mm/10"', '10mm@150 both', '130 kN/m2', 'Isolated'),
     ]
     pdf.set_font('Helvetica', '', 6)
     for row in fd_data:
@@ -650,18 +650,18 @@ def build_pdf():
             'Water: Potable quality. No sea water or contaminated water for mixing or curing.',
         ]),
         ('B. CLEAR COVER TO REINFORCEMENT', [
-            'Foundations: 50mm (bottom), 40mm (sides)',
-            'Columns: 40mm all faces',
-            'Beams: 25mm (bottom and sides)',
-            'Slabs: 20mm (bottom), 15mm (top)',
-            'Exposed surfaces: 50mm minimum',
+            'Foundations: 50mm/2" (bottom), 40mm/1.5" (sides)',
+            'Columns: 40mm/1.5" all faces',
+            'Beams: 25mm/1" (bottom and sides)',
+            'Slabs: 20mm/3/4" (bottom), 15mm/5/8" (top)',
+            'Exposed surfaces: 50mm/2" minimum',
         ]),
         ('C. LAP LENGTHS & ANCHORAGE (Seismic Zone IV)', [
-            'Tension lap (columns/beams): 50d (50 x bar dia). E.g., 20mm bar = 1000mm lap.',
-            'Compression lap: 40d.',
-            'Column laps: ONLY at mid-height. Never in the joint zone (Lo = 650mm from joint face).',
-            'Beam bars: Must extend minimum Ld past the face of support.',
-            'Top bars in cantilever: Anchor 10ft (3m) into the main span. Critical for safety.',
+            'Tension lap (columns/beams): 50d (50 x bar dia). E.g., 20mm bar = 1000mm/3\'4" lap.',
+            'Compression lap: 40d. E.g., 16mm bar = 640mm/2\'1" lap.',
+            'Column laps: ONLY at mid-height (6ft from floor). Never in the joint zone (Lo = 650mm/2\'2").',
+            'Beam bars: Must extend minimum Ld (development length) past the face of support.',
+            'Top bars in cantilever: Anchor 10ft/3m into the main span. Critical for safety.',
         ]),
         ('D. SEISMIC DETAILING (IS 13920)', [
             'All beam-column joints: Special confining reinforcement required.',
