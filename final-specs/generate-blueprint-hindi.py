@@ -60,58 +60,58 @@ def build_pdf():
     pdf.add_a4_page()
     pdf.border_frame()
 
-    pdf.set_font('HindiB', '', 18)
-    pdf.set_xy(0, 50)
-    pdf.cell(210, 10, 'STRUCTURAL BLUEPRINT', align='C')
+    pdf.set_font('HindiB', '', 16)
+    pdf.set_xy(0, 45)
+    pdf.cell(210, 10, '\u0922\u093e\u0902\u091a\u093e\u0917\u0924 \u0928\u0915\u094d\u0936\u093e (STRUCTURAL BLUEPRINT)', align='C')
 
-    pdf.set_font('Hindi', '', 14)
-    pdf.set_xy(0, 65)
-    pdf.cell(210, 8, 'G+1 Farm Storage + Residence', align='C')
+    pdf.set_font('Hindi', '', 12)
+    pdf.set_xy(0, 58)
+    pdf.cell(210, 7, 'G+1 \u092b\u093e\u0930\u094d\u092e \u0938\u094d\u091f\u094b\u0930\u0947\u091c + \u0906\u0935\u093e\u0938 (Farm Storage + Residence)', align='C')
 
-    pdf.set_font('Hindi', '', 11)
-    pdf.set_xy(0, 80)
-    pdf.cell(210, 6, 'Mithanpur Urf Naimtulla Nagar, Moradabad, Uttar Pradesh', align='C')
+    pdf.set_font('Hindi', '', 10)
+    pdf.set_xy(0, 68)
+    pdf.cell(210, 6, '\u092e\u093f\u0925\u0928\u092a\u0941\u0930 \u0909\u0930\u094d\u092b\u093c \u0928\u0908\u092e\u0924\u0941\u0932\u094d\u0932\u093e \u0928\u0917\u0930, \u092e\u0941\u0930\u093e\u0926\u093e\u092c\u093e\u0926, \u0909\u0924\u094d\u0924\u0930 \u092a\u094d\u0930\u0926\u0947\u0936', align='C')
 
-    pdf.set_font('Hindi', '', 9)
+    pdf.set_font('Hindi', '', 8)
     info = [
-        ('Project Type', 'G+1 RCC Frame Building (Storage + Residence)'),
-        ('Plot Area', '20ft x 25ft internal (21.5ft x 26.5ft external)'),
-        ('Ground Floor', 'Agricultural Storage (Godown) with 10ft Shutter'),
-        ('First Floor', '1BHK Residential (Room + Kitchen + Bathroom)'),
-        ('Structural System', 'RCC Moment Resisting Frame (OMRF), 8 Columns'),
-        ('Plinth Height', '3ft (0.91m) above NGL'),
-        ('Floor Height', '12ft (3.66m) per floor'),
-        ('Total Height', '28ft to roof slab, 31ft to parapet'),
-        ('Front Shade', '6ft pure cantilever (no supports)'),
+        ('\u092d\u0935\u0928 \u0915\u093e \u092a\u094d\u0930\u0915\u093e\u0930 (Type)', 'G+1 RCC \u092b\u094d\u0930\u0947\u092e (\u0917\u094b\u0926\u093e\u092e + \u092e\u0915\u093e\u0928)'),
+        ('\u092a\u094d\u0932\u0949\u091f (Plot)', '20 \u092b\u0941\u091f x 25 \u092b\u0941\u091f \u0905\u0902\u0926\u0930\u0942\u0928\u0940 (21.5 x 26.5 \u092c\u093e\u0939\u0930\u0940)'),
+        ('\u0917\u094d\u0930\u093e\u0909\u0902\u0921 \u092b\u094d\u0932\u094b\u0930 (GF)', '\u0915\u0943\u0937\u093f \u092d\u0902\u0921\u093e\u0930\u0923 (\u0917\u094b\u0926\u093e\u092e) - 10 \u092b\u0941\u091f \u0936\u091f\u0930'),
+        ('\u092a\u0939\u0932\u0940 \u092e\u0902\u091c\u093f\u0932 (1F)', '1BHK \u0906\u0935\u093e\u0938 (\u0915\u092e\u0930\u093e + \u0930\u0938\u094b\u0908 + \u0936\u094c\u091a\u093e\u0932\u092f)'),
+        ('\u0922\u093e\u0902\u091a\u093e (Frame)', 'RCC \u092e\u094b\u092e\u0947\u0902\u091f \u092b\u094d\u0930\u0947\u092e, 8 \u092a\u093f\u0932\u0930'),
+        ('\u092a\u094d\u0932\u093f\u0902\u0925 \u090a\u0902\u091a\u093e\u0908', '3 \u092b\u0941\u091f (\u091c\u092e\u0940\u0928 \u0938\u0947 \u090a\u092a\u0930)'),
+        ('\u092e\u0902\u091c\u093f\u0932 \u0915\u0940 \u090a\u0902\u091a\u093e\u0908', '12 \u092b\u0941\u091f \u092a\u094d\u0930\u0924\u093f \u092e\u0902\u091c\u093f\u0932'),
+        ('\u0915\u0941\u0932 \u090a\u0902\u091a\u093e\u0908', '28 \u092b\u0941\u091f \u091b\u0924 \u0924\u0915, 31 \u092b\u0941\u091f \u092a\u0948\u0930\u093e\u092a\u0947\u091f'),
+        ('\u0906\u0917\u0947 \u0915\u093e \u091b\u091c\u094d\u091c\u093e', '6 \u092b\u0941\u091f \u0915\u0948\u0902\u091f\u0940\u0932\u0940\u0935\u0930 (\u092c\u093f\u0928\u093e \u0938\u092a\u094b\u0930\u094d\u091f)'),
         ('', ''),
-        ('Seismic Zone', 'IV (Z = 0.24, Ah = 0.10)'),
-        ('Wind Speed', '47 m/s (Moradabad)'),
-        ('Soil Type', 'Alluvial (Medium), SBC = 130 kN/m2'),
-        ('Concrete Grade', 'M20 (fck = 20 N/mm2)'),
-        ('Steel Grade', 'Fe500 / Fe500D (fy = 500 N/mm2)'),
+        ('\u092d\u0942\u0915\u0902\u092a \u091c\u093c\u094b\u0928 (Seismic)', 'Zone IV (\u092e\u0941\u0930\u093e\u0926\u093e\u092c\u093e\u0926) - Z = 0.24'),
+        ('\u0915\u0902\u0915\u094d\u0930\u0940\u091f (Concrete)', 'M20 \u0917\u094d\u0930\u0947\u0921 (1:1.5:3)'),
+        ('\u0938\u0930\u093f\u092f\u093e (Steel)', 'Fe500 TMT (TATA/Kamdhenu/JSW 500D)'),
         ('', ''),
-        ('Applicable Codes', 'IS 456:2000, IS 875 (Parts 1-5), IS 1893:2016, IS 13920:2016'),
+        ('\u0938\u0940\u092e\u0947\u0902\u091f', 'ACC / Ambuja / Ultratech OPC-43'),
+        ('\u0938\u0930\u093f\u092f\u093e (TMT)', 'TATA Tiscon / Kamdhenu 500D / JSW NeoSteel'),
+        ('\u0930\u094b\u0921\u093c\u0940 (Aggregate)', '20mm - Haridwar/Roorkee'),
+        ('\u092c\u093e\u0932\u0942 (Sand)', 'Zone-II \u0928\u0926\u0940 \u0930\u0947\u0924 - \u0917\u0902\u0917\u093e/\u0930\u093e\u092e\u0917\u0902\u0917\u093e'),
+        ('\u0908\u0902\u091f (Brick)', '\u092a\u0915\u094d\u0915\u0940 \u0908\u0902\u091f - \u0938\u094d\u0925\u093e\u0928\u0940\u092f \u092d\u091f\u094d\u091f\u093e (1st class)'),
     ]
 
-    y = 100
+    y = 84
     for label, value in info:
         if label == '':
             y += 3
             continue
-        pdf.set_font('HindiB', '', 8)
-        pdf.set_xy(30, y)
-        pdf.cell(55, 5, label)
-        pdf.set_font('Hindi', '', 8)
-        pdf.cell(110, 5, value)
-        y += 5
+        pdf.set_font('HindiB', '', 7)
+        pdf.set_xy(25, y)
+        pdf.cell(55, 4.5, label)
+        pdf.set_font('Hindi', '', 7)
+        pdf.cell(120, 4.5, value)
+        y += 4.5
 
-    pdf.set_font('Hindi', '', 8)
-    pdf.set_xy(30, 250)
-    pdf.cell(0, 4, 'Date: June 2026')
-    pdf.set_xy(30, 255)
-    pdf.cell(0, 4, 'Drawing No: STR-001')
-    pdf.set_xy(30, 260)
-    pdf.cell(0, 4, 'Scale: NTS (Not to Scale) unless noted')
+    pdf.set_font('Hindi', '', 7)
+    pdf.set_xy(25, 255)
+    pdf.cell(0, 4, '\u0926\u093f\u0928\u093e\u0902\u0915: \u091c\u0942\u0928 2026  |  Drawing No: STR-001-HINDI')
+    pdf.set_xy(25, 260)
+    pdf.cell(0, 4, '\u0928\u094b\u091f: \u092f\u0939 \u0928\u0915\u094d\u0936\u093e \u0920\u0947\u0915\u0947\u0926\u093e\u0930/\u092e\u093f\u0938\u094d\u0924\u094d\u0930\u0940 \u0915\u0947 \u0932\u093f\u090f \u0939\u0948\u0964 \u0938\u092d\u0940 \u092e\u093e\u092a \u092b\u0941\u091f/\u0907\u0902\u091a \u092e\u0947\u0902\u0964')
 
     # ========== PAGE 2: COLUMN GRID PLAN (A3 Landscape) ==========
     pdf.add_a3_page()
@@ -1063,41 +1063,42 @@ def build_pdf():
 
     y = 22
     notes_sections = [
-        ('A. MATERIALS', [
-            'Concrete: M20 grade (1:1.5:3 by volume) for all RCC work. OPC 43/53 grade cement.',
-            'Steel: Fe500 / Fe500D TMT bars. BIS certified (IS 1786). No re-rolled or plain MS bars.',
-            'Bricks: First class burnt clay bricks (compressive strength > 7.5 N/mm2).',
-            'Sand: Clean river sand (Zone II as per IS 383). Free from clay, silt, organic matter.',
-            'Coarse aggregate: 20mm nominal size (angular crushed stone). Clean, well-graded.',
-            'Water: Potable quality. No sea water or contaminated water for mixing or curing.',
+        ('A. सामग्री (MATERIALS - मुरादाबाद)', [
+            'सीमेंट: M20 (1:1.5:3) - ACC/Ambuja/Ultratech OPC-43. कम से कम 7 बैग/m3.',
+            'सरिया: Fe500D TMT - TATA Tiscon / Kamdhenu 500D / JSW (BIS मार्क ज़रूरी).',
+            'ईंट: पक्की ईंट, पहली श्रेणी - स्थानीय भट्टा (7.5 N/mm2+).',
+            'बालू: Zone-II साफ नदी रेत - गंगा/रामगंगा। मिट्टी-रहित।',
+            'रोड़ी: 20mm कुचली पत्थर - हरिद्वार/रुड़की/नजीबाबाद।',
+            'पानी: पीने योग्य साफ पानी। नमकीन/गंदा पानी नहीं।',
         ]),
-        ('B. CLEAR COVER TO REINFORCEMENT', [
-            'Foundations: 50mm/2" (bottom), 40mm/1.5" (sides)',
-            'Columns: 40mm/1.5" all faces',
-            'Beams: 25mm/1" (bottom and sides)',
-            'Slabs: 20mm/3/4" (bottom), 15mm/5/8" (top)',
-            'Exposed surfaces: 50mm/2" minimum',
+        ('B. कवर (COVER - सरिये की दूरी)', [
+            'नींव (Foundation): 2 इंच (50mm) नीचे, 1.5 इंच (40mm) साइड',
+            'पिलर (Column): 1.5 इंच (40mm) चारों तरफ',
+            'बीम (Beam): 1 इंच (25mm) नीचे और साइड',
+            'छत/स्लैब (Slab): 3/4 इंच (20mm) नीचे, 5/8 इंच (15mm) ऊपर',
+            'कवर कम होने से सरिया जंग खाएगा। कभी कम न करें!',
         ]),
-        ('C. LAP LENGTHS & ANCHORAGE (Seismic Zone IV)', [
-            'Tension lap (columns/beams): 50d (50 x bar dia). E.g., 20mm bar = 1000mm/3\'4" lap.',
-            'Compression lap: 40d. E.g., 16mm bar = 640mm/2\'1" lap.',
-            'Column laps: ONLY at mid-height (6ft from floor). Never in the joint zone (Lo = 650mm/2\'2").',
-            'Beam bars: Must extend minimum Ld (development length) past the face of support.',
-            'Top bars in cantilever: Anchor 10ft/3m into the main span. Critical for safety.',
+        ('C. ओवरलैप/गोद (LAP LENGTH - Zone IV)', [
+            'खिंचाव (Tension): 50 x व्यास। 20mm = 1000mm (3 फुट 4 इंच).',
+            'दबाव (Compression): 40 x व्यास। 16mm = 640mm (2 फुट 1 इंच).',
+            'पिलर में गोद: सिर्फ बीच में (6 फुट ऊंचाई)। जोड़ के पास कभी नहीं!',
+            'छज्जे की ऊपरी सरिया: मुख्य स्लैब में 10 फुट अंदर तक जाएगी।',
+            'गोद पर 2 बार बाँधना (binding wire double)।',
         ]),
-        ('D. SEISMIC DETAILING (IS 13920)', [
-            'All beam-column joints: Special confining reinforcement required.',
-            'Stirrup spacing in confining zone (Lo): max d/4 or 100mm (whichever is less).',
-            'Confining zone length (Lo): max(D, h/6, 450mm) = 650mm from each joint face.',
-            'Bottom bars at beam support: Min 50% of top bar area must continue through joint.',
-            'No hooks opened out. All stirrups: 135-degree hooks with 10d extension.',
+        ('D. भूकंप सुरक्षा (SEISMIC - IS 13920)', [
+            'पिलर-बीम जोड़ (Joint) में रिंग: 4 इंच (100mm) c/c - बहुत करीब!',
+            'जोड़ से 2 फुट 2 इंच (650mm) तक करीबी रिंग (Lo zone)।',
+            'रिंग का हुक: 135 डिग्री मोड़। 90 डिग्री हुक मना है!',
+            'बीम की नीचे की सरिया: कम से कम ऊपर की आधी जोड़ से पार जाएगी।',
+            'मुरादाबाद Zone-IV - भूकंप का खतरा ज़्यादा - डिटेलिंग ज़रूरी!',
         ]),
-        ('E. CURING & CONSTRUCTION SEQUENCE', [
-            'Curing: Minimum 14 days continuous water curing (ponding for slabs, wet gunny for columns).',
-            'Formwork removal: Beams sides 3 days, slab props 21 days, cantilever props 28 days.',
-            'Sequence: Foundation > Plinth beams > Plinth fill > GF floor > Columns > Beams+Slab (together).',
-            'Concrete must be placed within 30 min of mixing. No re-tempering with water.',
-            'Vibration: Needle vibrator mandatory for all beams and columns. No hand-tamping.',
+        ('E. ढलाई/देखभाल (CURING & SEQUENCE)', [
+            'क्योरिंग: 14 दिन लगातार पानी (छत: ponding, पिलर: गीली बोरी)।',
+            'शटरिंग हटाना: बीम साइड 3 दिन, स्लैब प्रॉप 21 दिन, छज्जा 28 दिन।',
+            'क्रम: नींव > प्लिंथ बीम > भराई > फ्लोर > पिलर > बीम+स्लैब (साथ में).',
+            'ढलाई 30 मिनट में पूरी करें। बाद में पानी मिलाना मना है।',
+            'वाइब्रेटर ज़रूरी (सुई वाला)। हाथ से ठोकना काफी नहीं।',
+            'गर्मी में सुबह/शाम ढलाई। सर्दी में बोरी/पॉलीथीन से ढकें।',
         ]),
     ]
 
